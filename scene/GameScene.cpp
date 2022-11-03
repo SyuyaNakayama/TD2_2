@@ -1,6 +1,7 @@
 ﻿#include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
+#include "FbxLoader.h"
 
 using namespace std;
 
@@ -15,30 +16,7 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 	player_.Initialize(&viewProjection_);
 	enemy_.Initialize();
-	boxes_.resize(100);
-	for (WorldTransform& box : boxes_) { box.Initialize(); }
-
-	for (size_t i = 0; i < 25; i++)
-	{
-		boxes_[i].translation_ = { (float)(i % 4)*2.0f, (float)i*2.0f, 0};
-	}
-	for (size_t i = 25; i < 50; i++)
-	{
-		int j = i % 25;
-		boxes_[i].translation_ = { (float)(j % 4)*2.0f, (float)j*2.0f, 8.0f};
-	}
-	for (size_t i = 50; i < 75; i++)
-	{
-		int j = i % 50;
-		boxes_[i].translation_ = { 0,(float)j*2.0f,(float)(j % 4)*2.0f };
-	}
-	for (size_t i = 75; i < 100; i++)
-	{
-		int j = i % 75;
-		boxes_[i].translation_ = { 8.0f,(float)j*2.0f,(float)(j % 4)*2.0f };
-	}
-
-	for (WorldTransform& box : boxes_) { box.Update(); }
+	FbxLoader::GetInstance()->LoadModelFromFile("cube");
 }
 
 void GameScene::Update()
@@ -79,7 +57,6 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	for (WorldTransform box : boxes_) { model_->Draw(box, viewProjection_); }
 
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
