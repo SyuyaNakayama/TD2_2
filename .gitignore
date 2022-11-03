@@ -356,3 +356,5 @@ MigrationBackup/
 .ionide/
 DirectXGame/DirectXGame.exe
 DirectXGame/imgui.ini
+
+lib/fbx_sdk
