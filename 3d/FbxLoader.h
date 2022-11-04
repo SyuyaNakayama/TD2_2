@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "fbxsdk.h"
-
+#include "FbxModel.h"
 #include <d3d12.h>
 #include <d3dx12.h>
 #include <string>
@@ -22,7 +22,7 @@ public:
 	void Initialize(ID3D12Device* device);
 	void Finalize();
 	void LoadModelFromFile(const string& modelName);
-
+	void ParseNodeRecursive(FbxModel* model, FbxNode* fbxNode, Node* parent = nullptr);
 private:
 	ID3D12Device* device = nullptr;
 	FbxManager* fbxManager = nullptr;
