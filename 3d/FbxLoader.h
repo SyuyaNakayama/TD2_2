@@ -23,10 +23,13 @@ public:
 	void Finalize();
 	void LoadModelFromFile(const string& modelName);
 	void ParseNodeRecursive(FbxModel* model, FbxNode* fbxNode, Node* parent = nullptr);
+	void ParseMesh(FbxModel* model, FbxNode* fbxNode);
+	string ExtractFileName(const string& PATH);
 private:
 	ID3D12Device* device = nullptr;
 	FbxManager* fbxManager = nullptr;
 	FbxImporter* fbxImporter = nullptr;
+	static const string DEFAULT_TEXTURE_FILE_NAME;
 
 	// privateなコンストラクタ（シングルトンパターン）
 	FbxLoader() = default;
@@ -36,4 +39,9 @@ private:
 	FbxLoader(const FbxLoader& obj) = delete;
 	// コピー代入演算子を禁止（シングルトンパターン）
 	void operator=(const FbxLoader& obj) = delete;
+
+	void ParseMeshVertices(FbxModel* model, FbxMesh* fbxMesh);
+	void ParseMeshFaces(FbxModel* model, FbxMesh* fbxMesh);
+	void ParseMaterial(FbxModel* model, FbxNode* fbxNode);
+	void LoadTexture(FbxModel* model, const string& FULLPATH);
 };
