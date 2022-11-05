@@ -2,6 +2,10 @@
 #include <string>
 #include <vector>
 #include <DirectXTex.h>
+#include <windows.h>
+#include <wrl.h>
+#include <d3d12.h>
+#include <d3dx12.h>
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Matrix4.h"
@@ -25,14 +29,31 @@ public:
 		Vector2 uv;
 	};
 private:
-	std::string name;
-	std::vector<Node> nodes;
+	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
+	using XMFLOAT4 = DirectX::XMFLOAT4;
+	using TexMetadata = DirectX::TexMetadata;
+	using ScratchImage = DirectX::ScratchImage;
+	using string = std::string;
+	template <class T> using vector = std::vector<T>;
+
+	ComPtr<ID3D12Resource> vertBuff, indexBuff, texBuff;
+	D3D12_VERTEX_BUFFER_VIEW vbView{};
+	D3D12_INDEX_BUFFER_VIEW ibView{};
+	ComPtr<ID3D12DescriptorHeap> descHeapSRV;
+
+	string name;
+	vector<Node> nodes;
 	Node* meshNode = nullptr;
-	std::vector<VertexPosNormalUv> vertices;
-	std::vector<uint16_t> indices;
+	vector<VertexPosNormalUv> vertices;
+	vector<uint16_t> indices;
 	Vector3 ambient = { 1,1,1 }, diffuse = { 1,1,1 };
-	DirectX::TexMetadata metadata{};
-	DirectX::ScratchImage scratchImg{};
+	TexMetadata metadata{};
+	ScratchImage scratchImg{};
 public:
 	friend class FbxLoader;
+
+	void CreateBuffers(ID3D12Device* device);
+	void Draw(ID3D12GraphicsCommandList* cmdList);
+
+	const Matrix4& GetModelTransform() { return meshNode->globalTransform; }
 };

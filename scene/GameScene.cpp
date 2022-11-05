@@ -12,7 +12,8 @@ void GameScene::Initialize() {
 	audio_ = Audio::GetInstance();
 	debugText_ = DebugText::GetInstance();
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
-	model_ = Model::Create();
+	model_ = Model::CreateFromOBJ("tamesi");
+	tamesi.Initialize();
 	viewProjection_.Initialize();
 	player_.Initialize(&viewProjection_);
 	enemy_.Initialize();
@@ -57,7 +58,7 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-
+	model_->Draw(tamesi, viewProjection_);
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
 #pragma endregion

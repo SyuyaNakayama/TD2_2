@@ -48,4 +48,5 @@ public: // メンバ関数
 	CollisionManager collisionManager;
 	Player player_;
 	Enemy enemy_;
+	WorldTransform tamesi;
 };
