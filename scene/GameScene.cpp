@@ -5,6 +5,11 @@
 
 using namespace std;
 
+GameScene::~GameScene()
+{
+	delete fbxModel_, fbxObject_;
+}
+
 void GameScene::Initialize() {
 
 	dxCommon_ = DirectXCommon::GetInstance();
@@ -17,7 +22,14 @@ void GameScene::Initialize() {
 	viewProjection_.Initialize();
 	player_.Initialize(&viewProjection_);
 	enemy_.Initialize();
-	FbxLoader::GetInstance()->LoadModelFromFile("cube");
+
+	FbxObject3d::SetDevice(dxCommon_->GetDevice());
+	FbxObject3d::SetViewProjection(&viewProjection_);
+	FbxObject3d::CreateGraphicsPipeline();
+	fbxModel_ = FbxLoader::GetInstance()->LoadModelFromFile("cube");
+	fbxObject_ = new FbxObject3d;
+	fbxObject_->Initialize();
+	fbxObject_->SetModel(fbxModel_);
 }
 
 void GameScene::Update()
@@ -27,9 +39,10 @@ void GameScene::Update()
 
 	// 当たり判定
 	collisionManager.CheckAllCollisions(&player_, &enemy_);
-
+	viewProjection_.UpdateMatrix();
 	debugCamera_->Update();
 	viewProjection_ = debugCamera_->GetViewProjection();
+	fbxObject_->Update();
 }
 
 void GameScene::Draw() {
@@ -61,6 +74,9 @@ void GameScene::Draw() {
 	model_->Draw(tamesi, viewProjection_);
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
+	fbxObject_->Draw(commandList);
+	debugText_->SetPos(0, 0);
+	debugText_->Printf("%f", viewProjection_.eye.y);
 #pragma endregion
 
 #pragma region 前景スプライト描画

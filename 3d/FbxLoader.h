@@ -21,7 +21,7 @@ public:
 
 	void Initialize(ID3D12Device* device);
 	void Finalize();
-	void LoadModelFromFile(const string& modelName);
+	FbxModel* LoadModelFromFile(const string& modelName);
 	void ParseNodeRecursive(FbxModel* model, FbxNode* fbxNode, Node* parent = nullptr);
 	void ParseMesh(FbxModel* model, FbxNode* fbxNode);
 	string ExtractFileName(const string& PATH);

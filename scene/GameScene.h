@@ -14,6 +14,7 @@
 #include "enemy/Enemy.h"
 #include "collider/CollisionManager.h"
 #include <vector>
+#include "FbxObject3d.h"
 
 /// <summary>
 /// ゲームシーン
@@ -22,6 +23,7 @@ class GameScene {
 private: // サブクラス
 	enum Scene { Title, HowToPlay, Play, Clear, GameOver };
 public: // メンバ関数
+	~GameScene();
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -49,4 +51,6 @@ public: // メンバ関数
 	Player player_;
 	Enemy enemy_;
 	WorldTransform tamesi;
+	FbxModel* fbxModel_;
+	FbxObject3d* fbxObject_;
 };
