@@ -53,4 +53,5 @@ public: // メンバ関数
 	WorldTransform tamesi;
 	FbxModel* fbxModel_;
 	FbxObject3d* fbxObject_;
+	WorldTransform fbxObjWT;
 };

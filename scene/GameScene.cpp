@@ -28,7 +28,7 @@ void GameScene::Initialize() {
 	FbxObject3d::CreateGraphicsPipeline();
 	fbxModel_ = FbxLoader::GetInstance()->LoadModelFromFile("cube");
 	fbxObject_ = new FbxObject3d;
-	fbxObject_->Initialize();
+	fbxObject_->Initialize(&fbxObjWT);
 	fbxObject_->SetModel(fbxModel_);
 }
 

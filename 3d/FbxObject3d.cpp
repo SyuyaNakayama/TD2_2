@@ -160,7 +160,7 @@ void FbxObject3d::CreateGraphicsPipeline()
 	if (FAILED(result)) { assert(0); }
 }
 
-void FbxObject3d::Initialize()
+void FbxObject3d::Initialize(WorldTransform* worldTransform)
 {
 	HRESULT result;
 	// 定数バッファの生成
@@ -171,6 +171,9 @@ void FbxObject3d::Initialize()
 		D3D12_RESOURCE_STATE_GENERIC_READ,
 		nullptr,
 		IID_PPV_ARGS(&constBuffTransform));
+
+	this->worldTransform = worldTransform;
+	this->worldTransform->Initialize();
 }
 
 void FbxObject3d::Update()
@@ -178,19 +181,7 @@ void FbxObject3d::Update()
 	Matrix4 matScale, matRot, matTrans;
 
 	// スケール、回転、平行移動行列の計算
-	matScale = Matrix4Scaling(scale.x, scale.y, scale.z);
-	matRot = Matrix4Identity();
-	matRot *= Matrix4RotationZ(XMConvertToRadians(rotation.z));
-	matRot *= Matrix4RotationX(XMConvertToRadians(rotation.x));
-	matRot *= Matrix4RotationY(XMConvertToRadians(rotation.y));
-	matTrans = Matrix4Translation(position.x, position.y, position.z);
-
-	// ワールド行列の合成
-	matWorld = Matrix4Identity(); // 変形をリセット
-	matWorld *= matScale; // ワールド行列にスケーリングを反映
-	matWorld *= matRot; // ワールド行列に回転を反映
-	matWorld *= matTrans; // ワールド行列に平行移動を反映
-
+	worldTransform->Update();
 	// ビュープロジェクション行列
 	const Matrix4& matViewProjection = viewProjection->matView * viewProjection->matProjection;
 	// モデルのメッシュトランスフォーム
@@ -204,7 +195,7 @@ void FbxObject3d::Update()
 	result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
 		constMap->viewproj = matViewProjection;
-		constMap->world = modelTransform * matWorld;
+		constMap->world = modelTransform * worldTransform->matWorld_;
 		constMap->cameraPos = cameraPos;
 		constBuffTransform->Unmap(0, nullptr);
 	}

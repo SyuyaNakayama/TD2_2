@@ -1,6 +1,7 @@
 #pragma once
 #include "FbxModel.h"
 #include "ViewProjection.h"
+#include "WorldTransform.h"
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Matrix4.h"
@@ -47,7 +48,7 @@ public: // メンバ関数
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize();
+	void Initialize(WorldTransform* worldTransform);
 
 	/// <summary>
 	/// 毎フレーム処理
@@ -64,14 +65,7 @@ public: // メンバ関数
 protected: // メンバ変数
 	// 定数バッファ
 	ComPtr<ID3D12Resource> constBuffTransform;
-	// ローカルスケール
-	Vector3 scale = { 1,1,1 };
-	// X,Y,Z軸回りのローカル回転角
-	Vector3 rotation = { 0,0,0 };
-	// ローカル座標
-	Vector3 position = { 0,0,0 };
-	// ローカルワールド変換行列
-	Matrix4 matWorld;
+	WorldTransform* worldTransform;
 	// モデル
 	FbxModel* model = nullptr;
 };
