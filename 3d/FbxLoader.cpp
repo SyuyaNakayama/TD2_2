@@ -56,6 +56,15 @@ FbxModel* FbxLoader::LoadModelFromFile(const string& modelName)
 	return model;
 }
 
+Vector3 FbxDouble3ToVector3(const FbxDouble3& num1)
+{
+	return Vector3((float)num1[0], (float)num1[1], (float)num1[2]);
+}
+Vector3 FbxDouble4ToVector3(const FbxDouble4& num1)
+{
+	return Vector3((float)num1[0], (float)num1[1], (float)num1[2]);
+}
+
 void FbxLoader::ParseNodeRecursive(FbxModel* model, FbxNode* fbxNode, Node* parent)
 {
 	model->nodes.emplace_back();
@@ -66,9 +75,9 @@ void FbxLoader::ParseNodeRecursive(FbxModel* model, FbxNode* fbxNode, Node* pare
 		scaling = fbxNode->LclScaling.Get(),
 		translation = fbxNode->LclTranslation.Get();
 
-	node.rotation = { (float)rotation[0],(float)rotation[1],(float)rotation[2] };
-	node.scaling = { (float)scaling[0],(float)scaling[1],(float)scaling[2] };
-	node.translation = { (float)translation[0],(float)translation[1],(float)translation[2] };
+	node.rotation = FbxDouble3ToVector3(rotation);
+	node.scaling = FbxDouble3ToVector3(scaling);
+	node.translation = FbxDouble3ToVector3(translation);
 
 	node.rotation.x = DegreeToRadian(node.rotation.x);
 	node.rotation.y = DegreeToRadian(node.rotation.y);
@@ -137,9 +146,7 @@ void FbxLoader::ParseMeshVertices(FbxModel* model, FbxMesh* fbxMesh)
 	for (size_t i = 0; i < CONTROL_POINTS_COUNT; i++)
 	{
 		FbxModel::VertexPosNormalUv& vertex = vertices[i];
-		vertex.pos.x = (float)pCoord[i][0];
-		vertex.pos.y = (float)pCoord[i][1];
-		vertex.pos.z = (float)pCoord[i][2];
+		vertex.pos = FbxDouble4ToVector3(pCoord[i]);
 	}
 }
 
@@ -169,9 +176,7 @@ void FbxLoader::ParseMeshFaces(FbxModel* model, FbxMesh* fbxMesh)
 			FbxVector4 normal;
 			if (fbxMesh->GetPolygonVertexNormal(i, j, normal))
 			{
-				vertex.normal.x = (float)normal[0];
-				vertex.normal.y = (float)normal[1];
-				vertex.normal.z = (float)normal[2];
+				vertex.normal = FbxDouble4ToVector3(normal);
 			}
 
 			if (TEXTURE_UV_COUNT > 0)
@@ -215,14 +220,10 @@ void FbxLoader::ParseMaterial(FbxModel* model, FbxNode* fbxNode)
 				FbxSurfaceLambert* lambert = static_cast<FbxSurfaceLambert*>(material);
 
 				FbxPropertyT<FbxDouble3> ambient = lambert->Ambient;
-				model->ambient.x = (float)ambient.Get()[0];
-				model->ambient.y = (float)ambient.Get()[1];
-				model->ambient.z = (float)ambient.Get()[2];
+				model->ambient = FbxDouble3ToVector3(ambient.Get());
 				
 				FbxPropertyT<FbxDouble3> diffuse = lambert->Diffuse;
-				model->diffuse.x = (float)diffuse.Get()[0];
-				model->diffuse.y = (float)diffuse.Get()[1];
-				model->diffuse.z = (float)diffuse.Get()[2];
+				model->diffuse = FbxDouble3ToVector3(diffuse.Get());
 			}
 
 			const FbxProperty DIFFUSE_PROPERTY = material->FindProperty(FbxSurfaceMaterial::sDiffuse);
