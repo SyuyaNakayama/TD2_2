@@ -1,6 +1,7 @@
 #include "FbxObject3d.h"
 #include "MathUtility.h"
 #include <d3dcompiler.h>
+#include <string>
 #pragma comment(lib, "d3dcompiler.lib")
 using namespace Microsoft::WRL;
 using namespace DirectX;
@@ -10,6 +11,45 @@ ID3D12Device* FbxObject3d::device = nullptr;
 ViewProjection* FbxObject3d::viewProjection = nullptr;
 ComPtr<ID3D12RootSignature> FbxObject3d::rootsignature;
 ComPtr<ID3D12PipelineState> FbxObject3d::pipelinestate;
+
+ID3DBlob* ShaderResourceCompile(ID3DBlob* shaderBlob, std::wstring shaderName, LPCSTR modelName)
+{
+	ComPtr<ID3DBlob> errorBlob;
+	std::wstring str = L"Resources/shaders/" + shaderFileName + L".hlsl";
+	HRESULT result = D3DCompileFromFile(
+		str.c_str(),    // シェーダファイル名
+		nullptr,
+		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
+		"main", modelName,    // エントリーポイント名、シェーダーモデル指定
+		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
+		0,
+		&shaderBlob, &errorBlob);
+	if (FAILED(result)) {
+		// errorBlobからエラー内容をstring型にコピー
+		std::string errstr;
+		errstr.resize(errorBlob->GetBufferSize());
+
+		std::copy_n((char*)errorBlob->GetBufferPointer(),
+			errorBlob->GetBufferSize(),
+			errstr.begin());
+		errstr += "\n";
+		// エラー内容を出力ウィンドウに表示
+		OutputDebugStringA(errstr.c_str());
+		exit(1);
+	}
+	return shaderBlob;
+}
+
+D3D12_INPUT_ELEMENT_DESC GetInputLayout(LPCSTR semanticName)
+{
+	D3D12_INPUT_ELEMENT_DESC inputLayout =
+	{
+		semanticName, 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
+		D3D12_APPEND_ALIGNED_ELEMENT,
+		D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
+	};
+	return inputLayout;
+}
 
 void FbxObject3d::CreateGraphicsPipeline()
 {
@@ -21,68 +61,20 @@ void FbxObject3d::CreateGraphicsPipeline()
 	assert(device);
 
 	// 頂点シェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Resources/shaders/FBXVS.hlsl",    // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "vs_5_0",    // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&vsBlob, &errorBlob);
-	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
-		std::string errstr;
-		errstr.resize(errorBlob->GetBufferSize());
-
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			errstr.begin());
-		errstr += "\n";
-		// エラー内容を出力ウィンドウに表示
-		OutputDebugStringA(errstr.c_str());
-		exit(1);
-	}
+	vsBlob = ShaderResourceCompile(vsBlob.Get(), L"FBXVS", "vs_5_0");
 
 	// ピクセルシェーダの読み込みとコンパイル
-	result = D3DCompileFromFile(
-		L"Resources/shaders/FBXPS.hlsl",    // シェーダファイル名
-		nullptr,
-		D3D_COMPILE_STANDARD_FILE_INCLUDE, // インクルード可能にする
-		"main", "ps_5_0",    // エントリーポイント名、シェーダーモデル指定
-		D3DCOMPILE_DEBUG | D3DCOMPILE_SKIP_OPTIMIZATION, // デバッグ用設定
-		0,
-		&psBlob, &errorBlob);
-	if (FAILED(result)) {
-		// errorBlobからエラー内容をstring型にコピー
-		std::string errstr;
-		errstr.resize(errorBlob->GetBufferSize());
-
-		std::copy_n((char*)errorBlob->GetBufferPointer(),
-			errorBlob->GetBufferSize(),
-			errstr.begin());
-		errstr += "\n";
-		// エラー内容を出力ウィンドウに表示
-		OutputDebugStringA(errstr.c_str());
-		exit(1);
-	}
+	psBlob = ShaderResourceCompile(psBlob.Get(), L"FBXPS", "ps_5_0");
 
 	// 頂点レイアウト
-	D3D12_INPUT_ELEMENT_DESC inputLayout[] = {
-		{ // xy座標(1行で書いたほうが見やすい)
-			"POSITION", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
-		{ // 法線ベクトル(1行で書いたほうが見やすい)
-			"NORMAL", 0, DXGI_FORMAT_R32G32B32_FLOAT, 0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
-		{ // uv座標(1行で書いたほうが見やすい)
-			"TEXCOORD", 0, DXGI_FORMAT_R32G32_FLOAT, 0,
-			D3D12_APPEND_ALIGNED_ELEMENT,
-			D3D12_INPUT_CLASSIFICATION_PER_VERTEX_DATA, 0
-		},
+	D3D12_INPUT_ELEMENT_DESC inputLayout[] =
+	{
+		// xy座標(1行で書いたほうが見やすい)
+		GetInputLayout("POSITION"),
+		// 法線ベクトル(1行で書いたほうが見やすい)
+		GetInputLayout("NORMAL"),
+		// uv座標(1行で書いたほうが見やすい)
+		GetInputLayout("TEXCOORD")
 	};
 
 	// グラフィックスパイプラインの流れを設定
@@ -151,13 +143,13 @@ void FbxObject3d::CreateGraphicsPipeline()
 	result = D3DX12SerializeVersionedRootSignature(&rootSignatureDesc, D3D_ROOT_SIGNATURE_VERSION_1_0, &rootSigBlob, &errorBlob);
 	// ルートシグネチャの生成
 	result = device->CreateRootSignature(0, rootSigBlob->GetBufferPointer(), rootSigBlob->GetBufferSize(), IID_PPV_ARGS(rootsignature.ReleaseAndGetAddressOf()));
-	if (FAILED(result)) { assert(0); }
+	assert(SUCCEEDED(result));
 
 	gpipeline.pRootSignature = rootsignature.Get();
 
 	// グラフィックスパイプラインの生成
 	result = device->CreateGraphicsPipelineState(&gpipeline, IID_PPV_ARGS(pipelinestate.ReleaseAndGetAddressOf()));
-	if (FAILED(result)) { assert(0); }
+	assert(SUCCEEDED(result));
 }
 
 void FbxObject3d::Initialize(WorldTransform* worldTransform)
@@ -178,8 +170,6 @@ void FbxObject3d::Initialize(WorldTransform* worldTransform)
 
 void FbxObject3d::Update()
 {
-	Matrix4 matScale, matRot, matTrans;
-
 	// スケール、回転、平行移動行列の計算
 	worldTransform->Update();
 	// ビュープロジェクション行列
@@ -189,10 +179,9 @@ void FbxObject3d::Update()
 	// カメラ座標
 	const Vector3& cameraPos = viewProjection->eye;
 
-	HRESULT result;
 	// 定数バッファへデータ転送
 	ConstBufferDataTransform* constMap = nullptr;
-	result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
+	HRESULT result = constBuffTransform->Map(0, nullptr, (void**)&constMap);
 	if (SUCCEEDED(result)) {
 		constMap->viewproj = matViewProjection;
 		constMap->world = modelTransform * worldTransform->matWorld_;
@@ -204,9 +193,7 @@ void FbxObject3d::Update()
 void FbxObject3d::Draw(ID3D12GraphicsCommandList* cmdList)
 {
 	// モデルの割り当てがなければ描画しない
-	if (model == nullptr) {
-		return;
-	}
+	if (model == nullptr) { return; }
 
 	// パイプラインステートの設定
 	cmdList->SetPipelineState(pipelinestate.Get());
@@ -220,4 +207,3 @@ void FbxObject3d::Draw(ID3D12GraphicsCommandList* cmdList)
 	// モデル描画
 	model->Draw(cmdList);
 }
-;
