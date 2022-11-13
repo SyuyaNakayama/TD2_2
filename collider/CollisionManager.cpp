@@ -38,8 +38,8 @@ void CollisionManager::CheckAllCollisions(Player* player, Enemy* enemy)
 			Collider* colliderB = *itrB;
 			if (CheckBoxCollisionPair(colliderA, colliderB))
 			{
-				colliderA->OnCollision();
-				colliderB->OnCollision();
+				colliderA->OnCollision(colliderB);
+				colliderB->OnCollision(colliderA);
 			}
 		}
 	}

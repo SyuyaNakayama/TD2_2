@@ -10,11 +10,11 @@
 #include "Sprite.h"
 #include "ViewProjection.h"
 #include "WorldTransform.h"
-#include "player/Player.h"
 #include "enemy/Enemy.h"
 #include "collider/CollisionManager.h"
 #include <vector>
 #include "FbxObject3d.h"
+#include "Stage.h"
 
 /// <summary>
 /// ゲームシーン
@@ -48,10 +48,10 @@ public: // メンバ関数
 	Model* model_;
 	ViewProjection viewProjection_;
 	CollisionManager collisionManager;
-	Player player_;
 	Enemy enemy_;
 	WorldTransform tamesi;
 	FbxModel* fbxModel_;
 	FbxObject3d* fbxObject_;
 	WorldTransform fbxObjWT;
+	Stage stage_;
 };

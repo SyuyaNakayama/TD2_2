@@ -49,6 +49,8 @@ private:
 	Vector3 ambient = { 1,1,1 }, diffuse = { 1,1,1 };
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
+
+	template<class T> ID3D12Resource* CreateBuffer(ID3D12Device* device, vector<T> vec, ID3D12Resource* res, UINT buffSize);
 public:
 	friend class FbxLoader;
 
@@ -57,3 +59,22 @@ public:
 
 	const Matrix4& GetModelTransform() { return meshNode->globalTransform; }
 };
+
+template<class T>
+inline ID3D12Resource* FbxModel::CreateBuffer(ID3D12Device* device, vector<T> vec, ID3D12Resource* res, UINT buffSize)
+{
+	HRESULT result = device->CreateCommittedResource(&CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD),
+		D3D12_HEAP_FLAG_NONE, &CD3DX12_RESOURCE_DESC::Buffer(buffSize),
+		D3D12_RESOURCE_STATE_GENERIC_READ, nullptr, IID_PPV_ARGS(&res));
+	assert(SUCCEEDED(result));
+
+	T* map = nullptr;
+	result = res->Map(0, nullptr, (void**)&map);
+	if (SUCCEEDED(result))
+	{
+		std::copy(vec.begin(), vec.end(), map);
+		res->Unmap(0, nullptr);
+	}
+
+	return res;
+}

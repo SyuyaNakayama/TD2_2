@@ -20,7 +20,6 @@ void GameScene::Initialize() {
 	model_ = Model::CreateFromOBJ("tamesi");
 	tamesi.Initialize();
 	viewProjection_.Initialize();
-	player_.Initialize(&viewProjection_);
 	enemy_.Initialize();
 
 	FbxObject3d::SetDevice(dxCommon_->GetDevice());
@@ -30,19 +29,23 @@ void GameScene::Initialize() {
 	fbxObject_ = new FbxObject3d;
 	fbxObject_->Initialize(&fbxObjWT);
 	fbxObject_->SetModel(fbxModel_);
+	stage_.Initialize(viewProjection_);
 }
 
 void GameScene::Update()
 {
-	player_.Update();
-	enemy_.Update();
-
 	// 当たり判定
-	collisionManager.CheckAllCollisions(&player_, &enemy_);
+	//collisionManager.CheckAllCollisions(&player_, &enemy_);
+	enemy_.Update();
+	stage_.Update();
+
 	viewProjection_.UpdateMatrix();
 	debugCamera_->Update();
-	viewProjection_ = debugCamera_->GetViewProjection();
+	//viewProjection_ = debugCamera_->GetViewProjection();
 	fbxObject_->Update();
+	
+	debugText_->SetPos(0, 0);
+	debugText_->Printf("%f", viewProjection_.eye.z);
 }
 
 void GameScene::Draw() {
@@ -71,12 +74,12 @@ void GameScene::Draw() {
 	/// <summary>
 	/// ここに3Dオブジェクトの描画処理を追加できる
 	/// </summary>
-	model_->Draw(tamesi, viewProjection_);
+	enemy_.Draw(viewProjection_);
+	stage_.Draw();
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
-	fbxObject_->Draw(commandList);
-	debugText_->SetPos(0, 0);
-	debugText_->Printf("%f", viewProjection_.eye.y);
+	
+	//fbxObject_->Draw(commandList);
 #pragma endregion
 
 #pragma region 前景スプライト描画

@@ -12,6 +12,7 @@ void Enemy::Initialize()
 
 void Enemy::Update()
 {
+	worldTransform_.Update();
 }
 
 void Enemy::Draw(ViewProjection viewProjection)

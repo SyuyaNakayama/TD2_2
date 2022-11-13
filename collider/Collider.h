@@ -8,7 +8,7 @@ private:
 	uint32_t collisionAttribute_ = 0xffffffff;
 	uint32_t collisionMask_ = 0xffffffff;
 public:
-	virtual void OnCollision() = 0;
+	virtual void OnCollision(Collider* collider) = 0;
 	const virtual Vector3 GetWorldPosition() = 0, GetRadius() = 0;
 	uint32_t GetCollisionAttribute() { return collisionAttribute_; }
 	uint32_t GetCollisionMask() { return collisionMask_; }
