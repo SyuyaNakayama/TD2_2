@@ -2,18 +2,8 @@
 
 #include "Audio.h"
 #include "DirectXCommon.h"
-#include "DebugText.h"
-#include "DebugCamera.h"
-#include "Input.h"
-#include "Model.h"
 #include "SafeDelete.h"
 #include "Sprite.h"
-#include "ViewProjection.h"
-#include "WorldTransform.h"
-#include "enemy/Enemy.h"
-#include "collider/CollisionManager.h"
-#include <vector>
-#include "FbxObject3d.h"
 #include "Stage.h"
 
 /// <summary>
@@ -43,15 +33,6 @@ public: // メンバ関数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
-	DebugText* debugText_ = nullptr;
-	DebugCamera* debugCamera_ = nullptr;
-	Model* model_;
-	ViewProjection viewProjection_;
-	CollisionManager collisionManager;
-	Enemy enemy_;
-	WorldTransform tamesi;
-	FbxModel* fbxModel_;
-	FbxObject3d* fbxObject_;
-	WorldTransform fbxObjWT;
 	Stage stage_;
+	DebugText* debugText_ = nullptr;
 };

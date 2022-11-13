@@ -6,25 +6,43 @@ std::unique_ptr<Player>  Player::GetInstance()
 	return move(player);
 }
 
-void Player::Initialize(ViewProjection& viewProjection)
+void Player::Initialize(ViewProjection* viewProjection, float poleRad)
 {
+	debugText_ = DebugText::GetInstance();
 	model_ = Model::Create();
 	input_ = Input::GetInstance();
 	worldTransform_.Initialize();
 	worldTransform_.translation_ = { -25.0f,0,-25.0f };
 	viewProjection_ = viewProjection;
+	poleRadius_ = poleRad;
 }
 
 void Player::Move()
 {
 	worldTransform_.translation_ += spd_;
-	viewProjection_.eye = viewProjection_.target = worldTransform_.translation_;
+	viewProjection_->eye = viewProjection_->target = worldTransform_.translation_;
 	switch (direction_)
 	{
-	case Player::Front:	viewProjection_.eye.z -= CAMERA_DISTANCE;	break;
-	case Player::Right:	viewProjection_.eye.x += CAMERA_DISTANCE;	break;
-	case Player::Back:		break;
-	case Player::Left:		break;
+	case Player::Front:
+		viewProjection_->eye.z -= CAMERA_DISTANCE;
+		if (worldTransform_.translation_.x <= -poleRadius_)
+		{
+			viewProjection_->eye.x = viewProjection_->target.x =
+				worldTransform_.translation_.x = -poleRadius_;
+		}
+		break;
+	case Player::Right:
+		viewProjection_->eye.x += CAMERA_DISTANCE;
+		if (worldTransform_.translation_.z <= -poleRadius_)
+		{
+			viewProjection_->eye.z = viewProjection_->target.z =
+				worldTransform_.translation_.z = -poleRadius_;
+		}
+		break;
+	case Player::Back:
+		break;
+	case Player::Left:
+		break;
 	}
 }
 
@@ -36,7 +54,7 @@ void Player::Update()
 
 void Player::Draw()
 {
-	model_->Draw(worldTransform_, viewProjection_);
+	model_->Draw(worldTransform_, *viewProjection_);
 }
 
 void Player::UpdateSpeed()
@@ -61,14 +79,14 @@ void Player::UpdateSpeed()
 	spd_ *= 0.2f;
 }
 
-void Player::DirectionChange(uint32_t endDis)
+void Player::DirectionChange()
 {
 	switch (direction_)
 	{
 	case Player::Front:
-		if (worldTransform_.translation_.x >= endDis)
+		if (worldTransform_.translation_.x >= poleRadius_)
 		{
-			worldTransform_.translation_.x = endDis;
+			worldTransform_.translation_.x = poleRadius_;
 			direction_ = Right;
 		}
 		break;
@@ -79,6 +97,8 @@ void Player::DirectionChange(uint32_t endDis)
 	case Player::Left:
 		break;
 	}
+	debugText_->SetPos(0, 0);
+	debugText_->Printf("%f", worldTransform_.translation_.x);
 }
 
 void Player::OnCollision(Collider* collider)

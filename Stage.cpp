@@ -1,30 +1,75 @@
 #include "Stage.h"
+#include "WinApp.h"
 using namespace std;
 
-void Stage::Initialize(ViewProjection& viewProjection)
+void Stage::Initialize()
 {
-	viewProjection_ = viewProjection;
+	debugText_ = DebugText::GetInstance();
+	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	model_ = Model::Create();
-	blocks_.resize(50);
+	viewProjection_.Initialize();
+	/*FbxObject3d::SetDevice(dxCommon_->GetDevice());
+	FbxObject3d::SetViewProjection(&viewProjection_);
+	FbxObject3d::CreateGraphicsPipeline();
+	fbxModel_ = FbxLoader::GetInstance()->LoadModelFromFile("cube");
+	fbxObject_ = new FbxObject3d;
+	fbxObject_->Initialize(&fbxObjWT);
+	fbxObject_->SetModel(fbxModel_);*/
+
+	blocks_.resize(100);
 	for (size_t i = 0; i < blocks_.size(); i++)
 	{
 		blocks_[i].Initialize();
-		blocks_[i].translation_ = { -POLE_RAD + 2.0f * (float)i,(float)i * 2.0f,-POLE_RAD };
+		if (i < 25)
+		{
+			blocks_[i].translation_ = { -POLE_RAD + 2.0f * (float)(i + 1),(float)i * 2.0f,-POLE_RAD };
+		}
+		else if (i < 50)
+		{
+			blocks_[i].translation_ = { -POLE_RAD + 2.0f * (float)(i + 1),(float)i * 2.0f,-POLE_RAD };
+		}
+		else if (i < 75)
+		{
+			blocks_[i].translation_ = { -POLE_RAD + 2.0f * (float)(i + 1),(float)i * 2.0f,-POLE_RAD };
+		}
+		else
+		{
+			blocks_[i].translation_ = { -POLE_RAD + 2.0f * (float)(i + 1),(float)i * 2.0f,-POLE_RAD };
+		}
 		blocks_[i].Update();
 	}
 	player_ = Player::GetInstance();
-	player_->Initialize(viewProjection);
+	player_->Initialize(&viewProjection_, POLE_RAD);
+	enemy_.Initialize();
 }
 
 void Stage::Update()
 {
 	player_->UpdateSpeed();
+	// 当たり判定
+	//collisionManager.CheckAllCollisions(&player_, &enemy_);
+#pragma region オブジェクトの更新
 	player_->Update();
-	player_->DirectionChange(POLE_RAD);
+	player_->DirectionChange();
+	enemy_.Update();
+	//fbxObject_->Update();
+#pragma endregion
+#pragma region カメラの更新
+	viewProjection_.UpdateMatrix();
+	debugCamera_->Update();
+	//viewProjection_ = debugCamera_->GetViewProjection();
+
+#pragma endregion
 }
 
 void Stage::Draw()
 {
 	player_->Draw();
 	for (WorldTransform& block : blocks_) { model_->Draw(block, viewProjection_); }
+	enemy_.Draw(viewProjection_);
+}
+
+Stage::~Stage()
+{
+	delete debugCamera_;
 }
