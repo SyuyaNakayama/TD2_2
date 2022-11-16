@@ -1,11 +1,10 @@
 ﻿#include "Audio.h"
-#include "DirectXCommon.h"
 #include "GameScene.h"
 #include "TextureManager.h"
-#include "WinApp.h"
 #include "AxisIndicator.h"
 #include "PrimitiveDrawer.h"
 #include "fbx/FbxLoader.h"
+#include "particleManager/ParticleManager.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -49,6 +48,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 3Dモデル静的初期化
 	Model::StaticInitialize();
+
+	ParticleManager::StaticInitialize();
 
 	// 軸方向表示初期化
 	axisIndicator = AxisIndicator::GetInstance();

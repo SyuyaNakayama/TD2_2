@@ -27,9 +27,6 @@
     <Filter Include="ソース ファイル\scene">
       <UniqueIdentifier>{e2d0b4b8-24a1-4854-8e5b-bb6ed09f1add}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\input">
-      <UniqueIdentifier>{337d978c-44b1-4af3-811b-c5f6f355f7de}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ヘッダー ファイル\input">
       <UniqueIdentifier>{d461f61e-3cc4-4b11-b521-37a61c927ae5}</UniqueIdentifier>
     </Filter>
@@ -60,6 +57,24 @@
     <Filter Include="ヘッダー ファイル\audio">
       <UniqueIdentifier>{3a0044cc-1b7d-4ed5-a1a6-9074ed1b1769}</UniqueIdentifier>
     </Filter>
+    <Filter Include="シェーダー ファイル\Fbx">
+      <UniqueIdentifier>{0bfc5b61-1cde-4484-9c2c-5e045ce51bf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="シェーダー ファイル\Obj">
+      <UniqueIdentifier>{331b7531-4cff-4343-8578-4a367d210b95}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="シェーダー ファイル\Primitive">
+      <UniqueIdentifier>{575de69a-f403-4c51-b9b3-13c16037a3d9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="シェーダー ファイル\Shape">
+      <UniqueIdentifier>{5861776f-32a2-4cdf-874b-8d6bf7bf8111}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="シェーダー ファイル\Sprite">
+      <UniqueIdentifier>{f1f13fc8-30d0-4cf1-85b6-aca5f506fd8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="シェーダー ファイル\Terrain">
+      <UniqueIdentifier>{1c878f3a-26e7-47c0-b75a-83a153f6c97f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -79,9 +94,6 @@
     </ClCompile>
     <ClCompile Include="math\Vector3.cpp">
       <Filter>ソース ファイル\math</Filter>
-    </ClCompile>
-    <ClCompile Include="collider\CollisionManager.cpp">
-      <Filter>ソース ファイル</Filter>
     </ClCompile>
     <ClCompile Include="fadeManager\FadeManager.cpp">
       <Filter>ソース ファイル</Filter>
@@ -108,13 +120,16 @@
       <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
     <ClCompile Include="stage\Block.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
     <ClCompile Include="stage\BlockManager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\stage</Filter>
+    </ClCompile>
+    <ClCompile Include="collider\CollisionManager.cpp">
+      <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
     <ClCompile Include="particleManager\ParticleManager.cpp">
-      <Filter>ソース ファイル</Filter>
+      <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -236,71 +251,71 @@
       <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
     <ClInclude Include="stage\Block.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
     <ClInclude Include="stage\BlockManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
     <ClInclude Include="particleManager\ParticleManager.h">
-      <Filter>ヘッダー ファイル</Filter>
+      <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders\SpritePS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShapeVS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ShapePS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\ObjVS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\PrimitivePS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\PrimitiveVS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\TerrainVS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\FBXPS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
+      <Filter>シェーダー ファイル\Fbx</Filter>
     </FxCompile>
     <FxCompile Include="Resources\shaders\FBXVS.hlsl">
-      <Filter>シェーダー ファイル</Filter>
+      <Filter>シェーダー ファイル\Fbx</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjPS.hlsl">
+      <Filter>シェーダー ファイル\Obj</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ObjVS.hlsl">
+      <Filter>シェーダー ファイル\Obj</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PrimitivePS.hlsl">
+      <Filter>シェーダー ファイル\Primitive</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\PrimitiveVS.hlsl">
+      <Filter>シェーダー ファイル\Primitive</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShapePS.hlsl">
+      <Filter>シェーダー ファイル\Shape</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\ShapeVS.hlsl">
+      <Filter>シェーダー ファイル\Shape</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\SpritePS.hlsl">
+      <Filter>シェーダー ファイル\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\SpriteVS.hlsl">
+      <Filter>シェーダー ファイル\Sprite</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\TerrainVS.hlsl">
+      <Filter>シェーダー ファイル\Terrain</Filter>
+    </FxCompile>
+    <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
+      <Filter>シェーダー ファイル\Terrain</Filter>
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders\Sprite.hlsli">
-      <Filter>シェーダー ファイル</Filter>
-    </None>
-    <None Include="Resources\shaders\Shape.hlsli">
-      <Filter>シェーダー ファイル</Filter>
+    <None Include="Resources\shaders\FBX.hlsli">
+      <Filter>シェーダー ファイル\Fbx</Filter>
     </None>
     <None Include="Resources\shaders\Obj.hlsli">
-      <Filter>シェーダー ファイル</Filter>
+      <Filter>シェーダー ファイル\Obj</Filter>
     </None>
     <None Include="Resources\shaders\Primitive.hlsli">
-      <Filter>シェーダー ファイル</Filter>
+      <Filter>シェーダー ファイル\Primitive</Filter>
+    </None>
+    <None Include="Resources\shaders\Shape.hlsli">
+      <Filter>シェーダー ファイル\Shape</Filter>
+    </None>
+    <None Include="Resources\shaders\Sprite.hlsli">
+      <Filter>シェーダー ファイル\Sprite</Filter>
     </None>
     <None Include="Resources\shaders\Terrain.hlsli">
-      <Filter>シェーダー ファイル</Filter>
-    </None>
-    <None Include="Resources\shaders\FBX.hlsli">
-      <Filter>シェーダー ファイル</Filter>
+      <Filter>シェーダー ファイル\Terrain</Filter>
     </None>
   </ItemGroup>
 </Project>

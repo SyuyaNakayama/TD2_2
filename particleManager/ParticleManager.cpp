@@ -3,6 +3,7 @@
 #include <DirectXTex.h>
 #include <stdio.h>
 #include "DebugText.h"
+#include "DirectXCommon.h"
 
 #pragma comment(lib, "d3dcompiler.lib")
 
@@ -33,18 +34,17 @@ XMFLOAT3 ParticleManager::target = { 0, 0, 0 };
 XMFLOAT3 ParticleManager::up = { 0, 1, 0 };
 D3D12_VERTEX_BUFFER_VIEW ParticleManager::vbView{};
 
-void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, int window_height)
+void ParticleManager::StaticInitialize()
 {
 	// nullptrチェック
+	ParticleManager::device = DirectXCommon::GetInstance()->GetDevice();
 	assert(device);
-
-	ParticleManager::device = device;
 
 	// デスクリプタヒープの初期化
 	InitializeDescriptorHeap();
 
 	// カメラ初期化
-	InitializeCamera(window_width, window_height);
+	InitializeCamera();
 
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
@@ -54,7 +54,6 @@ void ParticleManager::StaticInitialize(ID3D12Device* device, int window_width, i
 
 	// モデル生成
 	CreateModel();
-
 }
 
 void ParticleManager::PreDraw(ID3D12GraphicsCommandList* cmdList)
@@ -158,7 +157,7 @@ void ParticleManager::InitializeDescriptorHeap()
 
 }
 
-void ParticleManager::InitializeCamera(int window_width, int window_height)
+void ParticleManager::InitializeCamera()
 {
 	// ビュー行列の生成
 	matView = XMMatrixLookAtLH(
@@ -166,15 +165,10 @@ void ParticleManager::InitializeCamera(int window_width, int window_height)
 		XMLoadFloat3(&target),
 		XMLoadFloat3(&up));
 
-	// 平行投影による射影行列の生成
-	//constMap->mat = XMMatrixOrthographicOffCenterLH(
-	//	0, window_width,
-	//	window_height, 0,
-	//	0, 1);
 	// 透視投影による射影行列の生成
 	matProjection = XMMatrixPerspectiveFovLH(
 		XMConvertToRadians(60.0f),
-		(float)window_width / window_height,
+		(float)WinApp::kWindowWidth / WinApp::kWindowHeight,
 		0.1f, 1000.0f
 	);
 
@@ -573,7 +567,7 @@ void ParticleManager::Add(int life, float start_scale, float end_scale)
 	{
 		particles.emplace_front();
 		Particle& p = particles.front();
-		const float md_pos = 2.5f;
+		const float md_pos = 25.0f;
 		// -5.0f~+5.0f:xyz
 		Vector3 pos =
 		{
