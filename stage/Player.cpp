@@ -6,15 +6,14 @@ std::unique_ptr<Player>  Player::GetInstance()
 	return move(player);
 }
 
-void Player::Initialize(ViewProjection* viewProjection, float poleRad)
+void Player::Initialize(ViewProjection* viewProjection)
 {
 	debugText_ = DebugText::GetInstance();
 	model_ = Model::Create();
 	input_ = Input::GetInstance();
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { -25.0f,0,-25.0f };
+	worldTransform_.translation_ = { 25.0f,50.0f,-25.0f };
 	viewProjection_ = viewProjection;
-	poleRadius_ = poleRad;
 }
 
 void Player::Move()
@@ -23,25 +22,59 @@ void Player::Move()
 	viewProjection_->eye = viewProjection_->target = worldTransform_.translation_;
 	switch (direction_)
 	{
-	case Player::Front:
+	case Front:
 		viewProjection_->eye.z -= CAMERA_DISTANCE;
-		if (worldTransform_.translation_.x <= -poleRadius_)
+		// ¶‚É‰‚¯‚È‚¢
+		if (worldTransform_.translation_.x <= -POLE_RAD)
 		{
 			viewProjection_->eye.x = viewProjection_->target.x =
-				worldTransform_.translation_.x = -poleRadius_;
+				worldTransform_.translation_.x = -POLE_RAD;
+		}
+		// •ûŒü“]Š·
+		if (worldTransform_.translation_.x >= POLE_RAD)
+		{
+			worldTransform_.translation_.x = POLE_RAD;
+			direction_ = Right;
 		}
 		break;
-	case Player::Right:
+	case Right:
 		viewProjection_->eye.x += CAMERA_DISTANCE;
-		if (worldTransform_.translation_.z <= -poleRadius_)
+		if (worldTransform_.translation_.z <= -POLE_RAD)
 		{
 			viewProjection_->eye.z = viewProjection_->target.z =
-				worldTransform_.translation_.z = -poleRadius_;
+				worldTransform_.translation_.z = -POLE_RAD;
+		}
+		if (worldTransform_.translation_.z >= POLE_RAD)
+		{
+			worldTransform_.translation_.z = POLE_RAD;
+			direction_ = Back;
 		}
 		break;
-	case Player::Back:
+	case Back:
+		viewProjection_->eye.z += CAMERA_DISTANCE;
+		if (worldTransform_.translation_.x >= POLE_RAD)
+		{
+			viewProjection_->eye.x = viewProjection_->target.x =
+				worldTransform_.translation_.x = POLE_RAD;
+		}
+		if (worldTransform_.translation_.x <= -POLE_RAD)
+		{
+			worldTransform_.translation_.x = -POLE_RAD;
+			direction_ = Left;
+		}
 		break;
-	case Player::Left:
+	case Left:
+		viewProjection_->eye.x -= CAMERA_DISTANCE;
+		if (worldTransform_.translation_.z >= POLE_RAD)
+		{
+			viewProjection_->eye.z = viewProjection_->target.z =
+				worldTransform_.translation_.z = POLE_RAD;
+		}
+		if (worldTransform_.translation_.z <= -POLE_RAD)
+		{
+			worldTransform_.translation_.z = -POLE_RAD;
+			direction_ = Front;
+		}
 		break;
 	}
 }
@@ -57,6 +90,7 @@ void Player::Draw()
 	model_->Draw(worldTransform_, *viewProjection_);
 }
 
+// “–‚½‚è”»’è‚Ì‘O‚És‚¤
 void Player::UpdateSpeed()
 {
 	float horizontalSpd = (input_->PushKey(DIK_RIGHT) - input_->PushKey(DIK_LEFT));
@@ -64,41 +98,21 @@ void Player::UpdateSpeed()
 
 	switch (direction_)
 	{
-	case Player::Front:
+	case Front:
 		spd_ = { horizontalSpd ,verticalSpd ,0 };
 		break;
-	case Player::Right:
+	case Right:
 		spd_ = { 0,verticalSpd ,horizontalSpd };
 		break;
-	case Player::Back:
+	case Back:
+		spd_ = { -horizontalSpd ,verticalSpd ,0 };
 		break;
-	case Player::Left:
+	case Left:
+		spd_ = { 0,verticalSpd ,-horizontalSpd };
 		break;
 	}
 	spd_.normalize();
-	spd_ *= 0.2f;
-}
-
-void Player::DirectionChange()
-{
-	switch (direction_)
-	{
-	case Player::Front:
-		if (worldTransform_.translation_.x >= poleRadius_)
-		{
-			worldTransform_.translation_.x = poleRadius_;
-			direction_ = Right;
-		}
-		break;
-	case Player::Right:
-		break;
-	case Player::Back:
-		break;
-	case Player::Left:
-		break;
-	}
-	debugText_->SetPos(0, 0);
-	debugText_->Printf("%f", worldTransform_.translation_.x);
+	spd_ *= 0.5f;
 }
 
 void Player::OnCollision(Collider* collider)

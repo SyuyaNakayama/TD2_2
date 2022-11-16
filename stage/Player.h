@@ -7,11 +7,10 @@
 #include "ViewProjection.h"
 #include <memory>
 #include "DebugText.h"
+#include "scene.h"
 
 class Player :public Collider
 {
-public:
-	enum Direction { Front, Right, Back, Left };
 private:
 	DebugText* debugText_ = nullptr;
 	WorldTransform worldTransform_;
@@ -21,19 +20,17 @@ private:
 	uint32_t texture_ = 0;
 	Vector3 spd_{};
 	const float CAMERA_DISTANCE = 70.0f;
-	Direction direction_ = Front;
-	float poleRadius_ = 0;
+	Direction direction_ = Right;
 
 	void Move();
 public:
 	Player() = default;
 	~Player() = default;
 	static std::unique_ptr<Player> GetInstance();
-	void Initialize(ViewProjection* viewProjection,float poleRad);
+	void Initialize(ViewProjection* viewProjection);
 	void Update();
 	void Draw();
 	void UpdateSpeed();
-	void DirectionChange();
 	Direction GetDirection() { return direction_; }
 
 	const Vector3 GetPosition() { return worldTransform_.translation_; }

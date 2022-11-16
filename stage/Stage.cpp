@@ -1,5 +1,6 @@
 #include "Stage.h"
 #include "WinApp.h"
+#include "SafeDelete.h"
 using namespace std;
 
 void Stage::Initialize()
@@ -26,20 +27,20 @@ void Stage::Initialize()
 		}
 		else if (i < 50)
 		{
-			blocks_[i].translation_ = { -POLE_RAD + 2.0f * (float)(i + 1),(float)i * 2.0f,-POLE_RAD };
+			blocks_[i].translation_ = { POLE_RAD,(float)i * 2.0f,-POLE_RAD + 2.0f * (float)(i % 25 + 1) };
 		}
 		else if (i < 75)
 		{
-			blocks_[i].translation_ = { -POLE_RAD + 2.0f * (float)(i + 1),(float)i * 2.0f,-POLE_RAD };
+			blocks_[i].translation_ = { POLE_RAD - 2.0f * (float)(i % 50 + 1),(float)i * 2.0f,POLE_RAD };
 		}
 		else
 		{
-			blocks_[i].translation_ = { -POLE_RAD + 2.0f * (float)(i + 1),(float)i * 2.0f,-POLE_RAD };
+			blocks_[i].translation_ = { -POLE_RAD,(float)i * 2.0f,POLE_RAD - 2.0f * (float)(i % 75 + 1) };
 		}
 		blocks_[i].Update();
 	}
 	player_ = Player::GetInstance();
-	player_->Initialize(&viewProjection_, POLE_RAD);
+	player_->Initialize(&viewProjection_);
 	enemy_.Initialize();
 }
 
@@ -50,7 +51,6 @@ void Stage::Update()
 	//collisionManager.CheckAllCollisions(&player_, &enemy_);
 #pragma region オブジェクトの更新
 	player_->Update();
-	player_->DirectionChange();
 	enemy_.Update();
 	//fbxObject_->Update();
 #pragma endregion
@@ -66,10 +66,10 @@ void Stage::Draw()
 {
 	player_->Draw();
 	for (WorldTransform& block : blocks_) { model_->Draw(block, viewProjection_); }
-	enemy_.Draw(viewProjection_);
+	//enemy_.Draw(viewProjection_);
 }
 
 Stage::~Stage()
 {
-	delete debugCamera_;
+	SafeDelete(debugCamera_);
 }

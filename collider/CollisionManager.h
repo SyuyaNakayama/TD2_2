@@ -2,8 +2,8 @@
 #include <list>
 #include "Collider.h"
 #include <memory>
-#include "player/Player.h"
-#include "enemy/Enemy.h"
+#include "stage/Player.h"
+#include "stage/Enemy.h"
 
 class CollisionManager
 {

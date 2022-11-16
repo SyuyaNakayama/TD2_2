@@ -4,14 +4,13 @@
 #include "DirectXCommon.h"
 #include "SafeDelete.h"
 #include "Sprite.h"
-#include "Stage.h"
+#include "stage/Stage.h"
+#include "fadeManager/FadeManager.h"
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
 class GameScene {
-private: // サブクラス
-	enum Scene { Title, HowToPlay, Play, Clear, GameOver };
 public: // メンバ関数
 	~GameScene();
 	/// <summary>

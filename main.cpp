@@ -5,7 +5,7 @@
 #include "WinApp.h"
 #include "AxisIndicator.h"
 #include "PrimitiveDrawer.h"
-#include "FbxLoader.h"
+#include "fbx/FbxLoader.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
