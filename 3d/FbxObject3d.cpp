@@ -15,7 +15,7 @@ ComPtr<ID3D12PipelineState> FbxObject3d::pipelinestate;
 ID3DBlob* ShaderResourceCompile(ID3DBlob* shaderBlob, std::wstring shaderName, LPCSTR modelName)
 {
 	ComPtr<ID3DBlob> errorBlob;
-	std::wstring str = L"Resources/shaders/" + shaderFileName + L".hlsl";
+	std::wstring str = L"Resources/shaders/" + shaderName + L".hlsl";
 	HRESULT result = D3DCompileFromFile(
 		str.c_str(),    // シェーダファイル名
 		nullptr,
