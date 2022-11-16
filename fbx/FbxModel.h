@@ -9,6 +9,7 @@
 #include "Vector2.h"
 #include "Vector3.h"
 #include "Matrix4.h"
+#include <fbxsdk.h>
 
 struct Node
 {
@@ -23,10 +24,22 @@ struct Node
 class FbxModel
 {
 public:
-	struct VertexPosNormalUv
+	static const int MAX_BONE_INDICES = 4;
+	struct VertexPosNormalUvSkin
 	{
 		Vector3 pos, normal;
 		Vector2 uv;
+		UINT boneIndex[MAX_BONE_INDICES];
+		float boneWeight[MAX_BONE_INDICES];
+	};
+
+	struct Bone
+	{
+		std::string name;
+		Matrix4 invInitialPose;
+		FbxCluster* fbxCluster;
+
+		Bone(const std::string& name) { this->name = name; }
 	};
 private:
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
@@ -44,20 +57,26 @@ private:
 	string name;
 	vector<Node> nodes;
 	Node* meshNode = nullptr;
-	vector<VertexPosNormalUv> vertices;
+	vector<VertexPosNormalUvSkin> vertices;
 	vector<uint16_t> indices;
 	Vector3 ambient = { 1,1,1 }, diffuse = { 1,1,1 };
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
+	vector<Bone> bones;
+	vector<Bone>& GetBones() { return bones; }
+	FbxScene* fbxScene = nullptr;
 
 	template<class T> ID3D12Resource* CreateBuffer(ID3D12Device* device, vector<T> vec, ID3D12Resource* res, UINT buffSize);
 public:
 	friend class FbxLoader;
 
+	~FbxModel() { fbxScene->Destroy(); }
+
 	void CreateBuffers(ID3D12Device* device);
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 
 	const Matrix4& GetModelTransform() { return meshNode->globalTransform; }
+	FbxScene* GetFbxScene() { return fbxScene; }
 };
 
 template<class T>

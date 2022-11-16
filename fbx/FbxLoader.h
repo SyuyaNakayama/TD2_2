@@ -25,6 +25,7 @@ public:
 	void ParseNodeRecursive(FbxModel* model, FbxNode* fbxNode, Node* parent = nullptr);
 	void ParseMesh(FbxModel* model, FbxNode* fbxNode);
 	string ExtractFileName(const string& PATH);
+	static void ConvertMatrixFromFbx(Matrix4* dst, const FbxAMatrix& src);
 private:
 	ID3D12Device* device = nullptr;
 	FbxManager* fbxManager = nullptr;
@@ -43,5 +44,6 @@ private:
 	void ParseMeshVertices(FbxModel* model, FbxMesh* fbxMesh);
 	void ParseMeshFaces(FbxModel* model, FbxMesh* fbxMesh);
 	void ParseMaterial(FbxModel* model, FbxNode* fbxNode);
+	void ParseSkin(FbxModel* model, FbxMesh* fbxMesh);
 	void LoadTexture(FbxModel* model, const string& FULLPATH);
 };

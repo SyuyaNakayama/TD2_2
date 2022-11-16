@@ -5,8 +5,8 @@ void FbxModel::CreateBuffers(ID3D12Device* device)
 	HRESULT result;
 
 #pragma region 頂点バッファ設定
-	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUv) * vertices.size());
-	vertBuff = CreateBuffer<VertexPosNormalUv>(device, vertices, vertBuff.Get(), sizeVB);
+	UINT sizeVB = static_cast<UINT>(sizeof(VertexPosNormalUvSkin) * vertices.size());
+	vertBuff = CreateBuffer<VertexPosNormalUvSkin>(device, vertices, vertBuff.Get(), sizeVB);
 	vbView.BufferLocation = vertBuff->GetGPUVirtualAddress();
 	vbView.SizeInBytes = sizeVB;
 	vbView.StrideInBytes = sizeof(vertices[0]);
