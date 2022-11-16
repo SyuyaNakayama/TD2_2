@@ -1,11 +1,11 @@
 #pragma once
 #include <vector>
 #include "Model.h"
-#include "player/Player.h"
-#include "enemy/Enemy.h"
+#include "Player.h"
+#include "Enemy.h"
 #include "collider/CollisionManager.h"
 #include "DebugCamera.h"
-#include "FbxObject3d.h"
+#include "fbx/FbxObject3d.h"
 
 class Stage
 {
@@ -15,7 +15,6 @@ private:
 	ViewProjection viewProjection_;
 	std::vector<WorldTransform> blocks_;
 	Model* model_ = nullptr;
-	const float POLE_RAD = 25.0f;
 	std::unique_ptr<Player> player_ = nullptr;
 	CollisionManager collisionManager;
 	Enemy enemy_;

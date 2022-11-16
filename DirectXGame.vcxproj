@@ -96,21 +96,23 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="3d\FbxLoader.cpp" />
-    <ClCompile Include="3d\FbxModel.cpp" />
-    <ClCompile Include="3d\FbxObject3d.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\TextureManager.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
     <ClCompile Include="collider\CollisionManager.cpp" />
-    <ClCompile Include="enemy\Enemy.cpp" />
     <ClCompile Include="fadeManager\FadeManager.cpp" />
+    <ClCompile Include="fbx\FbxLoader.cpp" />
+    <ClCompile Include="fbx\FbxModel.cpp" />
+    <ClCompile Include="fbx\FbxObject3d.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\MathUtility.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
-    <ClCompile Include="player\Player.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
-    <ClCompile Include="Stage.cpp" />
+    <ClCompile Include="stage\Block.cpp" />
+    <ClCompile Include="stage\BlockManager.cpp" />
+    <ClCompile Include="stage\Enemy.cpp" />
+    <ClCompile Include="stage\Player.cpp" />
+    <ClCompile Include="stage\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -118,9 +120,6 @@
     <ClInclude Include="3d\AxisIndicator.h" />
     <ClInclude Include="3d\CircleShadow.h" />
     <ClInclude Include="3d\DirectionalLight.h" />
-    <ClInclude Include="3d\FbxLoader.h" />
-    <ClInclude Include="3d\FbxModel.h" />
-    <ClInclude Include="3d\FbxObject3d.h" />
     <ClInclude Include="3d\LightGroup.h" />
     <ClInclude Include="3d\Material.h" />
     <ClInclude Include="3d\Mesh.h" />
@@ -140,17 +139,23 @@
     <ClInclude Include="collider\Collider.h" />
     <ClInclude Include="collider\CollisionConfig.h" />
     <ClInclude Include="collider\CollisionManager.h" />
-    <ClInclude Include="enemy\Enemy.h" />
     <ClInclude Include="fadeManager\FadeManager.h" />
+    <ClInclude Include="fbx\FbxLoader.h" />
+    <ClInclude Include="fbx\FbxModel.h" />
+    <ClInclude Include="fbx\FbxObject3d.h" />
     <ClInclude Include="input\Input.h" />
     <ClInclude Include="math\MathUtility.h" />
     <ClInclude Include="math\Matrix4.h" />
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
-    <ClInclude Include="player\Player.h" />
     <ClInclude Include="scene\GameScene.h" />
-    <ClInclude Include="Stage.h" />
+    <ClInclude Include="scene\scene.h" />
+    <ClInclude Include="stage\Block.h" />
+    <ClInclude Include="stage\BlockManager.h" />
+    <ClInclude Include="stage\Enemy.h" />
+    <ClInclude Include="stage\Player.h" />
+    <ClInclude Include="stage\Stage.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\FBXPS.hlsl">

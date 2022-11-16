@@ -1,7 +1,7 @@
 ﻿#include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
-#include "FbxLoader.h"
+#include "fbx/FbxLoader.h"
 
 using namespace std;
 
