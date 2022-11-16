@@ -10,7 +10,7 @@ void Stage::Initialize()
 	model_ = Model::Create();
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
-	particleManager_.Initialize();
+	particleManager_.Initialize(&viewProjection_);
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
 	enemy_.Initialize();
@@ -33,11 +33,10 @@ void Stage::Update()
 	player_->Update();
 	enemy_.Update();
 	//fbxObject_->Update();
-	particleManager_.SetEye({ viewProjection_.eye.x,viewProjection_.eye.y,viewProjection_.eye.z });
-	particleManager_.Update();
 #pragma endregion
 #pragma region ƒJƒƒ‰‚ÌXV
 	viewProjection_.UpdateMatrix();
+	particleManager_.Update();
 	debugCamera_->Update();
 	//viewProjection_ = debugCamera_->GetViewProjection();
 
@@ -49,9 +48,7 @@ void Stage::Draw()
 	//player_->Draw();
 	blockManager_.Draw(viewProjection_);
 	//enemy_.Draw(viewProjection_);
-	particleManager_.PreDraw(DirectXCommon::GetInstance()->GetCommandList());
 	particleManager_.Draw();
-	particleManager_.PostDraw();
 }
 
 Stage::~Stage()

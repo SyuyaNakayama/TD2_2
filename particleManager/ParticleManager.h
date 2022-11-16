@@ -6,7 +6,7 @@
 #include <DirectXMath.h>
 #include <d3dx12.h>
 #include <forward_list>
-#include "Vector3.h"
+#include "ViewProjection.h"
 
 /// <summary>
 /// 3Dオブジェクト
@@ -16,11 +16,6 @@ class ParticleManager
 private: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
-	// DirectX::を省略
-	using XMFLOAT2 = DirectX::XMFLOAT2;
-	using XMFLOAT3 = DirectX::XMFLOAT3;
-	using XMFLOAT4 = DirectX::XMFLOAT4;
-	using XMMATRIX = DirectX::XMMATRIX;
 
 public: // サブクラス
 	// 頂点データ構造体
@@ -33,8 +28,8 @@ public: // サブクラス
 	// 定数バッファ用データ構造体
 	struct ConstBufferData
 	{
-		XMMATRIX mat;	// ３Ｄ変換行列
-		XMMATRIX matBillboard; // ビルボード行列
+		Matrix4 mat;	// ３Ｄ変換行列
+		Matrix4 matBillboard; // ビルボード行列
 	};
 
 	// パーティクル1粒
@@ -67,57 +62,10 @@ public: // 静的メンバ関数
 	static void StaticInitialize();
 
 	/// <summary>
-	/// 描画前処理
-	/// </summary>
-	/// <param name="cmdList">描画コマンドリスト</param>
-	static void PreDraw(ID3D12GraphicsCommandList* cmdList);
-
-	/// <summary>
-	/// 描画後処理
-	/// </summary>
-	static void PostDraw();
-
-	/// <summary>
 	/// 3Dオブジェクト生成
 	/// </summary>
 	/// <returns></returns>
-	static ParticleManager* Create();
-
-	/// <summary>
-	/// 視点座標の取得
-	/// </summary>
-	/// <returns>座標</returns>
-	static const XMFLOAT3& GetEye() { return eye; }
-
-	/// <summary>
-	/// 視点座標の設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	static void SetEye(XMFLOAT3 eye);
-
-	/// <summary>
-	/// 注視点座標の取得
-	/// </summary>
-	/// <returns>座標</returns>
-	static const XMFLOAT3& GetTarget() { return target; }
-
-	/// <summary>
-	/// 注視点座標の設定
-	/// </summary>
-	/// <param name="position">座標</param>
-	static void SetTarget(XMFLOAT3 target);
-
-	/// <summary>
-	/// ベクトルによる移動
-	/// </summary>
-	/// <param name="move">移動量</param>
-	static void CameraMoveVector(XMFLOAT3 move);
-
-	/// <summary>
-	/// ベクトルによる視点移動
-	/// </summary>
-	/// <param name="move">移動量</param>
-	static void CameraMoveEyeVector(XMFLOAT3 move);
+	static ParticleManager* Create(ViewProjection* viewProjection);
 
 private: // 静的メンバ変数
 	// デバイス
@@ -140,20 +88,8 @@ private: // 静的メンバ変数
 	static CD3DX12_CPU_DESCRIPTOR_HANDLE cpuDescHandleSRV;
 	// シェーダリソースビューのハンドル(CPU)
 	static CD3DX12_GPU_DESCRIPTOR_HANDLE gpuDescHandleSRV;
-	// ビュー行列
-	static XMMATRIX matView;
-	// 射影行列
-	static XMMATRIX matProjection;
 	// ビルボード行列
-	static XMMATRIX matBillboard;
-	// Y軸回りビルボード行列
-	static XMMATRIX matBillboardY;
-	// 視点座標
-	static XMFLOAT3 eye;
-	// 注視点座標
-	static XMFLOAT3 target;
-	// 上方向ベクトル
-	static XMFLOAT3 up;
+	static Matrix4 matBillboard;
 	// 頂点バッファビュー
 	static D3D12_VERTEX_BUFFER_VIEW vbView;
 
@@ -162,13 +98,6 @@ private:// 静的メンバ関数
 	/// デスクリプタヒープの初期化
 	/// </summary>
 	static void InitializeDescriptorHeap();
-
-	/// <summary>
-	/// カメラ初期化
-	/// </summary>
-	/// <param name="window_width">画面横幅</param>
-	/// <param name="window_height">画面縦幅</param>
-	static void InitializeCamera();
 
 	/// <summary>
 	/// グラフィックパイプライン生成
@@ -189,10 +118,10 @@ private:// 静的メンバ関数
 	/// <summary>
 	/// ビュー行列を更新
 	/// </summary>
-	static void UpdateViewMatrix();
+	void UpdateViewMatrix();
 
 public: // メンバ関数
-	bool Initialize();
+	bool Initialize(ViewProjection* viewProjection);
 	/// <summary>
 	/// 毎フレーム処理
 	/// </summary>
@@ -212,5 +141,7 @@ private: // メンバ変数
 	ComPtr<ID3D12Resource> constBuff; // 定数バッファ
 	// パーティクル配列
 	std::forward_list<Particle> particles;
+	// ビュープロジェクション
+	ViewProjection* viewProjection;
 };
 

@@ -1,14 +1,14 @@
 ﻿#include "ParticleManager.h"
+#include "DebugText.h"
+#include "DirectXCommon.h"
+#include "MathUtility.h"
 #include <d3dcompiler.h>
 #include <DirectXTex.h>
 #include <stdio.h>
-#include "DebugText.h"
-#include "DirectXCommon.h"
-
 #pragma comment(lib, "d3dcompiler.lib")
-
 using namespace DirectX;
 using namespace Microsoft::WRL;
+using namespace MathUtility;
 
 /// <summary>
 /// 静的メンバ変数の実体
@@ -25,13 +25,7 @@ ComPtr<ID3D12Resource> ParticleManager::vertBuff;
 ComPtr<ID3D12Resource> ParticleManager::texbuff;
 CD3DX12_CPU_DESCRIPTOR_HANDLE ParticleManager::cpuDescHandleSRV;
 CD3DX12_GPU_DESCRIPTOR_HANDLE ParticleManager::gpuDescHandleSRV;
-XMMATRIX ParticleManager::matView{};
-XMMATRIX ParticleManager::matProjection{};
-XMMATRIX ParticleManager::matBillboard = XMMatrixIdentity();
-XMMATRIX ParticleManager::matBillboardY = XMMatrixIdentity();
-XMFLOAT3 ParticleManager::eye = { 0, 0, -5.0f };
-XMFLOAT3 ParticleManager::target = { 0, 0, 0 };
-XMFLOAT3 ParticleManager::up = { 0, 1, 0 };
+Matrix4 ParticleManager::matBillboard = Matrix4Identity();
 D3D12_VERTEX_BUFFER_VIEW ParticleManager::vbView{};
 
 void ParticleManager::StaticInitialize()
@@ -43,9 +37,6 @@ void ParticleManager::StaticInitialize()
 	// デスクリプタヒープの初期化
 	InitializeDescriptorHeap();
 
-	// カメラ初期化
-	InitializeCamera();
-
 	// パイプライン初期化
 	InitializeGraphicsPipeline();
 
@@ -56,29 +47,7 @@ void ParticleManager::StaticInitialize()
 	CreateModel();
 }
 
-void ParticleManager::PreDraw(ID3D12GraphicsCommandList* cmdList)
-{
-	// PreDrawとPostDrawがペアで呼ばれていなければエラー
-	assert(ParticleManager::cmdList == nullptr);
-
-	// コマンドリストをセット
-	ParticleManager::cmdList = cmdList;
-
-	// パイプラインステートの設定
-	cmdList->SetPipelineState(pipelinestate.Get());
-	// ルートシグネチャの設定
-	cmdList->SetGraphicsRootSignature(rootsignature.Get());
-	// プリミティブ形状を設定
-	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
-}
-
-void ParticleManager::PostDraw()
-{
-	// コマンドリストを解除
-	ParticleManager::cmdList = nullptr;
-}
-
-ParticleManager* ParticleManager::Create()
+ParticleManager* ParticleManager::Create(ViewProjection* viewProjection)
 {
 	// 3Dオブジェクトのインスタンスを生成
 	ParticleManager* object3d = new ParticleManager();
@@ -87,55 +56,13 @@ ParticleManager* ParticleManager::Create()
 	}
 
 	// 初期化
-	if (!object3d->Initialize()) {
+	if (!object3d->Initialize(viewProjection)) {
 		delete object3d;
 		assert(0);
 		return nullptr;
 	}
 
 	return object3d;
-}
-
-void ParticleManager::SetEye(XMFLOAT3 eye)
-{
-	ParticleManager::eye = eye;
-
-	UpdateViewMatrix();
-}
-
-void ParticleManager::SetTarget(XMFLOAT3 target)
-{
-	ParticleManager::target = target;
-
-	UpdateViewMatrix();
-}
-
-void ParticleManager::CameraMoveVector(XMFLOAT3 move)
-{
-	XMFLOAT3 eye_moved = GetEye();
-	XMFLOAT3 target_moved = GetTarget();
-
-	eye_moved.x += move.x;
-	eye_moved.y += move.y;
-	eye_moved.z += move.z;
-
-	target_moved.x += move.x;
-	target_moved.y += move.y;
-	target_moved.z += move.z;
-
-	SetEye(eye_moved);
-	SetTarget(target_moved);
-}
-
-void ParticleManager::CameraMoveEyeVector(XMFLOAT3 move)
-{
-	XMFLOAT3 eye_moved = GetEye();
-
-	eye_moved.x += move.x;
-	eye_moved.y += move.y;
-	eye_moved.z += move.z;
-
-	SetEye(eye_moved);
 }
 
 void ParticleManager::InitializeDescriptorHeap()
@@ -154,25 +81,6 @@ void ParticleManager::InitializeDescriptorHeap()
 
 	// デスクリプタサイズを取得
 	descriptorHandleIncrementSize = device->GetDescriptorHandleIncrementSize(D3D12_DESCRIPTOR_HEAP_TYPE_CBV_SRV_UAV);
-
-}
-
-void ParticleManager::InitializeCamera()
-{
-	// ビュー行列の生成
-	matView = XMMatrixLookAtLH(
-		XMLoadFloat3(&eye),
-		XMLoadFloat3(&target),
-		XMLoadFloat3(&up));
-
-	// 透視投影による射影行列の生成
-	matProjection = XMMatrixPerspectiveFovLH(
-		XMConvertToRadians(60.0f),
-		(float)WinApp::kWindowWidth / WinApp::kWindowHeight,
-		0.1f, 1000.0f
-	);
-
-	UpdateViewMatrix();
 }
 
 ComPtr<ID3DBlob> LoadShader(LPCWCHAR fileName, LPCSTR shaderModelName, ComPtr<ID3DBlob> sBlob, ComPtr<ID3DBlob> eBlob)
@@ -415,57 +323,49 @@ void ParticleManager::CreateModel()
 	vbView.StrideInBytes = sizeof(VertexPos);
 }
 
-void ParticleManager::UpdateViewMatrix()
+void Vector3ToArray(Vector3 vec, float* array)
 {
-	// ビュー行列の更新
-	XMVECTOR eyePosition = XMLoadFloat3(&eye),
-		targetPosition = XMLoadFloat3(&target),
-		upVector = XMLoadFloat3(&up);
-
-	XMVECTOR cameraAxisZ = XMVectorSubtract(targetPosition, eyePosition);
-
-	// 0ベクトルの時
-	assert(!XMVector3Equal(cameraAxisZ, XMVectorZero()));
-	assert(!XMVector3IsInfinite(cameraAxisZ));
-	assert(!XMVector3Equal(upVector, XMVectorZero()));
-	assert(!XMVector3IsInfinite(upVector));
-
-	cameraAxisZ = XMVector3Normalize(cameraAxisZ);
-
-	XMVECTOR cameraAxisX = XMVector3Cross(upVector, cameraAxisZ);
-	cameraAxisX = XMVector3Normalize(cameraAxisX);
-
-	XMVECTOR cameraAxisY = XMVector3Cross(cameraAxisZ, cameraAxisX);
-	cameraAxisY = XMVector3Normalize(cameraAxisY);
-
-	XMMATRIX matCameraRot{};
-	matCameraRot.r[0] = cameraAxisX;
-	matCameraRot.r[1] = cameraAxisY;
-	matCameraRot.r[2] = cameraAxisZ;
-	matCameraRot.r[3] = XMVectorSet(0, 0, 0, 1);
-
-	matView = XMMatrixTranspose(matCameraRot);
-	matBillboard = matCameraRot;
-
-	XMVECTOR reverseEyePosition = XMVectorNegate(eyePosition);
-	XMVECTOR tX = XMVector3Dot(cameraAxisX, reverseEyePosition),
-		tY = XMVector3Dot(cameraAxisY, reverseEyePosition),
-		tZ = XMVector3Dot(cameraAxisZ, reverseEyePosition),
-		translation = XMVectorSet(tX.m128_f32[0], tY.m128_f32[1], tZ.m128_f32[2], 1.0f);
-
-	matView.r[3] = translation;
-
-	XMVECTOR ybillCameraAxisX = cameraAxisX,
-		ybillCameraAxisY = XMVector3Normalize(upVector),
-		ybillCameraAxisZ = XMVector3Cross(ybillCameraAxisX, ybillCameraAxisY);
-
-	matBillboardY.r[0] = ybillCameraAxisX;
-	matBillboardY.r[1] = ybillCameraAxisY;
-	matBillboardY.r[2] = ybillCameraAxisZ;
-	matBillboardY.r[3] = XMVectorSet(0, 0, 0, 1);
+	array[0] = vec.x;
+	array[1] = vec.y;
+	array[2] = vec.z;
+	array[3] = 0;
 }
 
-bool ParticleManager::Initialize()
+void Vector4ToArray(Vector4 vec, float* array)
+{
+	array[0] = vec.x;
+	array[1] = vec.y;
+	array[2] = vec.z;
+	array[3] = vec.w;
+}
+
+void ParticleManager::UpdateViewMatrix()
+{
+	Vector3 cameraAxisZ = viewProjection->target - viewProjection->eye;
+
+	// 0ベクトルの時
+	assert(!Vector3Equal(cameraAxisZ, Vector3Zero()));
+	assert(!Vector3Equal(viewProjection->up, Vector3Zero()));
+
+	cameraAxisZ.normalize();
+
+	Vector3 cameraAxisX = viewProjection->up.cross(cameraAxisZ);
+	cameraAxisX = cameraAxisX.normalize();
+
+	Vector3 cameraAxisY = cameraAxisZ.cross(cameraAxisX);
+	cameraAxisY = cameraAxisY.normalize();
+
+	Matrix4 matCameraRot{};
+
+	Vector3ToArray(cameraAxisX, matCameraRot.m[0]);
+	Vector3ToArray(cameraAxisY, matCameraRot.m[1]);
+	Vector3ToArray(cameraAxisZ, matCameraRot.m[2]);
+	Vector4ToArray({ 0,0,0,1.0f }, matCameraRot.m[3]);
+
+	matBillboard = matCameraRot;
+}
+
+bool ParticleManager::Initialize(ViewProjection* viewProjection)
 {
 	// nullptrチェック
 	assert(device);
@@ -485,18 +385,9 @@ bool ParticleManager::Initialize()
 		IID_PPV_ARGS(&constBuff));
 	assert(SUCCEEDED(result));
 
-	return true;
-}
+	this->viewProjection = viewProjection;
 
-const XMFLOAT3 operator+(const XMFLOAT3& lhs, const XMFLOAT3& rhs)
-{
-	XMFLOAT3 result =
-	{
-		lhs.x + rhs.x,
-		lhs.y + rhs.y,
-		lhs.z + rhs.z
-	};
-	return result;
+	return true;
 }
 
 void ParticleManager::Update()
@@ -531,16 +422,30 @@ void ParticleManager::Update()
 	}
 	vertBuff->Unmap(0, nullptr);
 
+	UpdateViewMatrix();
+
 	// 定数バッファへデータ転送
 	ConstBufferData* constMap = nullptr;
 	result = constBuff->Map(0, nullptr, (void**)&constMap);
-	constMap->mat = matView * matProjection;	// 行列の合成
+	constMap->mat = viewProjection->matView * viewProjection->matProjection;	// 行列の合成
 	constMap->matBillboard = matBillboard;
 	constBuff->Unmap(0, nullptr);
 }
 
 void ParticleManager::Draw()
 {
+	// PreDrawとPostDrawがペアで呼ばれていなければエラー
+	assert(ParticleManager::cmdList == nullptr);
+
+	// コマンドリストをセット
+	ParticleManager::cmdList = DirectXCommon::GetInstance()->GetCommandList();
+
+	// パイプラインステートの設定
+	cmdList->SetPipelineState(pipelinestate.Get());
+	// ルートシグネチャの設定
+	cmdList->SetGraphicsRootSignature(rootsignature.Get());
+	// プリミティブ形状を設定
+	cmdList->IASetPrimitiveTopology(D3D_PRIMITIVE_TOPOLOGY_POINTLIST);
 	// nullptrチェック
 	assert(device);
 	assert(ParticleManager::cmdList);
@@ -558,6 +463,8 @@ void ParticleManager::Draw()
 	cmdList->SetGraphicsRootDescriptorTable(1, gpuDescHandleSRV);
 	// 描画コマンド
 	cmdList->DrawInstanced((UINT)std::distance(particles.begin(), particles.end()), 1, 0, 0);
+	// コマンドリストを解除
+	ParticleManager::cmdList = nullptr;
 }
 
 void ParticleManager::Add(int life, float start_scale, float end_scale)
