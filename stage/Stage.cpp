@@ -9,6 +9,7 @@ void Stage::Initialize()
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	model_ = Model::Create();
 	viewProjection_.Initialize();
+	blockManager_.Initialize();
 	/*FbxObject3d::SetDevice(dxCommon_->GetDevice());
 	FbxObject3d::SetViewProjection(&viewProjection_);
 	FbxObject3d::CreateGraphicsPipeline();
@@ -17,28 +18,6 @@ void Stage::Initialize()
 	fbxObject_->Initialize(&fbxObjWT);
 	fbxObject_->SetModel(fbxModel_);*/
 
-	blocks_.resize(100);
-	for (size_t i = 0; i < blocks_.size(); i++)
-	{
-		blocks_[i].Initialize();
-		if (i < 25)
-		{
-			blocks_[i].translation_ = { -POLE_RAD + 2.0f * (float)(i + 1),(float)i * 2.0f,-POLE_RAD };
-		}
-		else if (i < 50)
-		{
-			blocks_[i].translation_ = { POLE_RAD,(float)i * 2.0f,-POLE_RAD + 2.0f * (float)(i % 25 + 1) };
-		}
-		else if (i < 75)
-		{
-			blocks_[i].translation_ = { POLE_RAD - 2.0f * (float)(i % 50 + 1),(float)i * 2.0f,POLE_RAD };
-		}
-		else
-		{
-			blocks_[i].translation_ = { -POLE_RAD,(float)i * 2.0f,POLE_RAD - 2.0f * (float)(i % 75 + 1) };
-		}
-		blocks_[i].Update();
-	}
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
 	enemy_.Initialize();
@@ -65,7 +44,7 @@ void Stage::Update()
 void Stage::Draw()
 {
 	player_->Draw();
-	for (WorldTransform& block : blocks_) { model_->Draw(block, viewProjection_); }
+	blockManager_.Draw(viewProjection_);
 	//enemy_.Draw(viewProjection_);
 }
 

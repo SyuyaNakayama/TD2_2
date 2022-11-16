@@ -5,10 +5,10 @@
 class BlockManager
 {
 private:
-	std::array<Block, 4> blocks_;
+	std::array<Block,4> blocks_;
 	
+	void SetBlocks();
 public:
 	void Initialize();
-	void SetBlocks();
-	void Draw();
+	void Draw(ViewProjection viewProjection);
 };

@@ -12,7 +12,7 @@ void Player::Initialize(ViewProjection* viewProjection)
 	model_ = Model::Create();
 	input_ = Input::GetInstance();
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { 25.0f,50.0f,-25.0f };
+	worldTransform_.translation_ = { -POLE_RAD,0.0f,-POLE_RAD };
 	viewProjection_ = viewProjection;
 }
 

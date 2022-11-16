@@ -20,7 +20,7 @@ private:
 	uint32_t texture_ = 0;
 	Vector3 spd_{};
 	const float CAMERA_DISTANCE = 70.0f;
-	Direction direction_ = Right;
+	Direction direction_ = Front;
 
 	void Move();
 public:
