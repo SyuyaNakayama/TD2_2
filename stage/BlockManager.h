@@ -6,7 +6,7 @@ class BlockManager
 {
 private:
 	std::array<Block, 4> blocks_;
-
+	
 public:
 	void Initialize();
 	void SetBlocks();
