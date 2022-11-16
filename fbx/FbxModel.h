@@ -63,7 +63,6 @@ private:
 	TexMetadata metadata{};
 	ScratchImage scratchImg{};
 	vector<Bone> bones;
-	vector<Bone>& GetBones() { return bones; }
 	FbxScene* fbxScene = nullptr;
 
 	template<class T> ID3D12Resource* CreateBuffer(ID3D12Device* device, vector<T> vec, ID3D12Resource* res, UINT buffSize);
@@ -76,6 +75,7 @@ public:
 	void Draw(ID3D12GraphicsCommandList* cmdList);
 
 	const Matrix4& GetModelTransform() { return meshNode->globalTransform; }
+	vector<Bone>& GetBones() { return bones; }
 	FbxScene* GetFbxScene() { return fbxScene; }
 };
 

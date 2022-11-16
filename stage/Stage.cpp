@@ -1,6 +1,8 @@
 #include "Stage.h"
 #include "WinApp.h"
 #include "SafeDelete.h"
+#include "fbx/FbxLoader.h"
+#include "DirectXCommon.h"
 using namespace std;
 
 void Stage::Initialize()
@@ -10,13 +12,12 @@ void Stage::Initialize()
 	model_ = Model::Create();
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
-	/*FbxObject3d::SetDevice(dxCommon_->GetDevice());
 	FbxObject3d::SetViewProjection(&viewProjection_);
 	FbxObject3d::CreateGraphicsPipeline();
-	fbxModel_ = FbxLoader::GetInstance()->LoadModelFromFile("cube");
+	fbxModel_ = FbxLoader::GetInstance()->LoadModelFromFile("boneTest");
 	fbxObject_ = new FbxObject3d;
 	fbxObject_->Initialize(&fbxObjWT);
-	fbxObject_->SetModel(fbxModel_);*/
+	fbxObject_->SetModel(fbxModel_);
 
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
@@ -31,7 +32,7 @@ void Stage::Update()
 #pragma region オブジェクトの更新
 	player_->Update();
 	enemy_.Update();
-	//fbxObject_->Update();
+	fbxObject_->Update();
 #pragma endregion
 #pragma region カメラの更新
 	viewProjection_.UpdateMatrix();

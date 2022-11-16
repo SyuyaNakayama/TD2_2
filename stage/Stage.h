@@ -19,13 +19,14 @@ private:
 	CollisionManager collisionManager;
 	Enemy enemy_;
 	BlockManager blockManager_;
-	//FbxModel* fbxModel_;
-	//FbxObject3d* fbxObject_;
-	//WorldTransform fbxObjWT;
+	FbxModel* fbxModel_;
+	FbxObject3d* fbxObject_;
+	WorldTransform fbxObjWT;
 
 public:
 	~Stage();
 	void Initialize();
 	void Update();
 	void Draw();
+	FbxObject3d* GetFbxObject() { return fbxObject_; }
 };

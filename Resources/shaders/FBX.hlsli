@@ -11,6 +11,8 @@ struct VSInput
 	float4 pos	: POSITION;//位置   
 	float3 normal : NORMAL;//頂点法線
 	float2 uv	: TEXCOORD;//テクスチャー座標
+	uint4 boneIndices : BONEINDICES;
+	float4 boneWeights : BONEWEIGHTS;
 };
 
 // 頂点シェーダーからピクセルシェーダーへのやり取りに使用する構造体
@@ -20,3 +22,10 @@ struct VSOutput
 	float3 normal :NORMAL; // 法線
 	float2 uv  :TEXCOORD; // uv値
 };
+
+static const int MAX_BONES = 32;
+
+cbuffer skinning : register(b3)
+{
+	matrix matSkinning[MAX_BONES];
+}

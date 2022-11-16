@@ -52,7 +52,7 @@ void GameScene::Draw()
 	stage_.Draw();
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
-	//fbxObject_->Draw(commandList);
+	stage_.GetFbxObject()->Draw(commandList);
 
 #pragma endregion
 

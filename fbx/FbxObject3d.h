@@ -18,6 +18,8 @@ protected: // エイリアス
 	// Microsoft::WRL::を省略
 	template <class T> using ComPtr = Microsoft::WRL::ComPtr<T>;
 public: // サブクラス
+	static const int MAX_BONES = 32;
+
 	// 定数バッファ用データ構造体（座標変換行列用）
 	struct ConstBufferDataTransform
 	{
@@ -26,6 +28,10 @@ public: // サブクラス
 		Vector3 cameraPos; // カメラ座標（ワールド座標）
 	};
 
+	struct ConstBufferDataSkin
+	{
+		Matrix4 bones[MAX_BONES];
+	};
 public: // 静的メンバ関数
 	static ViewProjection* viewProjection;
 	/// <summary>
@@ -33,7 +39,6 @@ public: // 静的メンバ関数
 	/// </summary>
 	static void CreateGraphicsPipeline();
 	// setter
-	static void SetDevice(ID3D12Device* device) { FbxObject3d::device = device; }
 	static void SetViewProjection(ViewProjection* viewProjection) { FbxObject3d::viewProjection = viewProjection; }
 
 private: // 静的メンバ変数
@@ -64,7 +69,7 @@ public: // メンバ関数
 
 protected: // メンバ変数
 	// 定数バッファ
-	ComPtr<ID3D12Resource> constBuffTransform;
+	ComPtr<ID3D12Resource> constBuffTransform, constBuffSkin;
 	WorldTransform* worldTransform;
 	// モデル
 	FbxModel* model = nullptr;
