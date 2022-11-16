@@ -107,6 +107,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="math\MathUtility.cpp" />
     <ClCompile Include="math\Vector3.cpp" />
+    <ClCompile Include="particleManager\ParticleManager.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
     <ClCompile Include="stage\Block.cpp" />
     <ClCompile Include="stage\BlockManager.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="math\Vector2.h" />
     <ClInclude Include="math\Vector3.h" />
     <ClInclude Include="math\Vector4.h" />
+    <ClInclude Include="particleManager\ParticleManager.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\scene.h" />
     <ClInclude Include="stage\Block.h" />
