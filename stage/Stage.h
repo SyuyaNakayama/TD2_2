@@ -22,6 +22,7 @@ private:
 	Enemy enemy_;
 	BlockManager blockManager_;
 	ParticleManager particleManager_;
+	Model* DragonHead = nullptr;
 	AxisIndicator* axisIndicator_ = nullptr;
 	Shake shake_;
 
