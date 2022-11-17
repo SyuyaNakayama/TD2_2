@@ -6,7 +6,6 @@
 #include "DebugCamera.h"
 #include "BlockManager.h"
 #include "particleManager/ParticleManager.h"
-#include "AxisIndicator.h"
 #include "Shake.h"
 
 class Stage
@@ -21,7 +20,6 @@ private:
 	BlockManager blockManager_;
 	ParticleManager particleManager_;
 	Model* DragonHead = nullptr;
-	AxisIndicator* axisIndicator_ = nullptr;
 	Shake shake_;
 
 public:

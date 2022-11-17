@@ -13,9 +13,6 @@ void Stage::Initialize()
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
 	enemy_.Initialize();
-	axisIndicator_ = AxisIndicator::GetInstance();
-	axisIndicator_->SetVisible(true);
-	axisIndicator_->SetTargetViewProjection(&viewProjection_);
 }
 
 void Stage::Update()
@@ -36,7 +33,6 @@ void Stage::Update()
 	particleManager_.Update();
 	debugCamera_->Update();
 	//viewProjection_ = debugCamera_->GetViewProjection();
-	axisIndicator_->Update();
 #pragma endregion
 }
 
@@ -46,7 +42,6 @@ void Stage::Draw()
 	blockManager_.Draw(viewProjection_);
 	enemy_.Draw(viewProjection_);
 	particleManager_.Draw();
-	axisIndicator_->Draw();
 }
 
 Stage::~Stage()

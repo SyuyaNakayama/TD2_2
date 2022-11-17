@@ -19,14 +19,14 @@ void GameScene::Update()
 	switch (scene_)
 	{
 	case Title:
-		if (input_->TriggerKey(DIK_SPACE)) 
-		{
-			fadeManager_.ChangeScene(HowToPlay); 
-			stage_.Initialize();
-		}
+		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(HowToPlay); }
 		break;
 	case HowToPlay:
-		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Play); }
+		if (input_->TriggerKey(DIK_SPACE))
+		{
+			fadeManager_.ChangeScene(Play);
+			stage_.Initialize();
+		}
 		break;
 	case Play:
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Clear); }
@@ -37,14 +37,14 @@ void GameScene::Update()
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Title); }
 		break;
 	case GameOver:
-		if (input_->TriggerKey(DIK_SPACE)) 
+		if (input_->TriggerKey(DIK_SPACE))
 		{
-			fadeManager_.ChangeScene(Play); 
+			fadeManager_.ChangeScene(Play);
 			stage_.Initialize();
 		}
 		if (input_->TriggerKey(DIK_RETURN))
 		{
-			fadeManager_.ChangeScene(Title); 
+			fadeManager_.ChangeScene(Title);
 		}
 		break;
 	}
