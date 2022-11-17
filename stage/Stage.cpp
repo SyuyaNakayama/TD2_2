@@ -14,13 +14,6 @@ void Stage::Initialize()
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
 	enemy_.Initialize();
-	/*FbxObject3d::SetDevice(dxCommon_->GetDevice());
-	FbxObject3d::SetViewProjection(&viewProjection_);
-	FbxObject3d::CreateGraphicsPipeline();
-	fbxModel_ = FbxLoader::GetInstance()->LoadModelFromFile("cube");
-	fbxObject_ = new FbxObject3d;
-	fbxObject_->Initialize(&fbxObjWT);
-	fbxObject_->SetModel(fbxModel_);*/
 }
 
 void Stage::Update()
