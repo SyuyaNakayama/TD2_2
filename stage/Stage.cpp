@@ -8,19 +8,13 @@ void Stage::Initialize()
 	debugText_ = DebugText::GetInstance();
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	model_ = Model::Create();
+	DragonHead = Model::CreateFromOBJ("DragonHead");
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
 	particleManager_.Initialize(&viewProjection_);
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
-	enemy_.Initialize();
-	/*FbxObject3d::SetDevice(dxCommon_->GetDevice());
-	FbxObject3d::SetViewProjection(&viewProjection_);
-	FbxObject3d::CreateGraphicsPipeline();
-	fbxModel_ = FbxLoader::GetInstance()->LoadModelFromFile("cube");
-	fbxObject_ = new FbxObject3d;
-	fbxObject_->Initialize(&fbxObjWT);
-	fbxObject_->SetModel(fbxModel_);*/
+	enemy_.Initialize(DragonHead);
 }
 
 void Stage::Update()
@@ -47,7 +41,7 @@ void Stage::Draw()
 {
 	//player_->Draw();
 	blockManager_.Draw(viewProjection_);
-	//enemy_.Draw(viewProjection_);
+	enemy_.Draw(viewProjection_);
 	particleManager_.Draw();
 }
 

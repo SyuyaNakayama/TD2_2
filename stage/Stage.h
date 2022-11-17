@@ -5,7 +5,6 @@
 #include "Enemy.h"
 #include "collider/CollisionManager.h"
 #include "DebugCamera.h"
-#include "fbx/FbxObject3d.h"
 #include "BlockManager.h"
 #include "particleManager/ParticleManager.h"
 
@@ -21,6 +20,7 @@ private:
 	Enemy enemy_;
 	BlockManager blockManager_;
 	ParticleManager particleManager_;
+	Model* DragonHead = nullptr;
 	//FbxModel* fbxModel_;
 	//FbxObject3d* fbxObject_;
 	//WorldTransform fbxObjWT;

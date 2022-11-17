@@ -4,10 +4,11 @@ void Enemy::Move()
 {
 }
 
-void Enemy::Initialize()
+void Enemy::Initialize(Model* model)
 {
-	model_ = Model::Create();
+	model_ = model;
 	worldTransform_.Initialize();
+	worldTransform_.scale_ = { 20.0f,20.0f,20.0f };
 }
 
 void Enemy::Update()

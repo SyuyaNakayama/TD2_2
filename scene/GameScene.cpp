@@ -1,7 +1,6 @@
 ﻿#include "GameScene.h"
 #include "TextureManager.h"
 #include <cassert>
-#include "fbx/FbxLoader.h"
 
 using namespace std;
 
@@ -52,7 +51,6 @@ void GameScene::Draw()
 	stage_.Draw();
 	// 3Dオブジェクト描画後処理
 	Model::PostDraw();
-	//fbxObject_->Draw(commandList);
 
 #pragma endregion
 
