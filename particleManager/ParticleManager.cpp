@@ -474,7 +474,7 @@ void ParticleManager::Add(Vector3 position, int life, float start_scale, float e
 	{
 		particles.emplace_front();
 		Particle& p = particles.front();
-		const float md_pos = 5.0f;
+		const float md_pos = 3.0f;
 		// -5.0f~+5.0f:xyz
 		Vector3 pos =
 		{

@@ -22,7 +22,7 @@ void Stage::Update()
 	player_->UpdateSpeed();
 	// 当たり判定
 	//collisionManager.CheckAllCollisions(&player_, &enemy_);
-	particleManager_.Add({ 20,0,0 }, 60, 10.0f, 0.0f);
+	particleManager_.Add(player_->GetPosition(), 60, 10.0f, 0.0f);
 #pragma region オブジェクトの更新
 	player_->Update();
 	enemy_.Update();
@@ -39,7 +39,7 @@ void Stage::Update()
 
 void Stage::Draw()
 {
-	//player_->Draw();
+	player_->Draw();
 	blockManager_.Draw(viewProjection_);
 	enemy_.Draw(viewProjection_);
 	particleManager_.Draw();
