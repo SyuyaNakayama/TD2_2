@@ -12,71 +12,74 @@ void Player::Initialize(ViewProjection* viewProjection)
 	model_ = Model::Create();
 	input_ = Input::GetInstance();
 	worldTransform_.Initialize();
-	worldTransform_.translation_ = { -POLE_RAD,0.0f,-POLE_RAD };
+	worldTransform_.translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
 	viewProjection_ = viewProjection;
 }
 
 void Player::Move()
 {
-	worldTransform_.translation_ += spd_;
-	viewProjection_->eye = viewProjection_->target = worldTransform_.translation_;
+	float horizontalSpd = (input_->PushKey(DIK_RIGHT) - input_->PushKey(DIK_LEFT))* 0.5f;
+
+	// 移動
+	switch (direction_)
+	{
+	case Front:
+		worldTransform_.translation_.x += horizontalSpd;
+		break;
+	case Right:
+		worldTransform_.translation_.z += horizontalSpd;
+		break;
+	case Back:
+		worldTransform_.translation_.x -= horizontalSpd;
+		break;
+	case Left:
+		worldTransform_.translation_.z -= horizontalSpd;
+		break;
+	}
+
+	// ジャンプ
+	if (input_->PushKey(DIK_SPACE))
+	{
+		jamp_.StartJamp(1.5f, 0.1f, 2.0f);
+	}
+	jamp_.Update(worldTransform_.translation_.y);
+
+	viewProjection_->eye = viewProjection_->target = worldTransform_.translation_ + Vector3(0, 5.0f, 0);
+
+	// 方向転換
 	switch (direction_)
 	{
 	case Front:
 		viewProjection_->eye.z -= CAMERA_DISTANCE;
-		// 左に往けない
-		if (worldTransform_.translation_.x <= -POLE_RAD)
-		{
-			viewProjection_->eye.x = viewProjection_->target.x =
-				worldTransform_.translation_.x = -POLE_RAD;
-		}
-		// 方向転換
-		if (worldTransform_.translation_.x >= POLE_RAD)
-		{
-			worldTransform_.translation_.x = POLE_RAD;
-			direction_ = Right;
-		}
+		Turn(worldTransform_.translation_.x, Left, -POLE_RAD);
+		Turn(worldTransform_.translation_.x, Right, POLE_RAD);
 		break;
 	case Right:
 		viewProjection_->eye.x += CAMERA_DISTANCE;
-		if (worldTransform_.translation_.z <= -POLE_RAD)
-		{
-			viewProjection_->eye.z = viewProjection_->target.z =
-				worldTransform_.translation_.z = -POLE_RAD;
-		}
-		if (worldTransform_.translation_.z >= POLE_RAD)
-		{
-			worldTransform_.translation_.z = POLE_RAD;
-			direction_ = Back;
-		}
+		Turn(worldTransform_.translation_.z, Front, -POLE_RAD);
+		Turn(worldTransform_.translation_.z, Back, POLE_RAD);
 		break;
 	case Back:
 		viewProjection_->eye.z += CAMERA_DISTANCE;
-		if (worldTransform_.translation_.x >= POLE_RAD)
-		{
-			viewProjection_->eye.x = viewProjection_->target.x =
-				worldTransform_.translation_.x = POLE_RAD;
-		}
-		if (worldTransform_.translation_.x <= -POLE_RAD)
-		{
-			worldTransform_.translation_.x = -POLE_RAD;
-			direction_ = Left;
-		}
+		Turn(worldTransform_.translation_.x, Left, -POLE_RAD);
+		Turn(worldTransform_.translation_.x, Right, POLE_RAD);
 		break;
 	case Left:
 		viewProjection_->eye.x -= CAMERA_DISTANCE;
-		if (worldTransform_.translation_.z >= POLE_RAD)
-		{
-			viewProjection_->eye.z = viewProjection_->target.z =
-				worldTransform_.translation_.z = POLE_RAD;
-		}
-		if (worldTransform_.translation_.z <= -POLE_RAD)
-		{
-			worldTransform_.translation_.z = -POLE_RAD;
-			direction_ = Front;
-		}
+		Turn(worldTransform_.translation_.z, Front, -POLE_RAD);
+		Turn(worldTransform_.translation_.z, Back, POLE_RAD);
 		break;
 	}
+}
+
+void Player::Turn(float& pos1D, Direction nextDirection, float limitPos)
+{
+	bool isTurn;
+	if (limitPos <= 0) { isTurn = pos1D < limitPos; }
+	else { isTurn = pos1D > limitPos; }
+	if (!isTurn) { return; }
+	pos1D = limitPos;
+	direction_ = nextDirection;
 }
 
 void Player::Update()
@@ -93,55 +96,9 @@ void Player::Draw()
 // 当たり判定の前に行う
 void Player::UpdateSpeed()
 {
-	float horizontalSpd = (input_->PushKey(DIK_RIGHT) - input_->PushKey(DIK_LEFT));
-	float verticalSpd = (input_->PushKey(DIK_UP) - input_->PushKey(DIK_DOWN));
-
-	switch (direction_)
-	{
-	case Front:
-		spd_ = { horizontalSpd ,verticalSpd ,0 };
-		break;
-	case Right:
-		spd_ = { 0,verticalSpd ,horizontalSpd };
-		break;
-	case Back:
-		spd_ = { -horizontalSpd ,verticalSpd ,0 };
-		break;
-	case Left:
-		spd_ = { 0,verticalSpd ,-horizontalSpd };
-		break;
-	}
-	spd_.normalize();
-	spd_ *= 0.5f;
 }
 
 void Player::OnCollision(Collider* collider)
 {
-	Vector3 vec = GetWorldPosition() - collider->GetWorldPosition();
-	Vector3 cmpVec[2] =
-	{
-		collider->GetWorldPosition() - collider->GetRadius(),
-		GetWorldPosition() + GetRadius() - spd_
-	};
-	Vector3 cmpVec2[2] =
-	{
-		collider->GetWorldPosition() + collider->GetRadius(),
-		GetWorldPosition() - GetRadius() - spd_
-	};
-	if (vec.x <= 0)
-	{
-		if (cmpVec[0].x >= cmpVec[1].x)
-		{
-			spd_.x = 0;
-		}
-		else
-		{
-			spd_.z = 0;
-		}
-	}
-	else
-	{
-		if (cmpVec2[0].x <= cmpVec2[1].x) { spd_.x = 0; }
-		else { spd_.z = 0; }
-	}
+
 }

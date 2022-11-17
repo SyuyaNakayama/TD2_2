@@ -109,7 +109,9 @@
     <ClCompile Include="stage\Block.cpp" />
     <ClCompile Include="stage\BlockManager.cpp" />
     <ClCompile Include="stage\Enemy.cpp" />
+    <ClCompile Include="stage\Jamp.cpp" />
     <ClCompile Include="stage\Player.cpp" />
+    <ClCompile Include="stage\Shake.cpp" />
     <ClCompile Include="stage\Stage.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -150,7 +152,9 @@
     <ClInclude Include="stage\Block.h" />
     <ClInclude Include="stage\BlockManager.h" />
     <ClInclude Include="stage\Enemy.h" />
+    <ClInclude Include="stage\Jamp.h" />
     <ClInclude Include="stage\Player.h" />
+    <ClInclude Include="stage\Shake.h" />
     <ClInclude Include="stage\Stage.h" />
   </ItemGroup>
   <ItemGroup>

@@ -7,6 +7,8 @@
 #include "DebugCamera.h"
 #include "BlockManager.h"
 #include "particleManager/ParticleManager.h"
+#include "AxisIndicator.h"
+#include "Shake.h"
 
 class Stage
 {
@@ -20,9 +22,8 @@ private:
 	Enemy enemy_;
 	BlockManager blockManager_;
 	ParticleManager particleManager_;
-	//FbxModel* fbxModel_;
-	//FbxObject3d* fbxObject_;
-	//WorldTransform fbxObjWT;
+	AxisIndicator* axisIndicator_ = nullptr;
+	Shake shake_;
 
 public:
 	~Stage();

@@ -8,6 +8,7 @@
 #include <memory>
 #include "DebugText.h"
 #include "scene.h"
+#include "Jamp.h"
 
 class Player :public Collider
 {
@@ -19,10 +20,12 @@ private:
 	Input* input_ = nullptr;
 	uint32_t texture_ = 0;
 	Vector3 spd_{};
-	const float CAMERA_DISTANCE = 70.0f;
+	const float CAMERA_DISTANCE = 50.0f;
 	Direction direction_ = Front;
+	Jamp jamp_;
 
 	void Move();
+	void Turn(float& pos1D, Direction nextDirection, float limitPos);
 public:
 	Player() = default;
 	~Player() = default;
