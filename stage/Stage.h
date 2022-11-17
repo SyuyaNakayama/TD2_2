@@ -20,6 +20,7 @@ private:
 	Enemy enemy_;
 	BlockManager blockManager_;
 	ParticleManager particleManager_;
+	Model* DragonHead = nullptr;
 	//FbxModel* fbxModel_;
 	//FbxObject3d* fbxObject_;
 	//WorldTransform fbxObjWT;
