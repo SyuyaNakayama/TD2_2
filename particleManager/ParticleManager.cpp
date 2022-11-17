@@ -467,7 +467,7 @@ void ParticleManager::Draw()
 	ParticleManager::cmdList = nullptr;
 }
 
-void ParticleManager::Add(int life, float start_scale, float end_scale)
+void ParticleManager::Add(Vector3 position, int life, float start_scale, float end_scale)
 {
 	if (std::distance(particles.begin(), particles.end()) >= vertexCount) { return; }
 	for (size_t i = 0; i < 2; i++)
@@ -482,7 +482,7 @@ void ParticleManager::Add(int life, float start_scale, float end_scale)
 			(float)rand() / RAND_MAX * md_pos - md_pos / 2.0f,
 			(float)rand() / RAND_MAX * md_pos - md_pos / 2.0f
 		};
-		p.position = pos;
+		p.position = pos + position;
 		// -0.05f~+0.05f:xyz
 		const float md_vel = 0.1f;
 		Vector3 vel =

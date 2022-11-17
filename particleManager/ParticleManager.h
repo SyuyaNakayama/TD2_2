@@ -133,7 +133,7 @@ public: // メンバ関数
 	void Draw();
 
 	// パーティクル追加
-	void Add(int life, float start_scale, float end_scale);
+	void Add(Vector3 position,int life, float start_scale, float end_scale);
 
 	size_t GetParticleNum() { return std::distance(particles.begin(), particles.end()); }
 
