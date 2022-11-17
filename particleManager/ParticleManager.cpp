@@ -370,6 +370,8 @@ bool ParticleManager::Initialize(ViewProjection* viewProjection)
 	// nullptrチェック
 	assert(device);
 
+	if (!particles.empty()) { particles.clear(); }
+
 	// ヒーププロパティ
 	CD3DX12_HEAP_PROPERTIES heapProps = CD3DX12_HEAP_PROPERTIES(D3D12_HEAP_TYPE_UPLOAD);
 	// リソース設定

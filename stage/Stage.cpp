@@ -7,13 +7,12 @@ void Stage::Initialize()
 {
 	debugText_ = DebugText::GetInstance();
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
-	DragonHead = Model::CreateFromOBJ("DragonHead", true);
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
 	particleManager_.Initialize(&viewProjection_);
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
-	enemy_.Initialize(DragonHead);
+	enemy_.Initialize();
 	axisIndicator_ = AxisIndicator::GetInstance();
 	axisIndicator_->SetVisible(true);
 	axisIndicator_->SetTargetViewProjection(&viewProjection_);
@@ -48,10 +47,6 @@ void Stage::Draw()
 	enemy_.Draw(viewProjection_);
 	particleManager_.Draw();
 	axisIndicator_->Draw();
-}
-
-Stage::Stage()
-{
 }
 
 Stage::~Stage()

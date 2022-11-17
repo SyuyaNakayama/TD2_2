@@ -10,8 +10,8 @@ void GameScene::Initialize()
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
 	audio_ = Audio::GetInstance();
-	stage_.Initialize();
 	fadeManager_.Initialize(&scene_);
+	stage_.Initialize();
 }
 
 void GameScene::Update()
@@ -19,7 +19,11 @@ void GameScene::Update()
 	switch (scene_)
 	{
 	case Title:
-		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(HowToPlay); }
+		if (input_->TriggerKey(DIK_SPACE)) 
+		{
+			fadeManager_.ChangeScene(HowToPlay); 
+			stage_.Initialize();
+		}
 		break;
 	case HowToPlay:
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Play); }
@@ -37,6 +41,10 @@ void GameScene::Update()
 		{
 			fadeManager_.ChangeScene(Play); 
 			stage_.Initialize();
+		}
+		if (input_->TriggerKey(DIK_RETURN))
+		{
+			fadeManager_.ChangeScene(Title); 
 		}
 		break;
 	}

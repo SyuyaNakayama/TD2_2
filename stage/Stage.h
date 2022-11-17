@@ -25,7 +25,6 @@ private:
 	Shake shake_;
 
 public:
-	Stage();
 	~Stage();
 	void Initialize();
 	void Update();

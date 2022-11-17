@@ -14,7 +14,7 @@ private:
 
 	void Move();
 public:
-	void Initialize(Model* model);
+	void Initialize();
 	void Update();
 	void Draw(ViewProjection viewProjection);
 
