@@ -1,7 +1,4 @@
-﻿#include "Audio.h"
-#include "GameScene.h"
-#include "TextureManager.h"
-#include "AxisIndicator.h"
+﻿#include "GameScene.h"
 #include "PrimitiveDrawer.h"
 #include "particleManager/ParticleManager.h"
 

@@ -2,10 +2,8 @@
 #include "collider/Collider.h"
 #include "WorldTransform.h"
 #include "Model.h"
-#include "TextureManager.h"
 #include "Input.h"
 #include "ViewProjection.h"
-#include <memory>
 #include "DebugText.h"
 #include "scene.h"
 #include "Jamp.h"
@@ -19,7 +17,6 @@ private:
 	Model* model_ = nullptr;
 	Input* input_ = nullptr;
 	uint32_t texture_ = 0;
-	Vector3 spd_{};
 	const float CAMERA_DISTANCE = 50.0f;
 	Direction direction_ = Front;
 	Jamp jamp_;
@@ -29,16 +26,14 @@ private:
 public:
 	Player() = default;
 	~Player() = default;
-	static std::unique_ptr<Player> GetInstance();
+	static Player* GetInstance();
 	void Initialize(ViewProjection* viewProjection);
 	void Update();
 	void Draw();
 	void UpdateSpeed();
 	Direction GetDirection() { return direction_; }
 
-	const Vector3 GetPosition() { return worldTransform_.translation_; }
-
 	void OnCollision(Collider* collider);
-	const Vector3 GetWorldPosition() { return worldTransform_.translation_ + spd_; }
+	const Vector3 GetWorldPosition() { return worldTransform_.translation_; }
 	const Vector3 GetRadius() { return worldTransform_.scale_; }
 };

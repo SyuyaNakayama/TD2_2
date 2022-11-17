@@ -1,9 +1,9 @@
 #include "Player.h"
 
-std::unique_ptr<Player>  Player::GetInstance()
+Player* Player::GetInstance()
 {
-	static std::unique_ptr<Player> player = std::make_unique<Player>();
-	return move(player);
+	static Player* player = new Player;
+	return player;
 }
 
 void Player::Initialize(ViewProjection* viewProjection)
@@ -91,11 +91,6 @@ void Player::Update()
 void Player::Draw()
 {
 	model_->Draw(worldTransform_, *viewProjection_);
-}
-
-// “–‚½‚è”»’è‚Ì‘O‚És‚¤
-void Player::UpdateSpeed()
-{
 }
 
 void Player::OnCollision(Collider* collider)

@@ -1,6 +1,5 @@
 #pragma once
 #include <vector>
-#include "Model.h"
 #include "Player.h"
 #include "Enemy.h"
 #include "collider/CollisionManager.h"
@@ -16,8 +15,7 @@ private:
 	DebugText* debugText_ = nullptr;
 	DebugCamera* debugCamera_ = nullptr;
 	ViewProjection viewProjection_;
-	Model* model_ = nullptr;
-	std::unique_ptr<Player> player_ = nullptr;
+	Player* player_ = nullptr;
 	CollisionManager collisionManager;
 	Enemy enemy_;
 	BlockManager blockManager_;
@@ -27,6 +25,7 @@ private:
 	Shake shake_;
 
 public:
+	Stage();
 	~Stage();
 	void Initialize();
 	void Update();
