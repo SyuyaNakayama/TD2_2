@@ -21,14 +21,16 @@ private:
 	const float CAMERA_DISTANCE = 30.0f;
 	Direction direction_ = Front;
 	Jamp jamp_;
-	bool isTurn_;
+	bool isTurn_=0;
 	const int LERP_FLAME = 60;
 	int nowFlame = 0;
+	Vector3 larpVec[2]{};
+	bool x = 0;
 
 	uint16_t LorR = 0;// 1 = ‰EŒü‚«,@0 = ¶Œü‚« 
 	float Rot = 0;
 	void Move();
-	void Turn(float& pos1D, Direction nextDirection, float limitPos);
+	bool Turn(float& pos1D, Direction nextDirection, float limitPos);
 	Player() = default;
 	~Player() = default;
 public:

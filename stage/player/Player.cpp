@@ -7,7 +7,7 @@ Player* Player::GetInstance()
 	return player;
 }
 
-void Player::Initialize(Model* model1, Model* model2, Model* model3, Model* model4, Model* model5, Model* model6, 
+void Player::Initialize(Model* model1, Model* model2, Model* model3, Model* model4, Model* model5, Model* model6,
 	ViewProjection* viewProjection)
 {
 	debugText_ = DebugText::GetInstance();
@@ -22,7 +22,7 @@ void Player::Initialize(Model* model1, Model* model2, Model* model3, Model* mode
 	input_ = Input::GetInstance();
 	worldTransform_[0].Initialize();
 	ParentInitialize();
-	worldTransform_[0].translation_ = {-POLE_RAD,2.0f,-POLE_RAD};
+	worldTransform_[0].translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
 	direction_ = Front;
 	viewProjection_ = viewProjection;
 }
@@ -44,7 +44,6 @@ Vector3 GetCameraPos(Direction direction, float cameraDistance)
 void Player::Move()
 {
 	float horizontalSpd = (input_->PushKey(DIK_RIGHT) - input_->PushKey(DIK_LEFT)) * 0.5f;
-	Vector3 larpVec[2]{};
 
 	// 移動
 	switch (direction_)
@@ -70,7 +69,7 @@ void Player::Move()
 	}
 	jamp_.Update(worldTransform_[0].translation_.y);
 
-	viewProjection_->eye = viewProjection_->target = worldTransform_.translation_;
+	viewProjection_->eye = viewProjection_->target = worldTransform_[0].translation_;
 	viewProjection_->target.y += 2.0f;
 	if (!isTurn_)
 	{
@@ -81,20 +80,20 @@ void Player::Move()
 		switch (direction_)
 		{
 		case Front:
-			Turn(worldTransform_.translation_.x, Left, -POLE_RAD);
-			Turn(worldTransform_.translation_.x, Right, POLE_RAD);
+			if (Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; }
+			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
 			break;
 		case Right:
-			Turn(worldTransform_.translation_.z, Front, -POLE_RAD);
-			Turn(worldTransform_.translation_.z, Back, POLE_RAD);
+			if(Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
 			break;
 		case Back:
-			Turn(worldTransform_.translation_.x, Left, -POLE_RAD);
-			Turn(worldTransform_.translation_.x, Right, POLE_RAD);
+			if(Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
 			break;
 		case Left:
-			Turn(worldTransform_.translation_.z, Front, -POLE_RAD);
-			Turn(worldTransform_.translation_.z, Back, POLE_RAD);
+			if(Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
 			break;
 		}
 	}
@@ -104,23 +103,50 @@ void Player::Move()
 		larpVec[1] = viewProjection_->eye + GetCameraPos(direction_, CAMERA_DISTANCE);
 		float t = (float)++nowFlame / (float)LERP_FLAME;
 		viewProjection_->eye = lerp(larpVec[0], larpVec[1], t);
-		
-		if (nowFlame >= LERP_FLAME) 
+
+		if (nowFlame >= LERP_FLAME)
 		{
 			nowFlame = 0;
-			isTurn_ = 0; 
+			isTurn_ = 0;
+		}
+
+		if (!x) { x = true; }
+
+		// 方向転換
+		switch (direction_)
+		{
+		case Front:
+			if (Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; }
+			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
+			break;
+		case Right:
+			if (Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
+			break;
+		case Back:
+			if (Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
+			break;
+		case Left:
+			if (Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
+			break;
 		}
 	}
+
+	debugText_->SetPos(0, 0);
+	debugText_->Printf("%f,%f,%f", larpVec[0].x, larpVec[0].y, larpVec[0].z);
 }
 
-void Player::Turn(float& pos1D, Direction nextDirection, float limitPos)
+bool Player::Turn(float& pos1D, Direction nextDirection, float limitPos)
 {
 	if (limitPos <= 0) { isTurn_ = pos1D < limitPos; }
 	else { isTurn_ = pos1D > limitPos; }
-	if (!isTurn_) { return; }
+	if (!isTurn_) { return false; }
 	pos1D = limitPos;
 	nowFlame = 0;
 	direction_ = nextDirection;
+	return true;
 }
 
 void Player::Update()
@@ -163,11 +189,11 @@ void Player::ParentUpdate()
 
 void Player::ParentSetPosition()
 {
-	if(input_->PushKey(DIK_LEFT))//左右の判定
+	if (input_->PushKey(DIK_LEFT))//左右の判定
 	{
 		LorR = 0;
 	}
-	if(input_->PushKey(DIK_RIGHT))
+	if (input_->PushKey(DIK_RIGHT))
 	{
 		LorR = 1;
 	}
@@ -175,7 +201,7 @@ void Player::ParentSetPosition()
 #pragma region 手前
 	if (worldTransform_[0].translation_.z <= -24.5)//手前
 	{
-		if(LorR == 0)
+		if (LorR == 0)
 		{
 			Rot = 90;
 		}
@@ -280,7 +306,7 @@ void Player::ParentSetPosition()
 		{
 			Rot = 180;
 		}
-	
+
 		//頭
 		worldTransform_[1].rotation_.y = Rot * PI / 180;
 		worldTransform_[1].translation_.x = worldTransform_[0].translation_.x;
@@ -367,7 +393,7 @@ void Player::ParentSetPosition()
 		worldTransform_[6].translation_.z = worldTransform_[0].translation_.z;
 	}
 #pragma endregion
-	
+
 	//各worldTransformの更新
 	worldTransform_[1].Update();
 	worldTransform_[2].Update();
