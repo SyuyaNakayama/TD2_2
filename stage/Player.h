@@ -23,9 +23,9 @@ private:
 
 	void Move();
 	void Turn(float& pos1D, Direction nextDirection, float limitPos);
-public:
 	Player() = default;
 	~Player() = default;
+public:
 	static Player* GetInstance();
 	void Initialize(ViewProjection* viewProjection);
 	void Update();

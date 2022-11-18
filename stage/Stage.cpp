@@ -41,7 +41,7 @@ void Stage::Draw()
 	player_->Draw();
 	blockManager_.Draw(viewProjection_);
 	enemy_.Draw(viewProjection_);
-	particleManager_.Draw();
+	//particleManager_.Draw();
 }
 
 Stage::~Stage()

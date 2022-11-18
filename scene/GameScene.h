@@ -36,4 +36,5 @@ private: // メンバ変数
 	DebugText* debugText_ = nullptr;
 	Scene scene_ = Play;
 	FadeManager fadeManager_;
+	Sprite* sprite_ = nullptr;
 };

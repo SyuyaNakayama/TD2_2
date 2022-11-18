@@ -12,6 +12,8 @@ void GameScene::Initialize()
 	audio_ = Audio::GetInstance();
 	fadeManager_.Initialize(&scene_);
 	stage_.Initialize();
+	//sprite_ = Sprite::Create(TextureManager::Load("image.webp"), { 0,0 });
+	//sprite_->SetSize({ 1280,720 });
 }
 
 void GameScene::Update()
@@ -63,6 +65,7 @@ void GameScene::Draw()
 	/// <summary>
 	/// ここに背景スプライトの描画処理を追加できる
 	/// </summary>
+	//sprite_->Draw();
 
 	// スプライト描画後処理
 	Sprite::PostDraw();
