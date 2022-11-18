@@ -17,6 +17,12 @@ private:
 	DebugCamera* debugCamera_ = nullptr;
 	ViewProjection viewProjection_;
 	Model* model_ = nullptr;
+	Model* PLHead = nullptr;
+	Model* PLbody = nullptr;
+	Model* PLhandLeft = nullptr;
+	Model* PLhandRight = nullptr;
+	Model* PLfootLeft = nullptr;
+	Model* PLfootRight = nullptr;
 	std::unique_ptr<Player> player_ = nullptr;
 	CollisionManager collisionManager;
 	Enemy enemy_;
