@@ -22,7 +22,7 @@ void Stage::Initialize()
 	particleManager_.Initialize(&viewProjection_);
 	player_ = Player::GetInstance();
 	player_->Initialize(PLHead,PLbody,PLhandLeft,PLhandRight,PLfootLeft,PLfootRight,&viewProjection_);
-	enemy_.Initialize(DragonHead);
+	enemy_.Initialize();
 	
 }
 

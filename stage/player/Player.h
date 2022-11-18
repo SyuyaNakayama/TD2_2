@@ -38,7 +38,7 @@ public:
 	Direction GetDirection() { return direction_; }
 
 	void OnCollision(Collider* collider);
-	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_ + spd_; }
+	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
 	const Vector3 GetRadius() { return worldTransform_[0].scale_; }
 
 	void ParentInitialize();
