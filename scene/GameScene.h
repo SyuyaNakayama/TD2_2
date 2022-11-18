@@ -6,13 +6,13 @@
 #include "Sprite.h"
 #include "stage/Stage.h"
 #include "fadeManager/FadeManager.h"
+#include "scene.h"
 
 /// <summary>
 /// ゲームシーン
 /// </summary>
 class GameScene {
 public: // メンバ関数
-	~GameScene();
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -28,10 +28,13 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-  private: // メンバ変数
+private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
 	Audio* audio_ = nullptr;
 	Stage stage_;
 	DebugText* debugText_ = nullptr;
+	Scene scene_ = Play;
+	FadeManager fadeManager_;
+	Sprite* sprite_ = nullptr;
 };

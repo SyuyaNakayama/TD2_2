@@ -4,9 +4,9 @@ void Enemy::Move()
 {
 }
 
-void Enemy::Initialize(Model* model)
+void Enemy::Initialize()
 {
-	model_ = model;
+	model_ = Model::CreateFromOBJ("DragonHead", true);
 	worldTransform_.Initialize();
 	worldTransform_.scale_ = { 20.0f,20.0f,20.0f };
 }

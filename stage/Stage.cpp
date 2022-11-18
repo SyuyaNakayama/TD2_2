@@ -23,22 +23,19 @@ void Stage::Initialize()
 	player_ = Player::GetInstance();
 	player_->Initialize(PLHead,PLbody,PLhandLeft,PLhandRight,PLfootLeft,PLfootRight,&viewProjection_);
 	enemy_.Initialize(DragonHead);
-	axisIndicator_ = AxisIndicator::GetInstance();
-	axisIndicator_->SetVisible(true);
-	axisIndicator_->SetTargetViewProjection(&viewProjection_);
+	
 }
 
 void Stage::Update()
 {
-	//player_->UpdateSpeed();
 	// 当たり判定
 	//collisionManager.CheckAllCollisions(&player_, &enemy_);
-	particleManager_.Add(player_->GetPosition(), 60, 10.0f, 0.0f);
+	particleManager_.Add(player_->GetWorldPosition(), 60, 10.0f, 0.0f);
 #pragma region オブジェクトの更新
 	player_->Update();
 	enemy_.Update();
-	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) { 
-		shake_.ShakeStart(10.0f); 
+	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
+		shake_.ShakeStart(10.0f);
 	}
 	shake_.Update(viewProjection_);
 #pragma endregion
@@ -47,7 +44,6 @@ void Stage::Update()
 	particleManager_.Update();
 	debugCamera_->Update();
 	//viewProjection_ = debugCamera_->GetViewProjection();
-	axisIndicator_->Update();
 #pragma endregion
 }
 
@@ -57,7 +53,6 @@ void Stage::Draw()
 	blockManager_.Draw(viewProjection_);
 	enemy_.Draw(viewProjection_);
 	//particleManager_.Draw();
-	axisIndicator_->Draw();
 }
 
 Stage::~Stage()

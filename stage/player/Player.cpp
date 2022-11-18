@@ -1,9 +1,9 @@
 #include "Player.h"
-#define PI 3.14159
-std::unique_ptr<Player>  Player::GetInstance()
+
+Player* Player::GetInstance()
 {
-	static std::unique_ptr<Player> player = std::make_unique<Player>();
-	return move(player);
+	static Player* player = new Player;
+	return player;
 }
 
 void Player::Initialize(Model* model1, Model* model2, Model* model3, Model* model4, Model* model5, Model* model6, 
@@ -22,6 +22,7 @@ void Player::Initialize(Model* model1, Model* model2, Model* model3, Model* mode
 	worldTransform_[0].Initialize();
 	ParentInitialize();
 	worldTransform_[0].translation_ = {-POLE_RAD,2.0f,-POLE_RAD};
+	direction_ = Front;
 	viewProjection_ = viewProjection;
 }
 
@@ -107,11 +108,6 @@ void Player::Draw()
 	modelKnight[4]->Draw(worldTransform_[4], *viewProjection_);	//右腕
 	modelKnight[5]->Draw(worldTransform_[5], *viewProjection_);	//左足
 	modelKnight[6]->Draw(worldTransform_[6], *viewProjection_);	//右足
-}
-
-// 当たり判定の前に行う
-void Player::UpdateSpeed()
-{
 }
 
 void Player::OnCollision(Collider* collider)
