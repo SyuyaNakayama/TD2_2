@@ -1,12 +1,12 @@
 #pragma once
 #include "collider/Collider.h"
+#include "Input.h"
+#include "DebugText.h"
+#include "../stage/Jamp.h"
 #include "WorldTransform.h"
 #include "Model.h"
-#include "Input.h"
 #include "ViewProjection.h"
-#include "DebugText.h"
 #include "scene.h"
-#include "../stage/Jamp.h"
 
 class Player :public Collider
 {
@@ -17,9 +17,12 @@ private:
 	Model* model_ = nullptr;
 	Input* input_ = nullptr;
 	uint32_t texture_ = 0;
-	const float CAMERA_DISTANCE = 50.0f;
+	const float CAMERA_DISTANCE = 30.0f;
 	Direction direction_ = Front;
 	Jamp jamp_;
+	bool isTurn_;
+	const int LERP_FLAME = 60;
+	int nowFlame = 0;
 
 	void Move();
 	void Turn(float& pos1D, Direction nextDirection, float limitPos);
