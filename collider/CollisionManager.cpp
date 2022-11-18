@@ -1,5 +1,6 @@
 #include "CollisionManager.h"
 #include "CollisionConfig.h"
+#include <list>
 
 using namespace std;
 

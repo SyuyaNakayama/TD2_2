@@ -1,9 +1,7 @@
 #pragma once
-#include <list>
 #include "Collider.h"
-#include <memory>
-#include "stage/Player.h"
-#include "stage/Enemy.h"
+#include "stage/player/Player.h"
+#include "stage/enemy/Enemy.h"
 
 class CollisionManager
 {

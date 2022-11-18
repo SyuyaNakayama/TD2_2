@@ -6,7 +6,7 @@
 #include "ViewProjection.h"
 #include "DebugText.h"
 #include "scene.h"
-#include "Jamp.h"
+#include "../stage/Jamp.h"
 
 class Player :public Collider
 {

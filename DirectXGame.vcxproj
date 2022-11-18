@@ -106,11 +106,11 @@
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="particleManager\ParticleManager.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
-    <ClCompile Include="stage\Block.cpp" />
-    <ClCompile Include="stage\BlockManager.cpp" />
-    <ClCompile Include="stage\Enemy.cpp" />
+    <ClCompile Include="stage\block\Block.cpp" />
+    <ClCompile Include="stage\block\BlockManager.cpp" />
+    <ClCompile Include="stage\enemy\Enemy.cpp" />
     <ClCompile Include="stage\Jamp.cpp" />
-    <ClCompile Include="stage\Player.cpp" />
+    <ClCompile Include="stage\player\Player.cpp" />
     <ClCompile Include="stage\Shake.cpp" />
     <ClCompile Include="stage\Stage.cpp" />
   </ItemGroup>
@@ -149,11 +149,11 @@
     <ClInclude Include="particleManager\ParticleManager.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\scene.h" />
-    <ClInclude Include="stage\Block.h" />
-    <ClInclude Include="stage\BlockManager.h" />
-    <ClInclude Include="stage\Enemy.h" />
+    <ClInclude Include="stage\block\Block.h" />
+    <ClInclude Include="stage\block\BlockManager.h" />
+    <ClInclude Include="stage\enemy\Enemy.h" />
     <ClInclude Include="stage\Jamp.h" />
-    <ClInclude Include="stage\Player.h" />
+    <ClInclude Include="stage\player\Player.h" />
     <ClInclude Include="stage\Shake.h" />
     <ClInclude Include="stage\Stage.h" />
   </ItemGroup>

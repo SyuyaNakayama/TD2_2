@@ -101,34 +101,31 @@
     <ClCompile Include="math\MathUtility.cpp">
       <Filter>ソース ファイル\math</Filter>
     </ClCompile>
-    <ClCompile Include="fbx\FbxLoader.cpp">
-      <Filter>ソース ファイル\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="fbx\FbxModel.cpp">
-      <Filter>ソース ファイル\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="fbx\FbxObject3d.cpp">
-      <Filter>ソース ファイル\Fbx</Filter>
-    </ClCompile>
-    <ClCompile Include="stage\Enemy.cpp">
-      <Filter>ソース ファイル\stage</Filter>
-    </ClCompile>
-    <ClCompile Include="stage\Player.cpp">
-      <Filter>ソース ファイル\stage</Filter>
-    </ClCompile>
     <ClCompile Include="stage\Stage.cpp">
-      <Filter>ソース ファイル\stage</Filter>
-    </ClCompile>
-    <ClCompile Include="stage\Block.cpp">
-      <Filter>ソース ファイル\stage</Filter>
-    </ClCompile>
-    <ClCompile Include="stage\BlockManager.cpp">
       <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
     <ClCompile Include="collider\CollisionManager.cpp">
       <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
     <ClCompile Include="particleManager\ParticleManager.cpp">
+      <Filter>ソース ファイル\stage</Filter>
+    </ClCompile>
+    <ClCompile Include="stage\Jamp.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="stage\block\Block.cpp">
+      <Filter>ソース ファイル\stage</Filter>
+    </ClCompile>
+    <ClCompile Include="stage\block\BlockManager.cpp">
+      <Filter>ソース ファイル\stage</Filter>
+    </ClCompile>
+    <ClCompile Include="stage\enemy\Enemy.cpp">
+      <Filter>ソース ファイル\stage</Filter>
+    </ClCompile>
+    <ClCompile Include="stage\player\Player.cpp">
+      <Filter>ソース ファイル\stage</Filter>
+    </ClCompile>
+    <ClCompile Include="stage\Shake.cpp">
       <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
   </ItemGroup>
@@ -229,44 +226,35 @@
     <ClInclude Include="fadeManager\FadeManager.h">
       <Filter>ヘッダー ファイル\collider</Filter>
     </ClInclude>
-    <ClInclude Include="fbx\FbxLoader.h">
-      <Filter>ヘッダー ファイル\fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="fbx\FbxModel.h">
-      <Filter>ヘッダー ファイル\fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="fbx\FbxObject3d.h">
-      <Filter>ヘッダー ファイル\fbx</Filter>
-    </ClInclude>
-    <ClInclude Include="stage\Enemy.h">
-      <Filter>ヘッダー ファイル\stage</Filter>
-    </ClInclude>
-    <ClInclude Include="stage\Player.h">
-      <Filter>ヘッダー ファイル\stage</Filter>
-    </ClInclude>
     <ClInclude Include="stage\Stage.h">
       <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
     <ClInclude Include="scene\scene.h">
       <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
-    <ClInclude Include="stage\Block.h">
-      <Filter>ヘッダー ファイル\stage</Filter>
-    </ClInclude>
-    <ClInclude Include="stage\BlockManager.h">
-      <Filter>ヘッダー ファイル\stage</Filter>
-    </ClInclude>
     <ClInclude Include="particleManager\ParticleManager.h">
+      <Filter>ヘッダー ファイル\stage</Filter>
+    </ClInclude>
+    <ClInclude Include="stage\Jamp.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="stage\block\Block.h">
+      <Filter>ヘッダー ファイル\stage</Filter>
+    </ClInclude>
+    <ClInclude Include="stage\block\BlockManager.h">
+      <Filter>ヘッダー ファイル\stage</Filter>
+    </ClInclude>
+    <ClInclude Include="stage\enemy\Enemy.h">
+      <Filter>ヘッダー ファイル\stage</Filter>
+    </ClInclude>
+    <ClInclude Include="stage\player\Player.h">
+      <Filter>ヘッダー ファイル\stage</Filter>
+    </ClInclude>
+    <ClInclude Include="stage\Shake.h">
       <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="Resources\shaders\FBXPS.hlsl">
-      <Filter>シェーダー ファイル\Fbx</Filter>
-    </FxCompile>
-    <FxCompile Include="Resources\shaders\FBXVS.hlsl">
-      <Filter>シェーダー ファイル\Fbx</Filter>
-    </FxCompile>
     <FxCompile Include="Resources\shaders\ObjPS.hlsl">
       <Filter>シェーダー ファイル\Obj</Filter>
     </FxCompile>
@@ -299,9 +287,6 @@
     </FxCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\shaders\FBX.hlsli">
-      <Filter>シェーダー ファイル\Fbx</Filter>
-    </None>
     <None Include="Resources\shaders\Obj.hlsli">
       <Filter>シェーダー ファイル\Obj</Filter>
     </None>

@@ -1,10 +1,10 @@
 #pragma once
 #include <vector>
-#include "Player.h"
-#include "Enemy.h"
+#include "player/Player.h"
+#include "enemy/Enemy.h"
 #include "collider/CollisionManager.h"
 #include "DebugCamera.h"
-#include "BlockManager.h"
+#include "block/BlockManager.h"
 #include "particleManager/ParticleManager.h"
 #include "Shake.h"
 
