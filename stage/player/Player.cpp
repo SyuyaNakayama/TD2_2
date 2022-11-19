@@ -1,4 +1,5 @@
 #include "Player.h"
+using namespace MathUtility;
 
 Player* Player::GetInstance()
 {
@@ -20,14 +21,28 @@ void Player::Initialize(ViewProjection* viewProjection)
 	input_ = Input::GetInstance();
 	worldTransform_[0].Initialize();
 	ParentInitialize();
-	worldTransform_[0].translation_ = {-POLE_RAD,2.0f,-POLE_RAD};
+	worldTransform_[0].translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
 	direction_ = Front;
 	viewProjection_ = viewProjection;
 }
 
+Vector3 GetCameraPos(Direction direction, float cameraDistance)
+{
+	float angle = 0;
+
+	switch (direction)
+	{
+	case Right:	angle = 3.0f * PI / 2.0f;	break;
+	case Back:	angle = -PI;				break;
+	case Left:	angle = PI / 2.0f;			break;
+	}
+
+	return Vector3(0, 0, -cameraDistance) * Matrix4RotationY(angle);
+}
+
 void Player::Move()
 {
-	float horizontalSpd = (input_->PushKey(DIK_RIGHT) - input_->PushKey(DIK_LEFT))* 0.5f;
+	float horizontalSpd = (input_->PushKey(DIK_RIGHT) - input_->PushKey(DIK_LEFT)) * 0.5f;
 
 	// ˆÚ“®
 	switch (direction_)
@@ -53,42 +68,84 @@ void Player::Move()
 	}
 	jamp_.Update(worldTransform_[0].translation_.y);
 
-	viewProjection_->eye = viewProjection_->target = worldTransform_[0].translation_ + Vector3(0, 5.0f, 0);
-
-	// •ûŒü“]Š·
-	switch (direction_)
+	viewProjection_->eye = viewProjection_->target = worldTransform_[0].translation_;
+	viewProjection_->target.y += 2.0f;
+	if (!isTurn_)
 	{
-	case Front:
-		viewProjection_->eye.z -= CAMERA_DISTANCE;
-		Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD);
-		Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
-		break;
-	case Right:
-		viewProjection_->eye.x += CAMERA_DISTANCE;
-		Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD);
-		Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
-		break;
-	case Back:
-		viewProjection_->eye.z += CAMERA_DISTANCE;
-		Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD);
-		Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
-		break;
-	case Left:
-		viewProjection_->eye.x -= CAMERA_DISTANCE;
-		Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD);
-		Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
-		break;
+		viewProjection_->eye += GetCameraPos(direction_, CAMERA_DISTANCE);
+		larpVec[0] = viewProjection_->eye;
+
+		// •ûŒü“]Š·
+		switch (direction_)
+		{
+		case Front:
+			if (Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; }
+			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
+			break;
+		case Right:
+			if(Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
+			break;
+		case Back:
+			if(Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
+			break;
+		case Left:
+			if(Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
+			break;
+		}
 	}
+
+	if (isTurn_)
+	{
+		larpVec[1] = viewProjection_->eye + GetCameraPos(direction_, CAMERA_DISTANCE);
+		float t = (float)++nowFlame / (float)LERP_FLAME;
+		viewProjection_->eye = lerp(larpVec[0], larpVec[1], t);
+
+		if (nowFlame >= LERP_FLAME)
+		{
+			nowFlame = 0;
+			isTurn_ = 0;
+		}
+
+		if (!x) { x = true; }
+
+		// •ûŒü“]Š·
+		switch (direction_)
+		{
+		case Front:
+			if (Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; }
+			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
+			break;
+		case Right:
+			if (Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
+			break;
+		case Back:
+			if (Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
+			break;
+		case Left:
+			if (Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
+			break;
+		}
+	}
+
+	debugText_->SetPos(0, 0);
+	debugText_->Printf("%f,%f,%f", larpVec[0].x, larpVec[0].y, larpVec[0].z);
 }
 
-void Player::Turn(float& pos1D, Direction nextDirection, float limitPos)
+bool Player::Turn(float& pos1D, Direction nextDirection, float limitPos)
 {
-	bool isTurn;
-	if (limitPos <= 0) { isTurn = pos1D < limitPos; }
-	else { isTurn = pos1D > limitPos; }
-	if (!isTurn) { return; }
+	if (limitPos <= 0) { isTurn_ = pos1D < limitPos; }
+	else { isTurn_ = pos1D > limitPos; }
+	if (!isTurn_) { return false; }
 	pos1D = limitPos;
+	nowFlame = 0;
 	direction_ = nextDirection;
+	return true;
 }
 
 void Player::Update()
@@ -140,11 +197,11 @@ void Player::ParentUpdate()
 
 void Player::ParentSetPosition()
 {
-	if(input_->PushKey(DIK_LEFT))//¶‰E‚Ì”»’è
+	if (input_->PushKey(DIK_LEFT))//¶‰E‚Ì”»’è
 	{
 		LorR = 0;
 	}
-	if(input_->PushKey(DIK_RIGHT))
+	if (input_->PushKey(DIK_RIGHT))
 	{
 		LorR = 1;
 	}
@@ -152,7 +209,7 @@ void Player::ParentSetPosition()
 #pragma region Žè‘O
 	if (worldTransform_[0].translation_.z <= -24.5)//Žè‘O
 	{
-		if(LorR == 0)
+		if (LorR == 0)
 		{
 			Rot = 90;
 		}
@@ -291,7 +348,7 @@ void Player::ParentSetPosition()
 		{
 			Rot = 180;
 		}
-	
+
 		//“ª
 		worldTransform_[1].rotation_.y = Rot * PI / 180;
 		worldTransform_[1].translation_.x = worldTransform_[0].translation_.x;
