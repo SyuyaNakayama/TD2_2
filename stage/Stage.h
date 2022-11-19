@@ -16,12 +16,6 @@ private:
 	ViewProjection viewProjection_;
 	Player* player_ = nullptr;
 	Model* model_ = nullptr;
-	Model* PLHead = nullptr;
-	Model* PLbody = nullptr;
-	Model* PLhandLeft = nullptr;
-	Model* PLhandRight = nullptr;
-	Model* PLfootLeft = nullptr;
-	Model* PLfootRight = nullptr;
 
 	CollisionManager collisionManager;
 	Enemy enemy_;

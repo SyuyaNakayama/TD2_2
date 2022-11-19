@@ -8,20 +8,20 @@ void Stage::Initialize()
 	debugText_ = DebugText::GetInstance();
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	model_ = Model::Create();
-	DragonHead = Model::CreateFromOBJ("DragonHead");
+	DragonHead = Model::CreateFromOBJ("Doragon_Head");
 
-	PLHead = Model::CreateFromOBJ("Knight_head");
-	PLbody = Model::CreateFromOBJ("Knight_chest");
-	PLhandLeft = Model::CreateFromOBJ("Knight_handLeft");
-	PLhandRight = Model::CreateFromOBJ("Knight_handRight");
-	PLfootLeft = Model::CreateFromOBJ("Knight_footLeft");
-	PLfootRight = Model::CreateFromOBJ("Knight_footRight");
+	Model::CreateFromOBJ("Knight_head");
+	Model::CreateFromOBJ("Knight_chest");
+	Model::CreateFromOBJ("Knight_handLeft");
+	Model::CreateFromOBJ("Knight_handRight");
+	Model::CreateFromOBJ("Knight_footLeft");
+	Model::CreateFromOBJ("Knight_footRight");
 
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
 	particleManager_.Initialize(&viewProjection_);
 	player_ = Player::GetInstance();
-	player_->Initialize(PLHead,PLbody,PLhandLeft,PLhandRight,PLfootLeft,PLfootRight,&viewProjection_);
+	player_->Initialize(&viewProjection_);
 	enemy_.Initialize();
 	
 }

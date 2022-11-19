@@ -23,6 +23,12 @@ private:
 	Jamp jamp_;
 	uint16_t LorR = 0;// 1 = 右向き,　0 = 左向き 
 	float Rot = 0;
+	bool walkFlag = true;
+	float walkPos = 0.0f;
+	float walkTimer = 5.0f;
+	bool isAttack = false;
+	bool isUp = false;
+	float ATrot = 0.0f;
 	void Move();
 	void Turn(float& pos1D, Direction nextDirection, float limitPos);
 	Player() = default;
@@ -30,8 +36,7 @@ private:
 public:
 	static Player* GetInstance();
 
-	void Initialize(Model* model1, Model* model2, Model* model3, Model* model4, Model* model5, Model* model6,
-		ViewProjection* viewProjection);
+	void Initialize(ViewProjection* viewProjection);
 	void Update();
 	void Draw();
 	void UpdateSpeed();
@@ -45,5 +50,9 @@ public:
 
 	void ParentUpdate();
 
-	void ParentSetPosition();
+	void ParentSetPosition();	//各パーツの初期位置、左右反転
+
+	void WalkMotion();			//歩くモーション
+
+	void AttackMotion();		//攻撃のモーション
 };
