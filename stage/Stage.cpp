@@ -10,20 +10,12 @@ void Stage::Initialize()
 	model_ = Model::Create();
 	DragonHead = Model::CreateFromOBJ("Doragon_Head");
 
-	Model::CreateFromOBJ("Knight_head");
-	Model::CreateFromOBJ("Knight_chest");
-	Model::CreateFromOBJ("Knight_handLeft");
-	Model::CreateFromOBJ("Knight_handRight");
-	Model::CreateFromOBJ("Knight_footLeft");
-	Model::CreateFromOBJ("Knight_footRight");
-
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
 	particleManager_.Initialize(&viewProjection_);
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
 	enemy_.Initialize();
-	
 }
 
 void Stage::Update()
