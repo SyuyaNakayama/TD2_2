@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "collider/Collider.h"
 #include "WorldTransform.h"
 #include "Model.h"
@@ -21,6 +21,10 @@ private:
 	float y = 0.0f;
 	float z = 0.0f;
 	float s = 0.0f;
+	bool isStandby = true;
+	uint16_t timer = 30;
+	float standbyRot = 0.0f;
+	bool isUp = false;
 	void Move();
 public:
 	void Initialize();
@@ -31,9 +35,16 @@ public:
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
 	const Vector3 GetRadius() { return worldTransform_[0].scale_; }
 
-	void ParentInitialize();
+	float ParPos(float x) { return x / 20.0f; }//親子関係にすると座標がおかしくなるため
+
+	void ParentInitialize();	//親子関係の初期化
 
 	void ParentUpdate();
 
-	void ParentSetPosition();
+	void StandbyMotion();		//待機のモーション
+
+	void BreathMotion();		//ブレスのモーション
+
+	void BiteMotion();			//嚙みつきのモーション
+
 };
