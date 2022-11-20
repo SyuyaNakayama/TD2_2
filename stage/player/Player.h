@@ -12,10 +12,9 @@ class Player :public Collider
 {
 private:
 	DebugText* debugText_ = nullptr;
-	WorldTransform worldTransform_[7] = {};
+	std::vector<WorldTransform> worldTransform_;
+	std::vector<Model*> modelKnight;
 	ViewProjection* viewProjection_ = nullptr;
-	Model* model_ = nullptr;
-	Model* modelKnight[7] = {};
 	Input* input_ = nullptr;
 	uint32_t texture_ = 0;
 	const float CAMERA_DISTANCE = 30.0f;
@@ -25,7 +24,6 @@ private:
 	const int LERP_FLAME = 60;
 	int nowFlame = 0;
 	Vector3 larpVec[2]{};
-	bool x = 0;
 
 	uint16_t LorR = 0;// 1 = âEå¸Ç´,Å@0 = ç∂å¸Ç´ 
 	float Rot = 0;
@@ -51,8 +49,6 @@ public:
 	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
 	const Vector3 GetRadius() { return worldTransform_[0].scale_; }
-
-	void ParentInitialize();
 
 	void ParentUpdate();
 
