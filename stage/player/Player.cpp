@@ -37,6 +37,7 @@ float Player::DirectionToRadian()
 		if (LorR == 1) { return 0; }
 		else { return PI; }
 	}
+	return 0;
 }
 
 Player* Player::GetInstance()
@@ -186,25 +187,25 @@ void Player::OnCollision(Collider* collider)
 
 void Player::WalkMotion()
 {
-	float walkTIME = 10;
+	int walkTIME = 10;
 	if (input_->PushKey(DIK_LEFT) || input_->PushKey(DIK_RIGHT))
 	{
 		walkTimer++;
 		if (walkFlag == true)
 		{
-			walkPos += 0.1;
+			walkPos += 0.1f;
 			if (walkTimer >= walkTIME)
 			{
-				walkTimer = 1.0f;
+				walkTimer = 1;
 				walkFlag = false;
 			}
 		}
 		if (walkFlag == false)
 		{
-			walkPos -= 0.1;
+			walkPos -= 0.1f;
 			if (walkTimer >= walkTIME)
 			{
-				walkTimer = 0.0f;
+				walkTimer = 0;
 				walkFlag = true;
 			}
 		}

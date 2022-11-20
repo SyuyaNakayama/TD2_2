@@ -31,7 +31,7 @@ private:
 	float Rot = 0;
 	bool walkFlag = true;
 	float walkPos = 0.0f;
-	int walkTimer = 5.0f;
+	int walkTimer = 5;
 	bool isAttack = false;
 	bool isUp = false;
 	float ATrot = 0.0f;
