@@ -11,7 +11,7 @@
 class Player :public Collider
 {
 private:
-	enum { Head=1, Chest, HandLeft, HandRight, FootLeft, FootRight };
+	enum { Head = 1, Chest, HandLeft, HandRight, FootLeft, FootRight };
 
 	DebugText* debugText_ = nullptr;
 	std::vector<WorldTransform> worldTransform_;
@@ -22,7 +22,7 @@ private:
 	const float CAMERA_DISTANCE = 30.0f;
 	Direction direction_ = Front;
 	Jamp jamp_;
-	bool isTurn_=0;
+	bool isTurn_ = 0;
 	const int LERP_FLAME = 60;
 	int nowFlame = 0;
 	Vector3 larpVec[2]{};
@@ -39,6 +39,7 @@ private:
 	bool Turn(float& pos1D, Direction nextDirection, float limitPos);
 	Player() = default;
 	~Player() = default;
+	float DirectionToRadian();
 public:
 	static Player* GetInstance();
 
@@ -53,8 +54,6 @@ public:
 	const Vector3 GetRadius() { return worldTransform_[0].scale_; }
 
 	void ParentUpdate();
-
-	void ParentSetPosition();	//各パーツの初期位置、左右反転
 
 	void WalkMotion();			//歩くモーション
 

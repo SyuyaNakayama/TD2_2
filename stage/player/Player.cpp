@@ -1,37 +1,10 @@
 #include "Player.h"
 using namespace MathUtility;
 
-Player* Player::GetInstance()
-{
-	static Player* player = new Player;
-	return player;
-}
-
 std::vector<std::string> modelName =
 {
 	"head","chest","handLeft","handRight","footLeft","footRight"
 };
-
-void Player::Initialize(ViewProjection* viewProjection)
-{
-	debugText_ = DebugText::GetInstance();
-	worldTransform_.resize(7);
-	modelKnight.resize(worldTransform_.size());
-	input_ = Input::GetInstance();
-	direction_ = Front;
-	viewProjection_ = viewProjection;
-
-	modelKnight[0] = Model::Create();
-	for (size_t i = 1; i < modelKnight.size(); i++)
-	{
-		modelKnight[i] = Model::CreateFromOBJ("Knight_" + modelName[i - 1]);
-	}
-	for (WorldTransform& w : worldTransform_) { w.Initialize(); }
-	worldTransform_[0].translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
-	// êeéqä÷åWÇåãÇ‘
-	worldTransform_[Chest].parent_ = &worldTransform_[0];
-	worldTransform_[Chest].translation_.y += 1.0;
-}
 
 Vector3 GetCameraPos(Direction direction, float cameraDistance)
 {
@@ -45,6 +18,64 @@ Vector3 GetCameraPos(Direction direction, float cameraDistance)
 	}
 
 	return Vector3(0, 0, -cameraDistance) * Matrix4RotationY(angle);
+}
+
+float Player::DirectionToRadian()
+{
+	switch (direction_)
+	{
+	case Front:
+		if (LorR == 0) { return PI / 2.0f; }
+		else { return 3.0f * PI / 2.0f; }
+	case Right:
+		if (LorR == 0) { return 0; }
+		else { return PI; }
+	case Back:
+		if (LorR == 1) { return PI / 2.0f; }
+		else { return 3.0f * PI / 2.0f; }
+	case Left:
+		if (LorR == 1) { return 0; }
+		else { return PI; }
+	}
+}
+
+Player* Player::GetInstance()
+{
+	static Player* player = new Player;
+	return player;
+}
+
+void Player::Initialize(ViewProjection* viewProjection)
+{
+	debugText_ = DebugText::GetInstance();
+	worldTransform_.resize(7);
+	modelKnight.resize(worldTransform_.size());
+	input_ = Input::GetInstance();
+	direction_ = Front;
+	viewProjection_ = viewProjection;
+
+	modelKnight[0] = Model::Create();
+	for (size_t i = 1; i < modelKnight.size(); i++)
+	{
+		modelKnight[i] = Model::CreateFromOBJ("Knight_" + modelName[i - 1], true);
+	}
+	for (WorldTransform& w : worldTransform_) { w.Initialize(); }
+	worldTransform_[0].translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
+	// êeéqä÷åWÇåãÇ‘
+	for (size_t i = 1; i < worldTransform_.size(); i++)
+	{
+		worldTransform_[i].parent_ = &worldTransform_[0];
+	}
+	worldTransform_[Chest].translation_.y += 1.0f;
+	worldTransform_[Head].translation_.y += 3.5f;
+	worldTransform_[HandLeft].translation_.y += 1.7f;
+	worldTransform_[HandLeft].translation_.x += 1.4f;
+	worldTransform_[HandRight].translation_.y += 1.7f;
+	worldTransform_[HandRight].translation_.x -= 1.4f;
+	worldTransform_[FootLeft].translation_.y -= 0.3f;
+	worldTransform_[FootLeft].translation_.x -= 0.6f;
+	worldTransform_[FootRight].translation_.y -= 0.3f;
+	worldTransform_[FootRight].translation_.x += 0.6f;
 }
 
 void Player::Move()
@@ -135,6 +166,15 @@ bool Player::Turn(float& pos1D, Direction nextDirection, float limitPos)
 void Player::Update()
 {
 	Move();
+	if (input_->PushKey(DIK_LEFT))//ç∂âEÇÃîªíË
+	{
+		LorR = 0;
+	}
+	if (input_->PushKey(DIK_RIGHT))
+	{
+		LorR = 1;
+	}
+	worldTransform_[0].rotation_.y = DirectionToRadian();
 	worldTransform_[0].Update();
 	ParentUpdate();
 }
@@ -154,7 +194,6 @@ void Player::OnCollision(Collider* collider)
 
 void Player::ParentUpdate()
 {
-	//ParentSetPosition();
 	AttackMotion();
 	WalkMotion();
 	//äeworldTransform
@@ -166,254 +205,8 @@ void Player::ParentUpdate()
 	worldTransform_[6].Update();
 }
 
-void Player::ParentSetPosition()
-{
-	if (input_->PushKey(DIK_LEFT))//ç∂âEÇÃîªíË
-	{
-		LorR = 0;
-	}
-	if (input_->PushKey(DIK_RIGHT))
-	{
-		LorR = 1;
-	}
-
-	switch (direction_)
-	{
-#pragma region éËëO
-	case Front:
-		if (LorR == 0)
-		{
-			Rot = 90;
-		}
-		else
-		{
-			Rot = 270;
-		}
-
-		worldTransform_[1].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[1].translation_.y = worldTransform_[0].translation_.y + 3.5f;
-		worldTransform_[1].translation_.z = worldTransform_[0].translation_.z;
-
-		//ì∑
-		worldTransform_[2].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[2].translation_.y = worldTransform_[0].translation_.y + 1.0f;
-		worldTransform_[2].translation_.z = worldTransform_[0].translation_.z;
-
-		if (LorR == 0)//ç∂âEÇ≈òrÇ…à íuÇ™îΩì]Ç∑ÇÈÇΩÇﬂ
-		{
-			//ç∂òr
-			worldTransform_[3].translation_.x = worldTransform_[0].translation_.x;
-			worldTransform_[3].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[3].translation_.z = worldTransform_[0].translation_.z - 1.4f;
-
-			//âEòr
-			worldTransform_[4].translation_.x = worldTransform_[0].translation_.x;
-			worldTransform_[4].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[4].translation_.z = worldTransform_[0].translation_.z + 1.4f;
-		}
-		else
-		{
-			//ç∂òr
-			worldTransform_[3].translation_.x = worldTransform_[0].translation_.x;
-			worldTransform_[3].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[3].translation_.z = worldTransform_[0].translation_.z + 1.4f;
-
-			//âEòr
-			worldTransform_[4].translation_.x = worldTransform_[0].translation_.x;
-			worldTransform_[4].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[4].translation_.z = worldTransform_[0].translation_.z - 1.4f;
-		}
-
-		//ç∂ë´
-		worldTransform_[5].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[5].translation_.y = worldTransform_[0].translation_.y - 0.3f;
-		worldTransform_[5].translation_.z = worldTransform_[0].translation_.z - 0.6f;
-
-		//âEë´
-		worldTransform_[6].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[6].translation_.y = worldTransform_[0].translation_.y - 0.3f;
-		worldTransform_[6].translation_.z = worldTransform_[0].translation_.z + 0.6f;
-		break;
-#pragma endregion
-#pragma region âE
-	case Right:
-		if (LorR == 0)
-		{
-			Rot = 0;
-		}
-		else
-		{
-			Rot = 180;
-		}
-		//ì™
-		worldTransform_[1].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[1].translation_.y = worldTransform_[0].translation_.y + 3.5f;
-		worldTransform_[1].translation_.z = worldTransform_[0].translation_.z;
-
-		//ì∑
-		worldTransform_[2].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[2].translation_.y = worldTransform_[0].translation_.y + 1.0f;
-		worldTransform_[2].translation_.z = worldTransform_[0].translation_.z;
-
-		if (LorR == 1)//ç∂âEÇ≈òrÇ…à íuÇ™îΩì]Ç∑ÇÈÇΩÇﬂ
-		{
-			//ç∂òr
-			worldTransform_[3].translation_.x = worldTransform_[0].translation_.x - 1.4f;
-			worldTransform_[3].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[3].translation_.z = worldTransform_[0].translation_.z;
-
-			//âEòr
-			worldTransform_[4].translation_.x = worldTransform_[0].translation_.x + 1.4f;
-			worldTransform_[4].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[4].translation_.z = worldTransform_[0].translation_.z;
-		}
-		else
-		{
-			//ç∂òr
-			worldTransform_[3].translation_.x = worldTransform_[0].translation_.x + 1.4f;
-			worldTransform_[3].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[3].translation_.z = worldTransform_[0].translation_.z;
-
-			//âEòr
-			worldTransform_[4].translation_.x = worldTransform_[0].translation_.x - 1.4f;
-			worldTransform_[4].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[4].translation_.z = worldTransform_[0].translation_.z;
-		}
-
-		//ç∂ë´
-		worldTransform_[5].translation_.x = worldTransform_[0].translation_.x + 0.6f;
-		worldTransform_[5].translation_.y = worldTransform_[0].translation_.y - 0.3f;
-		worldTransform_[5].translation_.z = worldTransform_[0].translation_.z;
-
-		//âEë´
-		worldTransform_[6].translation_.x = worldTransform_[0].translation_.x - 0.6f;
-		worldTransform_[6].translation_.y = worldTransform_[0].translation_.y - 0.3f;
-		worldTransform_[6].translation_.z = worldTransform_[0].translation_.z;
-		break;
-#pragma endregion
-#pragma region âú
-	case Back:
-		if (LorR == 1)
-		{
-			Rot = 90;
-		}
-		else
-		{
-			Rot = 270;
-		}
-		worldTransform_[1].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[1].translation_.y = worldTransform_[0].translation_.y + 3.5f;
-		worldTransform_[1].translation_.z = worldTransform_[0].translation_.z;
-
-		//ì∑
-		worldTransform_[2].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[2].translation_.y = worldTransform_[0].translation_.y + 1.0f;
-		worldTransform_[2].translation_.z = worldTransform_[0].translation_.z;
-
-		if (LorR == 1)//ç∂âEÇ≈òrÇ…à íuÇ™îΩì]Ç∑ÇÈÇΩÇﬂ
-		{
-			//ç∂òr
-			worldTransform_[3].translation_.x = worldTransform_[0].translation_.x;
-			worldTransform_[3].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[3].translation_.z = worldTransform_[0].translation_.z - 1.4f;
-
-			//âEòr
-			worldTransform_[4].translation_.x = worldTransform_[0].translation_.x;
-			worldTransform_[4].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[4].translation_.z = worldTransform_[0].translation_.z + 1.4f;
-		}
-		else
-		{
-			//ç∂òr
-			worldTransform_[3].translation_.x = worldTransform_[0].translation_.x;
-			worldTransform_[3].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[3].translation_.z = worldTransform_[0].translation_.z + 1.4f;
-
-			//âEòr
-			worldTransform_[4].translation_.x = worldTransform_[0].translation_.x;
-			worldTransform_[4].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[4].translation_.z = worldTransform_[0].translation_.z - 1.4f;
-		}
-
-		//ç∂ë´
-		worldTransform_[5].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[5].translation_.y = worldTransform_[0].translation_.y - 0.3f;
-		worldTransform_[5].translation_.z = worldTransform_[0].translation_.z - 0.6f;
-
-		//âEë´
-		worldTransform_[6].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[6].translation_.y = worldTransform_[0].translation_.y - 0.3f;
-		worldTransform_[6].translation_.z = worldTransform_[0].translation_.z + 0.6f;
-		break;
-#pragma endregion
-#pragma region ç∂
-	case Left:
-		if (LorR == 1)
-		{
-			Rot = 0;
-		}
-		else
-		{
-			Rot = 180;
-		}
-
-		//ì™
-		worldTransform_[1].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[1].translation_.y = worldTransform_[0].translation_.y + 3.5f;
-		worldTransform_[1].translation_.z = worldTransform_[0].translation_.z;
-
-		//ì∑
-		worldTransform_[2].translation_.x = worldTransform_[0].translation_.x;
-		worldTransform_[2].translation_.y = worldTransform_[0].translation_.y + 1.0f;
-		worldTransform_[2].translation_.z = worldTransform_[0].translation_.z;
-
-		if (LorR == 0)//ç∂âEÇ≈òrÇ…à íuÇ™îΩì]Ç∑ÇÈÇΩÇﬂ
-		{
-			//ç∂òr
-			worldTransform_[3].translation_.x = worldTransform_[0].translation_.x - 1.4f;
-			worldTransform_[3].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[3].translation_.z = worldTransform_[0].translation_.z;
-
-			//âEòr
-			worldTransform_[4].translation_.x = worldTransform_[0].translation_.x + 1.4f;
-			worldTransform_[4].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[4].translation_.z = worldTransform_[0].translation_.z;
-		}
-		else
-		{
-			//ç∂òr
-			worldTransform_[3].translation_.x = worldTransform_[0].translation_.x + 1.4f;
-			worldTransform_[3].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[3].translation_.z = worldTransform_[0].translation_.z;
-
-			//âEòr
-			worldTransform_[4].translation_.x = worldTransform_[0].translation_.x - 1.4f;
-			worldTransform_[4].translation_.y = worldTransform_[0].translation_.y + 1.7f;
-			worldTransform_[4].translation_.z = worldTransform_[0].translation_.z;
-		}
-
-		//ç∂ë´
-		worldTransform_[5].translation_.x = worldTransform_[0].translation_.x + 0.6f;
-		worldTransform_[5].translation_.y = worldTransform_[0].translation_.y - 0.3f;
-		worldTransform_[5].translation_.z = worldTransform_[0].translation_.z;
-
-		//âEë´
-		worldTransform_[6].translation_.x = worldTransform_[0].translation_.x - 0.6f;
-		worldTransform_[6].translation_.y = worldTransform_[0].translation_.y - 0.3f;
-		worldTransform_[6].translation_.z = worldTransform_[0].translation_.z;
-		break;
-#pragma endregion
-	}
-
-	for (size_t i = 1; i < worldTransform_.size(); i++)
-	{
-		worldTransform_[i].rotation_.y = Rot * PI / 180;
-	}
-}
-
 void Player::WalkMotion()
 {
-
 	float walkTIME = 10;
 	if (input_->PushKey(DIK_LEFT) || input_->PushKey(DIK_RIGHT))
 	{
@@ -445,8 +238,9 @@ void Player::WalkMotion()
 
 
 	//ÉÇÅ[ÉVÉáÉìÇîΩâf
-	if (worldTransform_[0].translation_.z >= 24.5f || worldTransform_[0].translation_.z <= -24.5f)
+	switch (direction_)
 	{
+	case Front:	case Back:
 		if (isAttack == false)// çUåÇÉÇÅ[ÉVÉáÉìÇ∆èdÇ»Ç¡ÇƒÇµÇ‹Ç§ÇΩÇﬂ
 		{
 			worldTransform_[3].rotation_.x = walkPos * 10 * PI / 180;
@@ -455,9 +249,8 @@ void Player::WalkMotion()
 
 		worldTransform_[5].translation_.x += walkPos;
 		worldTransform_[6].translation_.x -= walkPos;
-	}
-	if (worldTransform_[0].translation_.x >= 24.5f || worldTransform_[0].translation_.x <= -24.5f)
-	{
+		break;
+	case Right:	case Left:
 		if (isAttack == false)// çUåÇÉÇÅ[ÉVÉáÉìÇ∆èdÇ»Ç¡ÇƒÇµÇ‹Ç§ÇΩÇﬂ
 		{
 			worldTransform_[3].rotation_.x = walkPos * 10 * PI / 180;
@@ -465,6 +258,7 @@ void Player::WalkMotion()
 		}
 		worldTransform_[5].translation_.z += walkPos;
 		worldTransform_[6].translation_.z -= walkPos;
+		break;
 	}
 }
 
