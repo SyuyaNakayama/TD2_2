@@ -60,6 +60,8 @@ struct WorldTransform {
 
 		matWorld_ = matScale * matRot * matTrans;
 
+		if (parent_) { matWorld_ *= parent_->matWorld_; }
+
 		TransferMatrix();
 	}
 };
