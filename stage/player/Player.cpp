@@ -17,17 +17,20 @@ void Player::Initialize(ViewProjection* viewProjection)
 	debugText_ = DebugText::GetInstance();
 	worldTransform_.resize(7);
 	modelKnight.resize(worldTransform_.size());
+	input_ = Input::GetInstance();
+	direction_ = Front;
+	viewProjection_ = viewProjection;
 
 	modelKnight[0] = Model::Create();
 	for (size_t i = 1; i < modelKnight.size(); i++)
 	{
 		modelKnight[i] = Model::CreateFromOBJ("Knight_" + modelName[i - 1]);
 	}
-	input_ = Input::GetInstance();
 	for (WorldTransform& w : worldTransform_) { w.Initialize(); }
 	worldTransform_[0].translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
-	direction_ = Front;
-	viewProjection_ = viewProjection;
+	// 親子関係を結ぶ
+	worldTransform_[Chest].parent_ = &worldTransform_[0];
+	worldTransform_[Chest].translation_.y += 1.0;
 }
 
 Vector3 GetCameraPos(Direction direction, float cameraDistance)
@@ -132,8 +135,8 @@ bool Player::Turn(float& pos1D, Direction nextDirection, float limitPos)
 void Player::Update()
 {
 	Move();
-	ParentUpdate();
 	worldTransform_[0].Update();
+	ParentUpdate();
 }
 
 void Player::Draw()
@@ -151,7 +154,7 @@ void Player::OnCollision(Collider* collider)
 
 void Player::ParentUpdate()
 {
-	ParentSetPosition();
+	//ParentSetPosition();
 	AttackMotion();
 	WalkMotion();
 	//各worldTransform
@@ -467,37 +470,32 @@ void Player::WalkMotion()
 
 void Player::AttackMotion()
 {
-	if (isAttack == false)
+	if (!isAttack)
 	{
 		if (input_->TriggerKey(DIK_A))
 		{
 			isAttack = true;
 			isUp = true;
 		}
+		else { return; }
 	}
 
-	if (isAttack == true)
+	if (isUp)//振り上げる
 	{
-		if (isUp == true)//振り上げる
+		ATrot += 20.0f;
+
+		if (ATrot >= 180)//真上まで右手を上げたら
 		{
-			ATrot += 20.0f;
-
-
-			if (ATrot == 180)//真上まで右手を上げたら
-			{
-				//ATrot = 0.0f;
-				isUp = false;
-			}
+			isUp = false;
 		}
+	}
+	if (!isUp) //振り下げる
+	{
+		ATrot -= 30.0f;
 
-		if (isUp == false)//振り下げる
+		if (ATrot <= 0.0f)
 		{
-			ATrot -= 30.0f;
-
-			if (ATrot == 0.0f)
-			{
-				isAttack = false;
-			}
+			isAttack = false;
 		}
 	}
 

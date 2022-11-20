@@ -11,6 +11,8 @@
 class Player :public Collider
 {
 private:
+	enum { Head=1, Chest, HandLeft, HandRight, FootLeft, FootRight };
+
 	DebugText* debugText_ = nullptr;
 	std::vector<WorldTransform> worldTransform_;
 	std::vector<Model*> modelKnight;
