@@ -49,18 +49,17 @@ void Player::Initialize(ViewProjection* viewProjection)
 {
 	debugText_ = DebugText::GetInstance();
 	worldTransform_.resize(7);
-	modelKnight.resize(worldTransform_.size());
+	modelKnight.resize(worldTransform_.size() - 1);
 	input_ = Input::GetInstance();
 	direction_ = Front;
 	viewProjection_ = viewProjection;
 
-	modelKnight[0] = Model::Create();
-	for (size_t i = 1; i < modelKnight.size(); i++)
+	for (size_t i = 0; i < modelKnight.size(); i++)
 	{
-		modelKnight[i] = Model::CreateFromOBJ("Knight_" + modelName[i - 1], true);
+		modelKnight[i] = Model::CreateFromOBJ("Knight_" + modelName[i], true);
 	}
 	for (WorldTransform& w : worldTransform_) { w.Initialize(); }
-	worldTransform_[0].translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
+	worldTransform_[Root].translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
 	// 親子関係を結ぶ
 	for (size_t i = 1; i < worldTransform_.size(); i++)
 	{
@@ -86,16 +85,16 @@ void Player::Move()
 	switch (direction_)
 	{
 	case Front:
-		worldTransform_[0].translation_.x += horizontalSpd;
+		worldTransform_[Root].translation_.x += horizontalSpd;
 		break;
 	case Right:
-		worldTransform_[0].translation_.z += horizontalSpd;
+		worldTransform_[Root].translation_.z += horizontalSpd;
 		break;
 	case Back:
-		worldTransform_[0].translation_.x -= horizontalSpd;
+		worldTransform_[Root].translation_.x -= horizontalSpd;
 		break;
 	case Left:
-		worldTransform_[0].translation_.z -= horizontalSpd;
+		worldTransform_[Root].translation_.z -= horizontalSpd;
 		break;
 	}
 
@@ -117,20 +116,20 @@ void Player::Move()
 		switch (direction_)
 		{
 		case Front:
-			if (Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; }
-			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
+			if (Turn(worldTransform_[Root].translation_.x, Left, -POLE_RAD)) { break; }
+			Turn(worldTransform_[Root].translation_.x, Right, POLE_RAD);
 			break;
 		case Right:
-			if (Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
-			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
+			if (Turn(worldTransform_[Root].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[Root].translation_.z, Back, POLE_RAD);
 			break;
 		case Back:
-			if (Turn(worldTransform_[0].translation_.x, Left, -POLE_RAD)) { break; };
-			Turn(worldTransform_[0].translation_.x, Right, POLE_RAD);
+			if (Turn(worldTransform_[Root].translation_.x, Left, -POLE_RAD)) { break; };
+			Turn(worldTransform_[Root].translation_.x, Right, POLE_RAD);
 			break;
 		case Left:
-			if (Turn(worldTransform_[0].translation_.z, Front, -POLE_RAD)) { break; };
-			Turn(worldTransform_[0].translation_.z, Back, POLE_RAD);
+			if (Turn(worldTransform_[Root].translation_.z, Front, -POLE_RAD)) { break; };
+			Turn(worldTransform_[Root].translation_.z, Back, POLE_RAD);
 			break;
 		}
 	}
@@ -147,9 +146,6 @@ void Player::Move()
 			isTurn_ = 0;
 		}
 	}
-
-	debugText_->SetPos(0, 0);
-	debugText_->Printf("%f,%f,%f", larpVec[0].x, larpVec[0].y, larpVec[0].z);
 }
 
 bool Player::Turn(float& pos1D, Direction nextDirection, float limitPos)
@@ -166,24 +162,20 @@ bool Player::Turn(float& pos1D, Direction nextDirection, float limitPos)
 void Player::Update()
 {
 	Move();
-	if (input_->PushKey(DIK_LEFT))//左右の判定
-	{
-		LorR = 0;
-	}
-	if (input_->PushKey(DIK_RIGHT))
-	{
-		LorR = 1;
-	}
-	worldTransform_[0].rotation_.y = DirectionToRadian();
-	worldTransform_[0].Update();
-	ParentUpdate();
+	// 左右の判定
+	if (input_->PushKey(DIK_LEFT)) { LorR = 0; }
+	if (input_->PushKey(DIK_RIGHT)) { LorR = 1; }
+	worldTransform_[Root].rotation_.y = DirectionToRadian();
+	AttackMotion();
+	WalkMotion();
+	for (WorldTransform& w : worldTransform_) { w.Update(); }
 }
 
 void Player::Draw()
 {
-	for (size_t i = 1; i < modelKnight.size(); i++)
+	for (size_t i = 0; i < modelKnight.size(); i++)
 	{
-		modelKnight[i]->Draw(worldTransform_[i], *viewProjection_);
+		modelKnight[i]->Draw(worldTransform_[i + 1], *viewProjection_);
 	}
 }
 
@@ -192,37 +184,23 @@ void Player::OnCollision(Collider* collider)
 
 }
 
-void Player::ParentUpdate()
-{
-	AttackMotion();
-	WalkMotion();
-	//各worldTransform
-	worldTransform_[1].Update();
-	worldTransform_[2].Update();
-	worldTransform_[3].Update();
-	worldTransform_[4].Update();
-	worldTransform_[5].Update();
-	worldTransform_[6].Update();
-}
-
 void Player::WalkMotion()
 {
 	float walkTIME = 10;
 	if (input_->PushKey(DIK_LEFT) || input_->PushKey(DIK_RIGHT))
 	{
+		walkTimer++;
 		if (walkFlag == true)
 		{
-			walkTimer++;
 			walkPos += 0.1;
 			if (walkTimer >= walkTIME)
 			{
-				walkTimer = 0.0f;
+				walkTimer = 1.0f;
 				walkFlag = false;
 			}
 		}
 		if (walkFlag == false)
 		{
-			walkTimer++;
 			walkPos -= 0.1;
 			if (walkTimer >= walkTIME)
 			{
@@ -231,67 +209,41 @@ void Player::WalkMotion()
 			}
 		}
 	}
-	else// このままだと止まった時に手足の位置がずれているので直す
+	else // このままだと止まった時に手足の位置がずれているので直す
 	{
 		walkPos = 0.0f;
 	}
 
-
-	//モーションを反映
-	switch (direction_)
+	if (!isAttack)// 攻撃モーションと重なってしまうため
 	{
-	case Front:	case Back:
-		if (isAttack == false)// 攻撃モーションと重なってしまうため
-		{
-			worldTransform_[3].rotation_.x = walkPos * 10 * PI / 180;
-			worldTransform_[4].rotation_.x = walkPos * 10 * PI / 180;
-		}
-
-		worldTransform_[5].translation_.x += walkPos;
-		worldTransform_[6].translation_.x -= walkPos;
-		break;
-	case Right:	case Left:
-		if (isAttack == false)// 攻撃モーションと重なってしまうため
-		{
-			worldTransform_[3].rotation_.x = walkPos * 10 * PI / 180;
-			worldTransform_[4].rotation_.x = walkPos * 10 * PI / 180;
-		}
-		worldTransform_[5].translation_.z += walkPos;
-		worldTransform_[6].translation_.z -= walkPos;
-		break;
+		worldTransform_[HandLeft].rotation_.x = walkPos * PI / 18;
+		worldTransform_[HandRight].rotation_.x = walkPos * PI / 18;
 	}
+
+	// モーションを反映
+	worldTransform_[FootLeft].translation_.z = walkPos;
+	worldTransform_[FootRight].translation_.z = -walkPos;
 }
 
 void Player::AttackMotion()
 {
 	if (!isAttack)
 	{
-		if (input_->TriggerKey(DIK_A))
-		{
-			isAttack = true;
-			isUp = true;
-		}
+		if (input_->TriggerKey(DIK_A)) { isAttack = isUp = true; }
 		else { return; }
 	}
 
-	if (isUp)//振り上げる
+	if (isUp)// 振り上げる
 	{
 		ATrot += 20.0f;
-
-		if (ATrot >= 180)//真上まで右手を上げたら
-		{
-			isUp = false;
-		}
+		// 真上まで右手を上げたら
+		isUp = ATrot < 180;
 	}
-	if (!isUp) //振り下げる
+	if (!isUp) // 振り下げる
 	{
 		ATrot -= 30.0f;
-
-		if (ATrot <= 0.0f)
-		{
-			isAttack = false;
-		}
+		isAttack = ATrot > 0.0f;
 	}
 
-	worldTransform_[4].rotation_.x = ATrot * PI / 180;
+	worldTransform_[HandRight].rotation_.x = ATrot * PI / 180.0f;
 }

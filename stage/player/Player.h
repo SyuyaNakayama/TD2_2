@@ -11,7 +11,7 @@
 class Player :public Collider
 {
 private:
-	enum { Head = 1, Chest, HandLeft, HandRight, FootLeft, FootRight };
+	enum { Root, Head, Chest, HandLeft, HandRight, FootLeft, FootRight };
 
 	DebugText* debugText_ = nullptr;
 	std::vector<WorldTransform> worldTransform_;
@@ -40,22 +40,17 @@ private:
 	Player() = default;
 	~Player() = default;
 	float DirectionToRadian();
+	void WalkMotion();			//歩くモーション
+	void AttackMotion();		//攻撃のモーション
 public:
 	static Player* GetInstance();
 
 	void Initialize(ViewProjection* viewProjection);
 	void Update();
 	void Draw();
-	void UpdateSpeed();
 	Direction GetDirection() { return direction_; }
 
 	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
 	const Vector3 GetRadius() { return worldTransform_[0].scale_; }
-
-	void ParentUpdate();
-
-	void WalkMotion();			//歩くモーション
-
-	void AttackMotion();		//攻撃のモーション
 };
