@@ -115,9 +115,10 @@ void Enemy::ParentInitialize()
 void Enemy::ParentUpdate()
 {
 	//StandbyMotion();
+
 	if(input_->PushKey(DIK_1))
 	{
-		isBreath = true;
+		isCharge = true;
 	}
 	BreathMotion();
 	for (int i = 0; i < modelNum; i++)
@@ -176,65 +177,72 @@ void Enemy::BreathMotion()
 	if (input_->PushKey(DIK_F)) {
 		Rot -= 0.1;
 	}
-
-	worldTransform_[1].translation_.y = ParPos(16.5f);
-	worldTransform_[1].translation_.z = ParPos(5.0f);
-	worldTransform_[1].rotation_.x = 20.0f * PI / 180;
-
-	worldTransform_[2].translation_.y = ParPos(16.5f);
-	worldTransform_[2].translation_.z = ParPos(5.0f);
-	worldTransform_[2].rotation_.x = 20.0f * PI / 180;
-
-	worldTransform_[3].translation_.y = ParPos(13.5f);
-	worldTransform_[3].translation_.z = ParPos(9.5f);
-	worldTransform_[3].rotation_.x = -26.5f * PI / 180;
-
-	worldTransform_[4].translation_.y = ParPos(10.5f);
-	worldTransform_[4].translation_.z = ParPos(10.0f);
-	worldTransform_[4].rotation_.x = 0 * PI / 180;
-
-	worldTransform_[5].translation_.y = ParPos(7.5f);
-	worldTransform_[5].translation_.z = ParPos(10.0f);
-	worldTransform_[5].rotation_.x = 11.0f * PI / 180;
-
-	worldTransform_[6].translation_.y = ParPos(4.5f);
-	worldTransform_[6].translation_.z = ParPos(9.0f);
-	worldTransform_[6].rotation_.x = 9.0f * PI / 180;
-
-	worldTransform_[7].translation_.y = ParPos(1.4f);
-	worldTransform_[7].translation_.z = ParPos(9.0f);
-	worldTransform_[7].rotation_.x = 0.0f * PI / 180;
-
-	worldTransform_[8].translation_.y = ParPos(-2.2f);
-	worldTransform_[8].translation_.z = ParPos(9.0f);
-	worldTransform_[8].rotation_.x = 4.0f * PI / 180;
-
-	worldTransform_[9].translation_.y = ParPos(-6.0f);
-	worldTransform_[9].translation_.z = ParPos(9.0f);
-	worldTransform_[9].rotation_.x =  4.0f * PI / 180;
-
-	worldTransform_[10].translation_.y = ParPos(-11.0f);
-	worldTransform_[10].translation_.z = ParPos(9.5f);
-	worldTransform_[10].rotation_.x = -4.0f * PI / 180;
-
-	worldTransform_[11].translation_.y = ParPos(-16.5f);
-	worldTransform_[11].translation_.z = ParPos(10.0f);
-	worldTransform_[11].rotation_.x = 5.0f * PI / 180;
-	if(isBreath == true)
+	
+	
+	//if(isBreath == true)
+	//{
+	//	//isCharge = true;
+	//	
+	//}
+	
+	//溜めるモーション
+	if (isCharge == true)
 	{
-		//溜めるモーション
-		if(isCharge == true)
+		for (int i = 1; i < 12; i++)//座標をセット
 		{
-
+			diffPosY[i] = chargePosY[i] - origPosY[i];
+			diffPosZ[i] = chargePosZ[i] - origPosZ[i];
+			diffRotX[i] = chargeRotX[i] - origRotX[i];
 		}
 
-		//ブレスを吐くモーション
+		timer--;
+		for (int i = 1; i < 12; i++)//
+		{
+			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 30);
+			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 30);
+			worldTransform_[i].rotation_.x += (diffRotX[i] / 30) * PI / 180;
+		}
 
-
+		if (timer <= 0.0f)
+		{
+			timer = 20;//ここは20
+			isBreath = true;
+			isCharge = false;
+		}
 	}
 
+	//数秒待機
+
+	//ブレスを吐くモーション
+	if (isBreath == true)
+	{
+		for (int i = 1; i < 12; i++)//座標をセット
+		{
+			diffPosY[i] = breathPosY[i] - chargePosY[i];
+			diffPosZ[i] = breathPosZ[i] - chargePosZ[i];
+			diffRotX[i] = breathPosX[i] - chargeRotX[i];
+		}
+
+		timer--;
+		for (int i = 1; i < 12; i++)//
+		{
+			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 20);
+			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 20);
+			worldTransform_[i].rotation_.x += (diffRotX[i] / 20) * PI / 180;
+		}
+		if (timer <= 0.0f)
+		{
+			timer = 30;//ここは30
+			isBreath = false;
+		}
+	}
+
+	//数秒待機
+
 	debugText_->SetPos(0, 0);
-	debugText_->Printf("y:%f, z:%f, Rot:%f", y, z, Rot);
+	debugText_->Printf("isCha:%d, timer:%f", isCharge,timer);
+	debugText_->SetPos(0, 20);
+	debugText_->Printf("Rot:%f", Rot);
 }
 
 void Enemy::BiteMotion()

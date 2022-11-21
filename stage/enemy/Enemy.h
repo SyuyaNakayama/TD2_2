@@ -27,10 +27,21 @@ private:
 	bool isBreath = false;
 	bool isCharge = false;
 
-	float origPosY[12] =	{ 0.0f,14.0f,14.0f,15.0f,14.0f,11.5f,8.0f,5.5f,2.2f,-2.0f,-7.0f, -12.5f };//元の座標
-	float origPosZ[12] =	{ 0.0f,-4.0f,-4.0f, 2.0f, 4.5f, 6.0f,5.0f,4.0f,3.5f, 3.5f, 4.0f, 4.5f };
-	float chargePosY[12] =	{ 0.0f,14.0f,14.0f,15.0f,14.0f,11.5f,8.0f,5.5f,2.2f,-2.0f,-7.0f, -12.5f };
-	float chargePosZ[12] =	{ 0.0f,	5.0f, 5.0f, 9.5f,10.0f,10.0f, 9.0f,9.0f,9.0f,9.0f, 9.5f, 10.0f };
+	float origPosY[12] =	{ 0.0f,14.0f, 14.0f, 15.0f, 14.0f,11.5f, 8.0f, 5.5f, 2.2f,  -2.0f, -7.0f, -12.5f };//元の座標
+	float origPosZ[12] =	{ 0.0f,-4.0f, -4.0f,  2.0f,  4.5f, 6.0f, 5.0f, 4.0f, 3.5f,   3.5f,  4.0f,  4.5f  };
+	float origRotX[12] =	{ 0.0f, 0.0f,  0.0f,-90.0f,-50.0f, 6.0f,43.0f,16.0f, 4.0f,  -4.0f, -4.0f, -5.0f  };
+
+	float chargePosY[12] =	{ 0.0f,16.5f, 16.5f, 13.5f, 10.5f, 7.5f, 4.5f, 1.4f,-2.2f,  -6.0f,-11.0f, -16.5f };//目指す座標
+	float chargePosZ[12] =	{ 0.0f,	5.0f,  5.0f,  9.5f, 10.0f,10.0f, 9.0f, 9.0f, 9.0f,   9.0f,  9.5f,  10.0f };
+	float chargeRotX[12] =  { 0.0f,20.0f, 30.0f,-26.5f,  0.0f,11.0f, 9.0f, 0.0f, 4.0f,   4.0f, -4.0f,  5.0f  };
+ 
+	float breathPosY[12] =  { 0.0f,14.0f, 14.0f, 15.0f, 14.0f,11.5f, 8.0f, 5.5f, 2.2f,  -2.0f, -7.0f, -12.5f };
+	float breathPosZ[12] =  { 0.0f,-4.0f, -4.0f,  2.0f,  4.5f, 6.0f, 5.0f, 4.0f, 3.5f,   3.5f,  4.0f,  4.5f  };
+	float breathPosX[12] =  { 0.0f,25.0f,-20.0f,-90.0f,-50.0f, 6.0f,43.0f,16.0f, 4.0f,  -4.0f, -4.0f, -5.0f  };
+						    
+	float diffPosY[12] = {};
+	float diffPosZ[12] = {};
+	float diffRotX[12] = {};
 	void Move();
 public:
 	void Initialize();
