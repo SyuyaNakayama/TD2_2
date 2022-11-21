@@ -7,6 +7,7 @@
 #include "Model.h"
 #include "ViewProjection.h"
 #include "scene.h"
+#include "timer/Timer.h"
 
 class Player :public Collider
 {
@@ -26,12 +27,12 @@ private:
 	const int LERP_FLAME = 60;
 	int nowFlame = 0;
 	Vector3 larpVec[2]{};
+	Timer walkTimer_ = 10;
 
 	uint16_t LorR = 0;// 1 = ‰EŒü‚«,@0 = ¶Œü‚« 
 	float Rot = 0;
 	bool walkFlag = true;
 	float walkPos = 0.0f;
-	int walkTimer = 5;
 	bool isAttack = false;
 	bool isUp = false;
 	float ATrot = 0.0f;

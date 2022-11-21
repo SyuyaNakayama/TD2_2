@@ -9,4 +9,5 @@ public:
 	Timer(int timer) { timer_ = timeMem_ = timer; }
 	bool CountDown();
 	int GetPassTime() { return timeMem_ - timer_; }
+	void Reset() { timer_ = timeMem_; }
 };

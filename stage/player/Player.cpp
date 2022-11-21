@@ -22,22 +22,15 @@ Vector3 GetCameraPos(Direction direction, float cameraDistance)
 
 float Player::DirectionToRadian()
 {
-	switch (direction_)
+	float rad[4][2] =
 	{
-	case Front:
-		if (LorR == 0) { return PI / 2.0f; }
-		else { return 3.0f * PI / 2.0f; }
-	case Right:
-		if (LorR == 0) { return 0; }
-		else { return PI; }
-	case Back:
-		if (LorR == 1) { return PI / 2.0f; }
-		else { return 3.0f * PI / 2.0f; }
-	case Left:
-		if (LorR == 1) { return 0; }
-		else { return PI; }
-	}
-	return 0;
+		{PI / 2.0f,3.0f * PI / 2.0f},
+		{0,PI},
+		{3.0f * PI / 2.0f,PI / 2.0f},
+		{PI,0},
+	};
+
+	return rad[direction_][LorR];
 }
 
 Player* Player::GetInstance()
@@ -60,7 +53,7 @@ void Player::Initialize(ViewProjection* viewProjection)
 		modelKnight[i] = Model::CreateFromOBJ("Knight_" + modelName[i], true);
 	}
 	for (WorldTransform& w : worldTransform_) { w.Initialize(); }
-	worldTransform_[Root].translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
+	worldTransform_[Root].translation_ = { 0,2.0f,-POLE_RAD };
 	// 親子関係を結ぶ
 	for (size_t i = 1; i < worldTransform_.size(); i++)
 	{
@@ -100,7 +93,7 @@ void Player::Move()
 	}
 
 	// ジャンプ
-	if (input_->PushKey(DIK_SPACE))
+	if (input_->PushKey(DIK_UP))
 	{
 		jamp_.StartJamp(1.5f, 0.1f, 2.0f);
 	}
@@ -187,32 +180,23 @@ void Player::OnCollision(Collider* collider)
 
 void Player::WalkMotion()
 {
-	int walkTIME = 10;
 	if (input_->PushKey(DIK_LEFT) || input_->PushKey(DIK_RIGHT))
 	{
-		walkTimer++;
-		if (walkFlag == true)
+		if (walkFlag)
 		{
-			walkPos += 0.1f;
-			if (walkTimer >= walkTIME)
-			{
-				walkTimer = 1;
-				walkFlag = false;
-			}
+			walkPos += 0.05f;
+			if (walkTimer_.CountDown()) { walkFlag = false; }
 		}
-		if (walkFlag == false)
+		if (!walkFlag)
 		{
-			walkPos -= 0.1f;
-			if (walkTimer >= walkTIME)
-			{
-				walkTimer = 0;
-				walkFlag = true;
-			}
+			walkPos -= 0.05f;
+			if (walkTimer_.CountDown()) { walkFlag = true; }
 		}
 	}
 	else // このままだと止まった時に手足の位置がずれているので直す
 	{
 		walkPos = 0.0f;
+		walkTimer_.Reset();
 	}
 
 	if (!isAttack)// 攻撃モーションと重なってしまうため
@@ -230,7 +214,7 @@ void Player::AttackMotion()
 {
 	if (!isAttack)
 	{
-		if (input_->TriggerKey(DIK_A)) { isAttack = isUp = true; }
+		if (input_->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; }
 		else { return; }
 	}
 

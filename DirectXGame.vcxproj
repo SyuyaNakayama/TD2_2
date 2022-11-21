@@ -115,11 +115,11 @@
     <ClCompile Include="stage\player\PlayerBullet.cpp" />
     <ClCompile Include="stage\Shake.cpp" />
     <ClCompile Include="stage\Stage.cpp" />
+    <ClCompile Include="timer\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
     <ClInclude Include="2d\Sprite.h" />
-    <ClInclude Include="3d\AxisIndicator.h" />
     <ClInclude Include="3d\CircleShadow.h" />
     <ClInclude Include="3d\DirectionalLight.h" />
     <ClInclude Include="3d\LightGroup.h" />
@@ -127,7 +127,6 @@
     <ClInclude Include="3d\Mesh.h" />
     <ClInclude Include="3d\Model.h" />
     <ClInclude Include="3d\PointLight.h" />
-    <ClInclude Include="3d\PrimitiveDrawer.h" />
     <ClInclude Include="3d\SpotLight.h" />
     <ClInclude Include="3d\Terrain.h" />
     <ClInclude Include="3d\TerrainCommon.h" />
@@ -160,6 +159,7 @@
     <ClInclude Include="stage\player\PlayerBullet.h" />
     <ClInclude Include="stage\Shake.h" />
     <ClInclude Include="stage\Stage.h" />
+    <ClInclude Include="timer\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">

@@ -1,5 +1,4 @@
 ﻿#include "GameScene.h"
-#include "PrimitiveDrawer.h"
 
 // Windowsアプリでのエントリーポイント(main関数)
 int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
@@ -9,12 +8,11 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	Input* input = nullptr;
 	Audio* audio = nullptr;
 	DebugText* debugText = nullptr;
-	PrimitiveDrawer* primitiveDrawer = nullptr;
 	GameScene* gameScene = nullptr;
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow("TD2_Game2");
+	win->CreateGameWindow("2248_枠龍");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();
@@ -45,8 +43,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	ParticleManager::StaticInitialize();
 
-	primitiveDrawer = PrimitiveDrawer::GetInstance();
-	primitiveDrawer->Initialize();
 #pragma endregion
 
 	// ゲームシーンの初期化
@@ -69,8 +65,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 		dxCommon->PreDraw();
 		// ゲームシーンの描画
 		gameScene->Draw();
-		// プリミティブ描画のリセット
-		primitiveDrawer->Reset();
 		// 描画終了
 		dxCommon->PostDraw();
 	}

@@ -131,9 +131,6 @@
     <ClCompile Include="stage\player\PlayerBullet.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Skydome.cpp">
-      <Filter>ソース ファイル\stage</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -208,12 +205,6 @@
     <ClInclude Include="math\Vector4.h">
       <Filter>ヘッダー ファイル\math</Filter>
     </ClInclude>
-    <ClInclude Include="3d\AxisIndicator.h">
-      <Filter>ヘッダー ファイル\3d</Filter>
-    </ClInclude>
-    <ClInclude Include="3d\PrimitiveDrawer.h">
-      <Filter>ヘッダー ファイル\3d</Filter>
-    </ClInclude>
     <ClInclude Include="3d\Terrain.h">
       <Filter>ヘッダー ファイル\3d</Filter>
     </ClInclude>
@@ -261,9 +252,6 @@
     </ClInclude>
     <ClInclude Include="stage\player\PlayerBullet.h">
       <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Skydome.h">
-      <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
