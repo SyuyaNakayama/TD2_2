@@ -162,33 +162,7 @@ void Enemy::StandbyMotion()
 }
 
 void Enemy::BreathMotion()
-{
-	if (input_->PushKey(DIK_W)) {
-		y += 0.1f;
-	}
-	if (input_->PushKey(DIK_S)) {
-		y -= 0.1f;
-	}
-	if (input_->PushKey(DIK_A)) {
-		z += 0.1f;
-	}
-	if (input_->PushKey(DIK_D)) {
-		z -= 0.1;
-	}
-	if (input_->PushKey(DIK_R)) {
-		Rot += 0.1;
-	}
-	if (input_->PushKey(DIK_F)) {
-		Rot -= 0.1;
-	}
-	
-	
-	//if(isBreath == true)
-	//{
-	//	//isCharge = true;
-	//	
-	//}
-	
+{	
 	//ó≠ÇﬂÇÈÉÇÅ[ÉVÉáÉì
 	if (isCharge == true)
 	{
@@ -238,6 +212,7 @@ void Enemy::BreathMotion()
 		{
 			timer = 20;//Ç±Ç±ÇÕ20
 			isBreath = false;
+			isClose = true;
 		}
 	}
 
@@ -263,7 +238,7 @@ void Enemy::BreathMotion()
 		if (timer <= 0.0f)
 		{
 			timer = 30;//Ç±Ç±ÇÕ30
-			isBreath = false;
+			isClose = false;
 		}
 	}
 
@@ -275,7 +250,24 @@ void Enemy::BreathMotion()
 
 void Enemy::BiteMotion()
 {
-
+	if (input_->PushKey(DIK_W)) {
+		y += 0.1f;
+	}
+	if (input_->PushKey(DIK_S)) {
+		y -= 0.1f;
+	}
+	if (input_->PushKey(DIK_A)) {
+		z += 0.1f;
+	}
+	if (input_->PushKey(DIK_D)) {
+		z -= 0.1;
+	}
+	if (input_->PushKey(DIK_R)) {
+		Rot += 0.1;
+	}
+	if (input_->PushKey(DIK_F)) {
+		Rot -= 0.1;
+	}
 }
 
 

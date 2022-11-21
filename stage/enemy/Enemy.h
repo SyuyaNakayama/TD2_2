@@ -45,6 +45,8 @@ private:
 	float diffPosY[12] = {};
 	float diffPosZ[12] = {};
 	float diffRotX[12] = {};
+
+	ViewProjection* viewProjection_ = nullptr;
 	void Move();
 	// ブレス
 	Bless breath_;
