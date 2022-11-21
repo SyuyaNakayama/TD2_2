@@ -12,11 +12,11 @@ class Player :public Collider
 private:
 	enum { Root, Head, Chest, HandLeft, HandRight, FootLeft, FootRight };
 
-	DebugText* debugText_ = nullptr;
+	DebugText* debugText_ = DebugText::GetInstance();
 	std::vector<WorldTransform> worldTransform_;
 	std::vector<Model*> modelKnight;
 	ViewProjection* viewProjection_ = nullptr;
-	Input* input_ = nullptr;
+	Input* input_ = Input::GetInstance();
 	uint32_t texture_ = 0;
 	const float CAMERA_DISTANCE = 30.0f;
 	Direction direction_ = Front;

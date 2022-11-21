@@ -31,5 +31,6 @@ void SoundManager::StopBGM(BGM index)
 SoundManager* SoundManager::GetInstance()
 {
 	static SoundManager* instance = new SoundManager;
+	instance->Initialize();
 	return instance;
 }

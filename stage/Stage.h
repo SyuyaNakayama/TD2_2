@@ -10,18 +10,16 @@
 class Stage
 {
 private:
-	DebugText* debugText_ = nullptr;
+	DebugText* debugText_ = DebugText::GetInstance();
 	DebugCamera* debugCamera_ = nullptr;
 	ViewProjection viewProjection_;
-	Player* player_ = nullptr;
-	Model* model_ = nullptr;
+	Player* player_ = Player::GetInstance();
 	CollisionManager collisionManager;
 	Enemy enemy_;
 	BlockManager blockManager_;
 	ParticleManager particleManager_;
-	Model* DragonHead = nullptr;
 	Shake shake_;
-	Skydome* skydome = nullptr;
+	Skydome* skydome = new Skydome();
 	float size = 1.0f;
 	
 public:

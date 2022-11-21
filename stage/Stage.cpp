@@ -7,7 +7,6 @@ void Stage::Initialize()
 {
 	debugText_ = DebugText::GetInstance();
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
-	model_ = Model::Create();
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
 	particleManager_.Initialize(&viewProjection_);

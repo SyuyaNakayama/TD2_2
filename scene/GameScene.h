@@ -29,11 +29,11 @@ public: // メンバ関数
 	void Draw();
 
 private: // メンバ変数
-	DirectXCommon* dxCommon_ = nullptr;
-	Input* input_ = nullptr;
-	SoundManager* soundManager_ = nullptr;
+	DirectXCommon* dxCommon_= DirectXCommon::GetInstance();
+	Input* input_ = Input::GetInstance();
+	SoundManager* soundManager_ = SoundManager::GetInstance();
 	Stage stage_;
-	DebugText* debugText_ = nullptr;
+	DebugText* debugText_ = DebugText::GetInstance();
 	Scene scene_ = Play;
 	FadeManager fadeManager_;
 	Sprite* sprite_ = nullptr;

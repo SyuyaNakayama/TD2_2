@@ -4,11 +4,6 @@ using namespace std;
 
 void GameScene::Initialize()
 {
-	debugText_ = DebugText::GetInstance();
-	dxCommon_ = DirectXCommon::GetInstance();
-	input_ = Input::GetInstance();
-	soundManager_ = SoundManager::GetInstance();
-	soundManager_->Initialize();
 	fadeManager_.Initialize(&scene_);
 	stage_.Initialize();
 }
@@ -33,6 +28,7 @@ void GameScene::Update()
 		//soundManager_->PlayBGM(SoundManager::Play);
 		//soundManager_->PlayBGM(SoundManager::Clear);
 		//soundManager_->PlayBGM(SoundManager::GameOver);
+		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(GameOver); }
 		break;
 	case Clear:
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Title); }
