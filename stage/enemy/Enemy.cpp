@@ -114,7 +114,11 @@ void Enemy::ParentInitialize()
 
 void Enemy::ParentUpdate()
 {
-	StandbyMotion();
+	//StandbyMotion();
+	if(input_->PushKey(DIK_1))
+	{
+		isBreath = true;
+	}
 	BreathMotion();
 	for (int i = 0; i < modelNum; i++)
 	{
@@ -124,25 +128,28 @@ void Enemy::ParentUpdate()
 
 void Enemy::StandbyMotion()
 {
-	if(isUp == true)
+	if(isStandby == true)
 	{
-		standbyRot += 0.1f;
-		
-		if(standbyRot >= 0.0f)
+		if (isUp == true)
 		{
-			isUp = false;
+			standbyRot += 0.1f;
+
+			if (standbyRot >= 0.0f)
+			{
+				isUp = false;
+			}
+		}
+		if (isUp == false)
+		{
+			standbyRot -= 0.1f;
+
+			if (standbyRot <= -10.0f)
+			{
+				isUp = true;
+			}
 		}
 	}
-	if(isUp == false)
-	{
-		standbyRot -= 0.1f;
-
-		if (standbyRot <= -10.0f)
-		{
-			isUp = true;
-		}
-	}
-
+	
 	for (int i = 1; i < 3; i++)//頭、顎
 	{
 		worldTransform_[i].rotation_.x = standbyRot * PI / 180;
@@ -151,15 +158,83 @@ void Enemy::StandbyMotion()
 
 void Enemy::BreathMotion()
 {
-	if(input_->PushKey(DIK_A))
-	{
-		Rot += 1;
+	if (input_->PushKey(DIK_W)) {
+		y += 0.1f;
 	}
-	if(input_->PushKey(DIK_D))
-	{
-		Rot -= 1;
+	if (input_->PushKey(DIK_S)) {
+		y -= 0.1f;
 	}
-	worldTransform_[0].rotation_.y = Rot * PI / 180;
+	if (input_->PushKey(DIK_A)) {
+		z += 0.1f;
+	}
+	if (input_->PushKey(DIK_D)) {
+		z -= 0.1;
+	}
+	if (input_->PushKey(DIK_R)) {
+		Rot += 0.1;
+	}
+	if (input_->PushKey(DIK_F)) {
+		Rot -= 0.1;
+	}
+
+	worldTransform_[1].translation_.y = ParPos(16.5f);
+	worldTransform_[1].translation_.z = ParPos(5.0f);
+	worldTransform_[1].rotation_.x = 20.0f * PI / 180;
+
+	worldTransform_[2].translation_.y = ParPos(16.5f);
+	worldTransform_[2].translation_.z = ParPos(5.0f);
+	worldTransform_[2].rotation_.x = 20.0f * PI / 180;
+
+	worldTransform_[3].translation_.y = ParPos(13.5f);
+	worldTransform_[3].translation_.z = ParPos(9.5f);
+	worldTransform_[3].rotation_.x = -26.5f * PI / 180;
+
+	worldTransform_[4].translation_.y = ParPos(10.5f);
+	worldTransform_[4].translation_.z = ParPos(10.0f);
+	worldTransform_[4].rotation_.x = 0 * PI / 180;
+
+	worldTransform_[5].translation_.y = ParPos(7.5f);
+	worldTransform_[5].translation_.z = ParPos(10.0f);
+	worldTransform_[5].rotation_.x = 11.0f * PI / 180;
+
+	worldTransform_[6].translation_.y = ParPos(4.5f);
+	worldTransform_[6].translation_.z = ParPos(9.0f);
+	worldTransform_[6].rotation_.x = 9.0f * PI / 180;
+
+	worldTransform_[7].translation_.y = ParPos(1.4f);
+	worldTransform_[7].translation_.z = ParPos(9.0f);
+	worldTransform_[7].rotation_.x = 0.0f * PI / 180;
+
+	worldTransform_[8].translation_.y = ParPos(-2.2f);
+	worldTransform_[8].translation_.z = ParPos(9.0f);
+	worldTransform_[8].rotation_.x = 4.0f * PI / 180;
+
+	worldTransform_[9].translation_.y = ParPos(-6.0f);
+	worldTransform_[9].translation_.z = ParPos(9.0f);
+	worldTransform_[9].rotation_.x =  4.0f * PI / 180;
+
+	worldTransform_[10].translation_.y = ParPos(-11.0f);
+	worldTransform_[10].translation_.z = ParPos(9.5f);
+	worldTransform_[10].rotation_.x = -4.0f * PI / 180;
+
+	worldTransform_[11].translation_.y = ParPos(-16.5f);
+	worldTransform_[11].translation_.z = ParPos(10.0f);
+	worldTransform_[11].rotation_.x = 5.0f * PI / 180;
+	if(isBreath == true)
+	{
+		//溜めるモーション
+		if(isCharge == true)
+		{
+
+		}
+
+		//ブレスを吐くモーション
+
+
+	}
+
+	debugText_->SetPos(0, 0);
+	debugText_->Printf("y:%f, z:%f, Rot:%f", y, z, Rot);
 }
 
 void Enemy::BiteMotion()

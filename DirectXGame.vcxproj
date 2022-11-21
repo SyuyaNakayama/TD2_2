@@ -106,6 +106,7 @@
     <ClCompile Include="math\Vector3.cpp" />
     <ClCompile Include="particleManager\ParticleManager.cpp" />
     <ClCompile Include="scene\GameScene.cpp" />
+    <ClCompile Include="Skydome.cpp" />
     <ClCompile Include="stage\block\Block.cpp" />
     <ClCompile Include="stage\block\BlockManager.cpp" />
     <ClCompile Include="stage\enemy\Enemy.cpp" />
@@ -150,6 +151,7 @@
     <ClInclude Include="particleManager\ParticleManager.h" />
     <ClInclude Include="scene\GameScene.h" />
     <ClInclude Include="scene\scene.h" />
+    <ClInclude Include="Skydome.h" />
     <ClInclude Include="stage\block\Block.h" />
     <ClInclude Include="stage\block\BlockManager.h" />
     <ClInclude Include="stage\enemy\Enemy.h" />
