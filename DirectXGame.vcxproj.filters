@@ -51,9 +51,6 @@
     <Filter Include="ヘッダー ファイル\audio">
       <UniqueIdentifier>{3a0044cc-1b7d-4ed5-a1a6-9074ed1b1769}</UniqueIdentifier>
     </Filter>
-    <Filter Include="シェーダー ファイル\Fbx">
-      <UniqueIdentifier>{0bfc5b61-1cde-4484-9c2c-5e045ce51bf4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="シェーダー ファイル\Obj">
       <UniqueIdentifier>{331b7531-4cff-4343-8578-4a367d210b95}</UniqueIdentifier>
     </Filter>
@@ -127,6 +124,9 @@
     </ClCompile>
     <ClCompile Include="audio\SoundManager.cpp">
       <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Skydome.cpp">
+      <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -252,6 +252,9 @@
     </ClInclude>
     <ClInclude Include="audio\SoundManager.h">
       <Filter>ヘッダー ファイル\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Skydome.h">
+      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

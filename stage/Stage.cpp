@@ -52,4 +52,5 @@ void Stage::Draw()
 Stage::~Stage()
 {
 	SafeDelete(debugCamera_);
+	SafeDelete(skydome);
 }
