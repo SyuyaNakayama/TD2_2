@@ -39,14 +39,8 @@
     <Filter Include="ヘッダー ファイル\collider">
       <UniqueIdentifier>{d7d4bd5c-7185-4214-bbf0-79e164cb485e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Fbx">
-      <UniqueIdentifier>{cca07928-95fd-4fc4-9bb6-d9dd40aca175}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\stage">
       <UniqueIdentifier>{7deeb340-08ff-4436-8c4d-ffc46db85ead}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\fbx">
-      <UniqueIdentifier>{3dec518e-641b-463a-ac59-eaaa321c24b1}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\stage">
       <UniqueIdentifier>{b7bc956a-b474-4fe4-aef2-7eac64df98b2}</UniqueIdentifier>
@@ -128,11 +122,11 @@
     <ClCompile Include="stage\Shake.cpp">
       <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
-    <ClCompile Include="stage\player\PlayerBullet.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="timer\Timer.cpp">
       <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="audio\SoundManager.cpp">
+      <Filter>ソース ファイル\scene</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -253,11 +247,11 @@
     <ClInclude Include="stage\Shake.h">
       <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
-    <ClInclude Include="stage\player\PlayerBullet.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="timer\Timer.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="audio\SoundManager.h">
+      <Filter>ヘッダー ファイル\audio</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

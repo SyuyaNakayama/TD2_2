@@ -7,7 +7,6 @@ class SoundManager
 private:
 	Audio* audio_ = nullptr;
 	std::vector<uint32_t> bgm_, se_;
-	bool isPlay_ = false;
 	std::vector<uint32_t> playHandle_;
 
 	SoundManager() = default;
@@ -24,4 +23,5 @@ public:
 	void PlayBGM(BGM index);
 	void PlaySE(SE index);
 	void StopBGM(BGM index);
+	void Finalize() { audio_->Finalize(); }
 };

@@ -96,6 +96,7 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="audio\SoundManager.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\TextureManager.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
@@ -111,7 +112,6 @@
     <ClCompile Include="stage\enemy\Enemy.cpp" />
     <ClCompile Include="stage\Jamp.cpp" />
     <ClCompile Include="stage\player\Player.cpp" />
-    <ClCompile Include="stage\player\PlayerBullet.cpp" />
     <ClCompile Include="stage\Shake.cpp" />
     <ClCompile Include="stage\Stage.cpp" />
     <ClCompile Include="timer\Timer.cpp" />
@@ -132,6 +132,7 @@
     <ClInclude Include="3d\ViewProjection.h" />
     <ClInclude Include="3d\WorldTransform.h" />
     <ClInclude Include="audio\Audio.h" />
+    <ClInclude Include="audio\SoundManager.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\SafeDelete.h" />
     <ClInclude Include="base\TextureManager.h" />
@@ -154,7 +155,6 @@
     <ClInclude Include="stage\enemy\Enemy.h" />
     <ClInclude Include="stage\Jamp.h" />
     <ClInclude Include="stage\player\Player.h" />
-    <ClInclude Include="stage\player\PlayerBullet.h" />
     <ClInclude Include="stage\Shake.h" />
     <ClInclude Include="stage\Stage.h" />
     <ClInclude Include="timer\Timer.h" />

@@ -1,6 +1,6 @@
 ﻿#pragma once
 
-#include "Audio.h"
+#include "SoundManager.h"
 #include "DirectXCommon.h"
 #include "SafeDelete.h"
 #include "Sprite.h"
@@ -13,6 +13,8 @@
 /// </summary>
 class GameScene {
 public: // メンバ関数
+	~GameScene() { soundManager_->Finalize(); }
+
 	/// <summary>
 	/// 初期化
 	/// </summary>
@@ -31,7 +33,7 @@ public: // メンバ関数
 private: // メンバ変数
 	DirectXCommon* dxCommon_ = nullptr;
 	Input* input_ = nullptr;
-	Audio* audio_ = nullptr;
+	SoundManager* soundManager_ = nullptr;
 	Stage stage_;
 	DebugText* debugText_ = nullptr;
 	Scene scene_ = Play;

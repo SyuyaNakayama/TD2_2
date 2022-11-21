@@ -9,11 +9,10 @@ void GameScene::Initialize()
 	debugText_ = DebugText::GetInstance();
 	dxCommon_ = DirectXCommon::GetInstance();
 	input_ = Input::GetInstance();
-	audio_ = Audio::GetInstance();
+	soundManager_ = SoundManager::GetInstance();
+	soundManager_->Initialize();
 	fadeManager_.Initialize(&scene_);
 	stage_.Initialize();
-	//sprite_ = Sprite::Create(TextureManager::Load("image.webp"), { 0,0 });
-	//sprite_->SetSize({ 1280,720 });
 }
 
 void GameScene::Update()
@@ -31,9 +30,11 @@ void GameScene::Update()
 		}
 		break;
 	case Play:
-		//if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Clear); }
-		//if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(GameOver); }
 		stage_.Update();
+		soundManager_->PlayBGM(SoundManager::Title);
+		soundManager_->PlayBGM(SoundManager::Play);
+		soundManager_->PlayBGM(SoundManager::Clear);
+		soundManager_->PlayBGM(SoundManager::GameOver);
 		break;
 	case Clear:
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Title); }
