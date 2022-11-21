@@ -1,8 +1,5 @@
 #pragma once
 #include <vector>
-#include "WorldTransform.h"
-#include "player/Player.h"
-#include "enemy/Enemy.h"
 #include "collider/CollisionManager.h"
 #include "DebugCamera.h"
 #include "block/BlockManager.h"

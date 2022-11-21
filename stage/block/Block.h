@@ -1,9 +1,7 @@
 #pragma once
-#include "WorldTransform.h"
-#include "ViewProjection.h"
+#include "Model.h"
 #include "scene.h"
 #include <vector>
-#include <Model.h>
 
 // 1•ûŒü•ª‚ÌƒuƒƒbƒNî•ñ
 class Block

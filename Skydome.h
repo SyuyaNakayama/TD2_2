@@ -1,7 +1,4 @@
 #pragma once
-#include "TextureManager.h"
-#include "WorldTransform.h"
-#include "ViewProjection.h"
 #include "Model.h"
 
 class Skydome

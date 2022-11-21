@@ -1,6 +1,4 @@
 ﻿#include "GameScene.h"
-#include "TextureManager.h"
-#include <cassert>
 
 using namespace std;
 

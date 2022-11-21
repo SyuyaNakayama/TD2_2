@@ -3,9 +3,7 @@
 #include "Input.h"
 #include "DebugText.h"
 #include "../stage/Jamp.h"
-#include "WorldTransform.h"
 #include "Model.h"
-#include "ViewProjection.h"
 #include "scene.h"
 #include "timer/Timer.h"
 

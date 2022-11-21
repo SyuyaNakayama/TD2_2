@@ -3,10 +3,8 @@
 #include "SoundManager.h"
 #include "DirectXCommon.h"
 #include "SafeDelete.h"
-#include "Sprite.h"
 #include "stage/Stage.h"
 #include "fadeManager/FadeManager.h"
-#include "scene.h"
 
 /// <summary>
 /// ゲームシーン
