@@ -14,7 +14,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// ゲームウィンドウの作成
 	win = WinApp::GetInstance();
-	win->CreateGameWindow("TD2_Game2");
+	win->CreateGameWindow("2248_枠龍");
 
 	// DirectX初期化処理
 	dxCommon = DirectXCommon::GetInstance();

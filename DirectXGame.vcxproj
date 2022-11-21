@@ -118,7 +118,6 @@
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
     <ClInclude Include="2d\Sprite.h" />
-    <ClInclude Include="3d\AxisIndicator.h" />
     <ClInclude Include="3d\CircleShadow.h" />
     <ClInclude Include="3d\DirectionalLight.h" />
     <ClInclude Include="3d\LightGroup.h" />
@@ -126,7 +125,6 @@
     <ClInclude Include="3d\Mesh.h" />
     <ClInclude Include="3d\Model.h" />
     <ClInclude Include="3d\PointLight.h" />
-    <ClInclude Include="3d\PrimitiveDrawer.h" />
     <ClInclude Include="3d\SpotLight.h" />
     <ClInclude Include="3d\Terrain.h" />
     <ClInclude Include="3d\TerrainCommon.h" />
