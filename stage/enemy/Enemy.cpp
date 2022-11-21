@@ -4,7 +4,7 @@ void Enemy::Move()
 {
 }
 
-void Enemy::Initialize()
+void Enemy::Initialize(ViewProjection* viewProjection)
 {
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
@@ -21,24 +21,26 @@ void Enemy::Initialize()
 	ParentInitialize();
 	worldTransform_[0].scale_ = {20.0f,20.0f,20.0f};
 	// ブレスの初期化
-	//breath_.Initialize(worldTransform_[0].translation_,{0,0,-0.5f},);
+	viewProjection_ = viewProjection;
+	breath_.Initialize(worldTransform_[0].translation_,{0,0,-0.5f}, viewProjection_);
 }
 
 void Enemy::Update()
 {
 	worldTransform_[0].Update();
 	ParentUpdate();
+	breath_.Update();
 }
 
-void Enemy::Draw(ViewProjection viewProjection)
+void Enemy::Draw()
 {
 	//modelDoragon[0]->Draw(worldTransform_[0], viewProjection);//大元
-
 	// 各パーツ(頭、顎、首)
 	for (int i = 1; i < modelNum; i++)
 	{
-		modelDoragon[i]->Draw(worldTransform_[i], viewProjection);
+		modelDoragon[i]->Draw(worldTransform_[i], *viewProjection_);
 	}
+	breath_.Draw();
 }
 
 void Enemy::ParentInitialize()

@@ -11,7 +11,7 @@ void Stage::Initialize()
 	blockManager_.Initialize();
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
-	enemy_.Initialize();
+	enemy_.Initialize(&viewProjection_);
 	skydome = new Skydome();
 	skydome->Initialize();
 }
@@ -40,8 +40,8 @@ void Stage::Draw()
 {
 	player_->Draw();
 	blockManager_.Draw(viewProjection_);
-	enemy_.Draw(viewProjection_);
 	skydome->Draw(viewProjection_);
+	enemy_.Draw();
 }
 
 Stage::~Stage()

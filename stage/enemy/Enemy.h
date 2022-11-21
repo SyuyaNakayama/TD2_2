@@ -27,6 +27,7 @@ private:
 	bool isUp = false;
 	bool isBreath = false;
 	bool isCharge = false;
+	ViewProjection* viewProjection_ = nullptr;
 
 	float origPosY[12] =	{ 0.0f,14.0f,14.0f,15.0f,14.0f,11.5f,8.0f,5.5f,2.2f,-2.0f,-7.0f, -12.5f };//元の座標
 	float origPosZ[12] =	{ 0.0f,-4.0f,-4.0f, 2.0f, 4.5f, 6.0f,5.0f,4.0f,3.5f, 3.5f, 4.0f, 4.5f };
@@ -36,9 +37,9 @@ private:
 	// ブレス
 	Bless breath_;
 public:
-	void Initialize();
+	void Initialize(ViewProjection* viewProjection);
 	void Update();
-	void Draw(ViewProjection viewProjection);
+	void Draw();
 
 	void OnCollision(Collider* collider) {};
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
