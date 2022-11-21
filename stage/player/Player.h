@@ -48,6 +48,8 @@ public:
 	void Update();
 	void Draw();
 	Direction GetDirection() { return direction_; }
+	std::vector<WorldTransform> GetWorldTransforms() { return worldTransform_; }
+	void SetWorldTransforms(std::vector<WorldTransform> worldTransforms) { worldTransform_ = worldTransforms; }
 
 	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }

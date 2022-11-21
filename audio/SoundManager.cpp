@@ -5,10 +5,10 @@ void SoundManager::Initialize()
 	// オーディオの初期化
 	audio_ = Audio::GetInstance();
 	audio_->Initialize();
-	bgm_.push_back(audio_->LoadWave("sound/bgm/battleMusic1.mp3"));
-	bgm_.push_back(audio_->LoadWave("sound/bgm/battleMusic2.mp3"));
-	bgm_.push_back(audio_->LoadWave("sound/bgm/battleMusic3.mp3"));
-	bgm_.push_back(audio_->LoadWave("sound/bgm/battleMusic4.mp3"));
+	//bgm_.push_back(audio_->LoadWave("sound/bgm/battleMusic1.mp3"));
+	//bgm_.push_back(audio_->LoadWave("sound/bgm/battleMusic2.mp3"));
+	//bgm_.push_back(audio_->LoadWave("sound/bgm/battleMusic3.mp3"));
+	//bgm_.push_back(audio_->LoadWave("sound/bgm/battleMusic4.mp3"));
 	playHandle_.resize(bgm_.size());
 }
 

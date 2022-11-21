@@ -36,5 +36,6 @@ private: // メンバ変数
 	DebugText* debugText_ = DebugText::GetInstance();
 	Scene scene_ = Play;
 	FadeManager fadeManager_;
-	Sprite* sprite_ = nullptr;
+	std::vector<Sprite*> sprite_{};
+	float playerBodyRotSpd = 0.06f;
 };

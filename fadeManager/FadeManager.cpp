@@ -13,6 +13,7 @@ void FadeManager::Initialize(Scene* nowScene)
 void FadeManager::Update()
 {
 	if (!isFade_) { return; }
+	isSceneChange_ = false;
 
 	alpha_ += fadePerFlame;
 	if (alpha_ >= 1.0f)
@@ -20,6 +21,7 @@ void FadeManager::Update()
 		alpha_ = 1.0f;
 		fadePerFlame = -fadePerFlame;
 		*nowScene_ = nextScene_;
+		isSceneChange_ = true;
 	}
 	if (alpha_ <= 0)
 	{

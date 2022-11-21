@@ -61,6 +61,7 @@ void Player::Initialize(ViewProjection* viewProjection)
 	}
 	worldTransform_[Chest].translation_.y = 1.0f;
 	worldTransform_[Head].translation_.y = 3.5f;
+	worldTransform_[Head].rotation_.x = 0;
 	worldTransform_[HandLeft].translation_ = { 1.4f,1.7f,0 };
 	worldTransform_[HandRight].translation_ = { -1.4f,1.7f,0 };
 	worldTransform_[FootLeft].translation_ = { -0.6f,-0.3f,0 };
