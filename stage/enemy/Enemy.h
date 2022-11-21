@@ -49,9 +49,9 @@ private:
 	// ブレス
 	Bless breath_;
 public:
-	void Initialize();
+	void Initialize(ViewProjection* viewProjection);
 	void Update();
-	void Draw(ViewProjection viewProjection);
+	void Draw();
 
 	void OnCollision(Collider* collider) {};
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
