@@ -1,6 +1,7 @@
 #pragma once
-#include "Model.h"
 #include "WorldTransform.h"
+#include "ViewProjection.h"
+#include "particleManager/ParticleManager.h"
 
 /// <summary>
 /// 敵キャラの弾
@@ -9,30 +10,23 @@ class Bless {
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
-	// モデル
-	Model* model_ = nullptr;
-	// テクスチャハンドル
-	uint32_t textureHandle_ = 0u;
-
 	// 速度
 	Vector3 velocity_;
-
 	// 寿命<frm>
-	static const int32_t kLifeTime = 60 * 5;
-
+	static const int kLifeTime = 60 * 5;
 	// デスタイマー
-	int32_t dethTimer_ = kLifeTime;
+	int dethTimer_ = kLifeTime;
 	// デスフラグ
 	bool isDead_ = false;
+	ParticleManager particleManager_;
 
 public:
 	bool IsDead() const { return isDead_; }
 
-public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
-	void Initialize(Model* model, const Vector3& position, const Vector3 velocity);
+	void Initialize(const Vector3& position, const Vector3 velocity, ViewProjection* viewProjection);
 
 	/// <summary>
 	/// 更新
@@ -42,6 +36,6 @@ public:
 	/// <summary>
 	/// 描画
 	/// </summary>
-	void Draw(const ViewProjection& viewProjection);
+	void Draw();
 };
 

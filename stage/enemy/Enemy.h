@@ -6,6 +6,7 @@
 #include "ViewProjection.h"
 #include "Input.h"
 #include "DebugText.h"
+#include "Bless.h"
 
 class Enemy :public Collider
 {
@@ -32,6 +33,8 @@ private:
 	float chargePosY[12] =	{ 0.0f,14.0f,14.0f,15.0f,14.0f,11.5f,8.0f,5.5f,2.2f,-2.0f,-7.0f, -12.5f };
 	float chargePosZ[12] =	{ 0.0f,	5.0f, 5.0f, 9.5f,10.0f,10.0f, 9.0f,9.0f,9.0f,9.0f, 9.5f, 10.0f };
 	void Move();
+	// ブレス
+	Bless breath_;
 public:
 	void Initialize();
 	void Update();

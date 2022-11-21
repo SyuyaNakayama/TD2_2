@@ -3,7 +3,6 @@
 #include "collider/CollisionManager.h"
 #include "DebugCamera.h"
 #include "block/BlockManager.h"
-#include "particleManager/ParticleManager.h"
 #include "Shake.h"
 #include "Skydome.h"
 
@@ -17,7 +16,6 @@ private:
 	CollisionManager collisionManager;
 	Enemy enemy_;
 	BlockManager blockManager_;
-	ParticleManager particleManager_;
 	Shake shake_;
 	Skydome* skydome = new Skydome();
 	float size = 1.0f;

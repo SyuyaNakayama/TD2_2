@@ -96,12 +96,10 @@
     </FxCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Affin.cpp" />
     <ClCompile Include="audio\SoundManager.cpp" />
     <ClCompile Include="base\DirectXCommon.cpp" />
     <ClCompile Include="base\TextureManager.cpp" />
     <ClCompile Include="base\WinApp.cpp" />
-    <ClCompile Include="Bless.cpp" />
     <ClCompile Include="collider\CollisionManager.cpp" />
     <ClCompile Include="fadeManager\FadeManager.cpp" />
     <ClCompile Include="main.cpp" />
@@ -112,6 +110,7 @@
     <ClCompile Include="Skydome.cpp" />
     <ClCompile Include="stage\block\Block.cpp" />
     <ClCompile Include="stage\block\BlockManager.cpp" />
+    <ClCompile Include="stage\enemy\Bless.cpp" />
     <ClCompile Include="stage\enemy\Enemy.cpp" />
     <ClCompile Include="stage\Jamp.cpp" />
     <ClCompile Include="stage\player\Player.cpp" />
@@ -134,14 +133,12 @@
     <ClInclude Include="3d\TerrainCommon.h" />
     <ClInclude Include="3d\ViewProjection.h" />
     <ClInclude Include="3d\WorldTransform.h" />
-    <ClInclude Include="Affin.h" />
     <ClInclude Include="audio\Audio.h" />
     <ClInclude Include="audio\SoundManager.h" />
     <ClInclude Include="base\DirectXCommon.h" />
     <ClInclude Include="base\SafeDelete.h" />
     <ClInclude Include="base\TextureManager.h" />
     <ClInclude Include="base\WinApp.h" />
-    <ClInclude Include="Bless.h" />
     <ClInclude Include="collider\Collider.h" />
     <ClInclude Include="collider\CollisionConfig.h" />
     <ClInclude Include="collider\CollisionManager.h" />
@@ -158,6 +155,7 @@
     <ClInclude Include="Skydome.h" />
     <ClInclude Include="stage\block\Block.h" />
     <ClInclude Include="stage\block\BlockManager.h" />
+    <ClInclude Include="stage\enemy\Bless.h" />
     <ClInclude Include="stage\enemy\Enemy.h" />
     <ClInclude Include="stage\Jamp.h" />
     <ClInclude Include="stage\player\Player.h" />

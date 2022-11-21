@@ -20,6 +20,8 @@ void Enemy::Initialize()
 	//worldTransform_[0].Initialize();
 	ParentInitialize();
 	worldTransform_[0].scale_ = {20.0f,20.0f,20.0f};
+	// ƒuƒŒƒX‚Ì‰Šú‰»
+	//breath_.Initialize(worldTransform_[0].translation_,{0,0,-0.5f},);
 }
 
 void Enemy::Update()
