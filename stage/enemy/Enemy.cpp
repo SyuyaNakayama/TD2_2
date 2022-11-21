@@ -222,7 +222,33 @@ void Enemy::BreathMotion()
 		{
 			diffPosY[i] = breathPosY[i] - chargePosY[i];
 			diffPosZ[i] = breathPosZ[i] - chargePosZ[i];
-			diffRotX[i] = breathPosX[i] - chargeRotX[i];
+			diffRotX[i] = breathRotX[i] - chargeRotX[i];
+		}
+
+		timer--;
+		for (int i = 1; i < 12; i++)//
+		{
+			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 20);
+			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 20);
+			worldTransform_[i].rotation_.x += (diffRotX[i] / 20) * PI / 180;
+		}
+		if (timer <= 0.0f)
+		{
+			timer = 20;//ここは20
+			isBreath = false;
+		}
+	}
+
+	//数秒待機
+
+	//口閉じる
+	if (isClose == true)
+	{
+		for (int i = 1; i < 12; i++)//座標をセット
+		{
+			diffPosY[i] = origPosY[i] - breathPosY[i];
+			diffPosZ[i] = origPosZ[i] - breathPosZ[i];
+			diffRotX[i] = origRotX[i] - breathRotX[i];
 		}
 
 		timer--;
@@ -238,8 +264,6 @@ void Enemy::BreathMotion()
 			isBreath = false;
 		}
 	}
-
-	//数秒待機
 
 	debugText_->SetPos(0, 0);
 	debugText_->Printf("isCha:%d, timer:%f", isCharge,timer);
