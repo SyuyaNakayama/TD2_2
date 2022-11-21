@@ -22,22 +22,15 @@ Vector3 GetCameraPos(Direction direction, float cameraDistance)
 
 float Player::DirectionToRadian()
 {
-	switch (direction_)
+	float rad[4][2] =
 	{
-	case Front:
-		if (LorR == 0) { return PI / 2.0f; }
-		else { return 3.0f * PI / 2.0f; }
-	case Right:
-		if (LorR == 0) { return 0; }
-		else { return PI; }
-	case Back:
-		if (LorR == 1) { return PI / 2.0f; }
-		else { return 3.0f * PI / 2.0f; }
-	case Left:
-		if (LorR == 1) { return 0; }
-		else { return PI; }
-	}
-	return 0;
+		{PI / 2.0f,3.0f * PI / 2.0f},
+		{0,PI},
+		{3.0f * PI / 2.0f,PI / 2.0f},
+		{PI,0},
+	};
+	
+	return rad[direction_][LorR];
 }
 
 Player* Player::GetInstance()
@@ -60,7 +53,7 @@ void Player::Initialize(ViewProjection* viewProjection)
 		modelKnight[i] = Model::CreateFromOBJ("Knight_" + modelName[i], true);
 	}
 	for (WorldTransform& w : worldTransform_) { w.Initialize(); }
-	worldTransform_[Root].translation_ = { -POLE_RAD,2.0f,-POLE_RAD };
+	worldTransform_[Root].translation_ = { 0,2.0f,-POLE_RAD };
 	// êeéqä÷åWÇåãÇ‘
 	for (size_t i = 1; i < worldTransform_.size(); i++)
 	{
