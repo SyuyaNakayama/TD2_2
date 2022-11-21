@@ -21,4 +21,5 @@ public:
 
 	void FadeScene();
 	void ChangeScene(Scene nextScene);
+	Scene GetNextScene() { return nextScene_; }
 };

@@ -6,7 +6,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	DirectXCommon* dxCommon = nullptr;
 	// 汎用機能
 	Input* input = nullptr;
-	Audio* audio = nullptr;
 	DebugText* debugText = nullptr;
 	GameScene* gameScene = nullptr;
 
@@ -22,10 +21,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	// 入力の初期化
 	input = Input::GetInstance();
 	input->Initialize();
-
-	// オーディオの初期化
-	audio = Audio::GetInstance();
-	audio->Initialize();
 
 	// テクスチャマネージャの初期化
 	TextureManager::GetInstance()->Initialize(dxCommon->GetDevice());
@@ -71,7 +66,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// 各種解放
 	SafeDelete(gameScene);
-	audio->Finalize();
 
 	// ゲームウィンドウの破棄
 	win->TerminateGameWindow();

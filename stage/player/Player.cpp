@@ -59,16 +59,13 @@ void Player::Initialize(ViewProjection* viewProjection)
 	{
 		worldTransform_[i].parent_ = &worldTransform_[0];
 	}
-	worldTransform_[Chest].translation_.y += 1.0f;
-	worldTransform_[Head].translation_.y += 3.5f;
-	worldTransform_[HandLeft].translation_.y += 1.7f;
-	worldTransform_[HandLeft].translation_.x += 1.4f;
-	worldTransform_[HandRight].translation_.y += 1.7f;
-	worldTransform_[HandRight].translation_.x -= 1.4f;
-	worldTransform_[FootLeft].translation_.y -= 0.3f;
-	worldTransform_[FootLeft].translation_.x -= 0.6f;
-	worldTransform_[FootRight].translation_.y -= 0.3f;
-	worldTransform_[FootRight].translation_.x += 0.6f;
+	worldTransform_[Chest].translation_.y = 1.0f;
+	worldTransform_[Head].translation_.y = 3.5f;
+	worldTransform_[Head].rotation_.x = 0;
+	worldTransform_[HandLeft].translation_ = { 1.4f,1.7f,0 };
+	worldTransform_[HandRight].translation_ = { -1.4f,1.7f,0 };
+	worldTransform_[FootLeft].translation_ = { -0.6f,-0.3f,0 };
+	worldTransform_[FootRight].translation_ = { 0.6f,-0.3f,0 };
 }
 
 void Player::Move()

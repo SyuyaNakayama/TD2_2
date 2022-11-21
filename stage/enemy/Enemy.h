@@ -6,6 +6,7 @@
 #include "ViewProjection.h"
 #include "Input.h"
 #include "DebugText.h"
+#include "Bless.h"
 
 class Enemy :public Collider
 {
@@ -43,6 +44,8 @@ private:
 	float diffPosZ[12] = {};
 	float diffRotX[12] = {};
 	void Move();
+	// ブレス
+	Bless breath_;
 public:
 	void Initialize();
 	void Update();

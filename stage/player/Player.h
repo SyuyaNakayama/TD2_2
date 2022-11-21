@@ -3,9 +3,7 @@
 #include "Input.h"
 #include "DebugText.h"
 #include "../stage/Jamp.h"
-#include "WorldTransform.h"
 #include "Model.h"
-#include "ViewProjection.h"
 #include "scene.h"
 #include "timer/Timer.h"
 
@@ -14,11 +12,11 @@ class Player :public Collider
 private:
 	enum { Root, Head, Chest, HandLeft, HandRight, FootLeft, FootRight };
 
-	DebugText* debugText_ = nullptr;
+	DebugText* debugText_ = DebugText::GetInstance();
 	std::vector<WorldTransform> worldTransform_;
 	std::vector<Model*> modelKnight;
 	ViewProjection* viewProjection_ = nullptr;
-	Input* input_ = nullptr;
+	Input* input_ = Input::GetInstance();
 	uint32_t texture_ = 0;
 	const float CAMERA_DISTANCE = 30.0f;
 	Direction direction_ = Front;
@@ -50,6 +48,8 @@ public:
 	void Update();
 	void Draw();
 	Direction GetDirection() { return direction_; }
+	std::vector<WorldTransform> GetWorldTransforms() { return worldTransform_; }
+	void SetWorldTransforms(std::vector<WorldTransform> worldTransforms) { worldTransform_ = worldTransforms; }
 
 	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }

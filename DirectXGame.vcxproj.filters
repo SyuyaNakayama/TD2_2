@@ -39,14 +39,8 @@
     <Filter Include="ヘッダー ファイル\collider">
       <UniqueIdentifier>{d7d4bd5c-7185-4214-bbf0-79e164cb485e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ソース ファイル\Fbx">
-      <UniqueIdentifier>{cca07928-95fd-4fc4-9bb6-d9dd40aca175}</UniqueIdentifier>
-    </Filter>
     <Filter Include="ソース ファイル\stage">
       <UniqueIdentifier>{7deeb340-08ff-4436-8c4d-ffc46db85ead}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ヘッダー ファイル\fbx">
-      <UniqueIdentifier>{3dec518e-641b-463a-ac59-eaaa321c24b1}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\stage">
       <UniqueIdentifier>{b7bc956a-b474-4fe4-aef2-7eac64df98b2}</UniqueIdentifier>
@@ -56,9 +50,6 @@
     </Filter>
     <Filter Include="ヘッダー ファイル\audio">
       <UniqueIdentifier>{3a0044cc-1b7d-4ed5-a1a6-9074ed1b1769}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="シェーダー ファイル\Fbx">
-      <UniqueIdentifier>{0bfc5b61-1cde-4484-9c2c-5e045ce51bf4}</UniqueIdentifier>
     </Filter>
     <Filter Include="シェーダー ファイル\Obj">
       <UniqueIdentifier>{331b7531-4cff-4343-8578-4a367d210b95}</UniqueIdentifier>
@@ -128,7 +119,19 @@
     <ClCompile Include="stage\Shake.cpp">
       <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
-    <ClCompile Include="stage\player\PlayerBullet.cpp">
+    <ClCompile Include="timer\Timer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="audio\SoundManager.cpp">
+      <Filter>ソース ファイル\scene</Filter>
+    </ClCompile>
+    <ClCompile Include="Skydome.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Bless.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
+    <ClCompile Include="Affin.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -220,9 +223,6 @@
     <ClInclude Include="collider\CollisionManager.h">
       <Filter>ヘッダー ファイル\collider</Filter>
     </ClInclude>
-    <ClInclude Include="fadeManager\FadeManager.h">
-      <Filter>ヘッダー ファイル\collider</Filter>
-    </ClInclude>
     <ClInclude Include="stage\Stage.h">
       <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
@@ -250,7 +250,22 @@
     <ClInclude Include="stage\Shake.h">
       <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
-    <ClInclude Include="stage\player\PlayerBullet.h">
+    <ClInclude Include="timer\Timer.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="audio\SoundManager.h">
+      <Filter>ヘッダー ファイル\audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Skydome.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="fadeManager\FadeManager.h">
+      <Filter>ヘッダー ファイル\scene</Filter>
+    </ClInclude>
+    <ClInclude Include="Bless.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="Affin.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>
