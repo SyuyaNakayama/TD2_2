@@ -29,7 +29,7 @@ float Player::DirectionToRadian()
 		{3.0f * PI / 2.0f,PI / 2.0f},
 		{PI,0},
 	};
-	
+
 	return rad[direction_][LorR];
 }
 
@@ -180,32 +180,23 @@ void Player::OnCollision(Collider* collider)
 
 void Player::WalkMotion()
 {
-	int walkTIME = 10;
 	if (input_->PushKey(DIK_LEFT) || input_->PushKey(DIK_RIGHT))
 	{
-		walkTimer++;
-		if (walkFlag == true)
+		if (walkFlag)
 		{
-			walkPos += 0.1f;
-			if (walkTimer >= walkTIME)
-			{
-				walkTimer = 1;
-				walkFlag = false;
-			}
+			walkPos += 0.05f;
+			if (walkTimer_.CountDown()) { walkFlag = false; }
 		}
-		if (walkFlag == false)
+		if (!walkFlag)
 		{
-			walkPos -= 0.1f;
-			if (walkTimer >= walkTIME)
-			{
-				walkTimer = 0;
-				walkFlag = true;
-			}
+			walkPos -= 0.05f;
+			if (walkTimer_.CountDown()) { walkFlag = true; }
 		}
 	}
 	else // このままだと止まった時に手足の位置がずれているので直す
 	{
 		walkPos = 0.0f;
+		walkTimer_.Reset();
 	}
 
 	if (!isAttack)// 攻撃モーションと重なってしまうため

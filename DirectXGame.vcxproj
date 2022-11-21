@@ -114,6 +114,7 @@
     <ClCompile Include="stage\player\PlayerBullet.cpp" />
     <ClCompile Include="stage\Shake.cpp" />
     <ClCompile Include="stage\Stage.cpp" />
+    <ClCompile Include="timer\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="2d\DebugText.h" />
@@ -156,6 +157,7 @@
     <ClInclude Include="stage\player\PlayerBullet.h" />
     <ClInclude Include="stage\Shake.h" />
     <ClInclude Include="stage\Stage.h" />
+    <ClInclude Include="timer\Timer.h" />
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="Resources\shaders\TerrainPS.hlsl">
