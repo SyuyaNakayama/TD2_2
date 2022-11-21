@@ -26,9 +26,9 @@ void Stage::Update()
 #pragma region オブジェクトの更新
 	player_->Update();
 	enemy_.Update();
-	if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
-		shake_.ShakeStart(10.0f);
-	}
+	//if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
+	//	shake_.ShakeStart(10.0f);
+	//}
 	shake_.Update(viewProjection_);
 #pragma endregion
 #pragma region カメラの更新

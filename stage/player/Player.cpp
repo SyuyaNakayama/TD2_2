@@ -93,7 +93,7 @@ void Player::Move()
 	}
 
 	// ƒWƒƒƒ“ƒv
-	if (input_->PushKey(DIK_SPACE))
+	if (input_->PushKey(DIK_UP))
 	{
 		jamp_.StartJamp(1.5f, 0.1f, 2.0f);
 	}
@@ -223,7 +223,7 @@ void Player::AttackMotion()
 {
 	if (!isAttack)
 	{
-		if (input_->TriggerKey(DIK_A)) { isAttack = isUp = true; }
+		if (input_->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; }
 		else { return; }
 	}
 
