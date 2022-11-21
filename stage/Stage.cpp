@@ -8,14 +8,14 @@ void Stage::Initialize()
 	debugText_ = DebugText::GetInstance();
 	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	model_ = Model::Create();
-	DragonHead = Model::CreateFromOBJ("Doragon_Head");
-
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
 	particleManager_.Initialize(&viewProjection_);
 	player_ = Player::GetInstance();
 	player_->Initialize(&viewProjection_);
 	enemy_.Initialize();
+	skydome = new Skydome();
+	skydome->Initialize();
 }
 
 void Stage::Update()
@@ -31,6 +31,7 @@ void Stage::Update()
 	//}
 	shake_.Update(viewProjection_);
 #pragma endregion
+
 #pragma region ƒJƒƒ‰‚ÌXV
 	viewProjection_.UpdateMatrix();
 	particleManager_.Update();
@@ -44,6 +45,7 @@ void Stage::Draw()
 	player_->Draw();
 	blockManager_.Draw(viewProjection_);
 	enemy_.Draw(viewProjection_);
+	skydome->Draw(viewProjection_);
 	//particleManager_.Draw();
 }
 
