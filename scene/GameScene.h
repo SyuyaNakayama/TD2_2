@@ -34,7 +34,7 @@ private: // メンバ変数
 	SoundManager* soundManager_ = SoundManager::GetInstance();
 	Stage stage_;
 	DebugText* debugText_ = DebugText::GetInstance();
-	Scene scene_ = Title;
+	Scene scene_ = Play;
 	FadeManager fadeManager_;
 	std::vector<Sprite*> sprite_{};
 	float playerBodyRotSpd = 0.06f;

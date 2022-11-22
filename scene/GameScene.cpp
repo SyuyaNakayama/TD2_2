@@ -72,10 +72,13 @@ void GameScene::Update()
 
 		if (input_->TriggerKey(DIK_SPACE))
 		{
-			fadeManager_.ChangeScene(Play);
-			stage_.Initialize();
+			fadeManager_.ChangeScene(Reset);
 		}
 		if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(Title); }
+		break;
+	case Reset:
+		stage_.Initialize();
+		scene_ = Play;
 		break;
 	}
 	fadeManager_.Update();

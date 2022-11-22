@@ -27,6 +27,7 @@ private:
 	Vector3 larpVec[2]{};
 	Timer walkTimer_ = 10;
 
+	int hp_ = 20;
 	uint16_t LorR = 0;// 1 = ‰EŒü‚«,@0 = ¶Œü‚« 
 	float Rot = 0;
 	bool walkFlag = true;
