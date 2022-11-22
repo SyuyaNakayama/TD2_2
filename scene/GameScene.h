@@ -38,4 +38,5 @@ private: // メンバ変数
 	FadeManager fadeManager_;
 	std::vector<Sprite*> sprite_{};
 	float playerBodyRotSpd = 0.06f;
+	float startStringYOffset_ = 0;
 };

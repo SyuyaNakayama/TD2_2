@@ -6,6 +6,8 @@ void GameScene::Initialize()
 {
 	fadeManager_.Initialize(&scene_);
 	stage_.Initialize();
+	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/Title.png"), {}));
+	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/PUSH_START.png"), { 367.0f,500.0f }));
 	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/HowToPlay.png"), {}));
 	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/Clear.png"), {}));
 	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/GameOver.png"), {}));
@@ -19,6 +21,8 @@ void GameScene::Update()
 	{
 	case Title:
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(HowToPlay); }
+		startStringYOffset_ += 0.04f;
+		sprite_[1]->SetPosition({ 367.0f,500.0f - fabs(sinf(startStringYOffset_)) * 30.0f });
 		break;
 	case HowToPlay:
 		if (input_->TriggerKey(DIK_SPACE))
@@ -29,10 +33,7 @@ void GameScene::Update()
 		break;
 	case Play:
 		stage_.Update();
-		//soundManager_->PlayBGM(SoundManager::Title);
 		//soundManager_->PlayBGM(SoundManager::Play);
-		//soundManager_->PlayBGM(SoundManager::Clear);
-		//soundManager_->PlayBGM(SoundManager::GameOver);
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Clear); }
 		if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(GameOver); }
 		break;
@@ -68,10 +69,13 @@ void GameScene::Update()
 
 		if (input_->TriggerKey(DIK_SPACE))
 		{
-			fadeManager_.ChangeScene(Play);
-			stage_.Initialize();
+			fadeManager_.ChangeScene(Reset);
 		}
 		if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(Title); }
+		break;
+	case Reset:
+		stage_.Initialize();
+		scene_ = Play;
 		break;
 	}
 	fadeManager_.Update();
@@ -92,15 +96,17 @@ void GameScene::Draw()
 	switch (scene_)
 	{
 	case Title:
-		break;
-	case HowToPlay:
 		sprite_[0]->Draw();
-		break;
-	case Clear:
 		sprite_[1]->Draw();
 		break;
-	case GameOver:
+	case HowToPlay:
 		sprite_[2]->Draw();
+		break;
+	case Clear:
+		sprite_[3]->Draw();
+		break;
+	case GameOver:
+		sprite_[4]->Draw();
 		break;
 	}
 
