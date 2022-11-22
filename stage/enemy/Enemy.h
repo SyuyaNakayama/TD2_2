@@ -1,9 +1,6 @@
 ﻿#pragma once
 #include "collider/Collider.h"
-#include "WorldTransform.h"
 #include "Model.h"
-#include "TextureManager.h"
-#include "ViewProjection.h"
 #include "Input.h"
 #include "DebugText.h"
 #include "Bless.h"

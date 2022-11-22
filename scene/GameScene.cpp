@@ -55,8 +55,6 @@ void GameScene::Update()
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Title); }
 		break;
 	case GameOver:
-		if (fadeManager_.GetNextScene() != Play)
-		{
 			pw = Player::GetInstance()->GetWorldTransforms();
 			pw[0].translation_ = { 0,0,0 };
 			pw[0].rotation_.y = 0;
@@ -65,7 +63,6 @@ void GameScene::Update()
 			Player::GetInstance()->SetWorldTransforms(pw);
 			stage_.SetEye({ 0,2.5f,-15.0f });
 			stage_.SetTarget({ 0,2.5f,0 });
-		}
 
 		if (input_->TriggerKey(DIK_SPACE))
 		{
