@@ -17,11 +17,11 @@ private:
 	Vector3 GetPositionFromMatrix4(Matrix4 matWorld) { return Vector3(matWorld.m[3][0], matWorld.m[3][1], matWorld.m[3][2]); }
 
 public:
-	void Initialize(WorldTransform* playerWorldTransform) { playerWorldTransform_ = playerWorldTransform; }
+	void Initialize(WorldTransform* playerWorldTransform);
 	void Motion();	//UŒ‚‚Ìƒ‚[ƒVƒ‡ƒ“
 	bool IsAttack() { return isAttack; }
 	void OnCollision(Collider* collider) {}
-	const Vector3 GetWorldPosition() { return GetPositionFromMatrix4(playerWorldTransform_->matWorld_); }
+	const Vector3 GetWorldPosition() { return GetPositionFromMatrix4(playerWorldTransform_->matWorld_) + Vector3(-3.0f, 0, 0); }
 	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
 };
 
@@ -69,6 +69,7 @@ public:
 	Direction GetDirection() { return direction_; }
 	std::vector<WorldTransform> GetWorldTransforms() { return worldTransform_; }
 	void SetWorldTransforms(std::vector<WorldTransform> worldTransforms) { worldTransform_ = worldTransforms; }
+	PlayerAttack* GetAttack() { return &attack_; }
 
 	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return Vector3(worldTransform_[1].matWorld_.m[3][0], worldTransform_[1].matWorld_.m[3][1], worldTransform_[1].matWorld_.m[3][2]); }

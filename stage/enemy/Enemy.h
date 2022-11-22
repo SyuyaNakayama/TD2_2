@@ -69,7 +69,7 @@ public:
 	void Update();
 	void Draw();
 
-	void OnCollision(Collider* collider) {};
+	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return Vector3(worldTransform_[1].matWorld_.m[3][0], worldTransform_[1].matWorld_.m[3][1], worldTransform_[1].matWorld_.m[3][2] - 5.0f); }
 	const Vector3 GetRadius() { return Vector3(3.0f, 5.0f, 5.0f); }
 	Bless* GetBreath() { return &breath_; }

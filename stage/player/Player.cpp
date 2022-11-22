@@ -227,6 +227,13 @@ void Player::WalkMotion()
 	worldTransform_[FootRight].translation_.z = -walkPos;
 }
 
+void PlayerAttack::Initialize(WorldTransform* playerWorldTransform)
+{
+	playerWorldTransform_ = playerWorldTransform;
+	SetCollisionAttribute(CollisionAttribute::PlayerAttack);
+	SetCollisionMask(CollisionMask::Player);
+}
+
 void PlayerAttack::Motion()
 {
 	if (!isAttack)

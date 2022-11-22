@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "./stage/player/Player.h"
 
 void Enemy::Move()
 {
@@ -34,7 +35,7 @@ void Enemy::Update()
 	breath_.Update();
 
 	debugText_->SetPos(0, 0);
-	debugText_->Printf("%f",GetWorldPosition().x);
+	debugText_->Printf("%d",hp_);
 }
 
 void Enemy::Draw()
@@ -354,4 +355,11 @@ void Enemy::BiteMotion()
 			isBiteMotion = false;
 		}
 	}
+}
+
+void Enemy::OnCollision(Collider* collider)
+{
+	if (collider->GetCollisionAttribute() != CollisionAttribute::PlayerAttack) { return; }
+	if (!Player::GetInstance()->GetAttack()->IsAttack()) { return; }
+	hp_--;
 }

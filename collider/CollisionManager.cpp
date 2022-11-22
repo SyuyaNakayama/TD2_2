@@ -27,6 +27,7 @@ void CollisionManager::CheckAllCollisions(Enemy* enemy)
 	list<Collider*> colliders_;
 	Player* player = Player::GetInstance();
 	colliders_.push_back(player);
+	colliders_.push_back(player->GetAttack());
 	colliders_.push_back(enemy);
 	colliders_.push_back(enemy->GetBreath());
 
