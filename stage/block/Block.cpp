@@ -2,8 +2,8 @@
 
 void Block::Initialize(Direction direction)
 {
-	//model_ = Model::Create();
-	model_ = Model::CreateFromOBJ("cloud", true);
+	model_ = Model::Create();
+	//model_ = Model::CreateFromOBJ("cloud", true);
 	direction_ = direction;
 }
 
