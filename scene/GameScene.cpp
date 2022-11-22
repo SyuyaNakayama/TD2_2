@@ -34,8 +34,8 @@ void GameScene::Update()
 	case Play:
 		stage_.Update();
 		//soundManager_->PlayBGM(SoundManager::Play);
-		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Clear); }
-		if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(GameOver); }
+		//if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Clear); }
+		//if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(GameOver); }
 		break;
 	case Clear:
 		pw = Player::GetInstance()->GetWorldTransforms();

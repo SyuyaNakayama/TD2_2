@@ -28,6 +28,9 @@ void Enemy::Update()
 	worldTransform_[0].Update();
 	ParentUpdate();
 	breath_.Update();
+
+	debugText_->SetPos(0, 0);
+	debugText_->Printf("%f",GetWorldPosition().x);
 }
 
 void Enemy::Draw()
@@ -205,7 +208,6 @@ void Enemy::BreathMotion()
 		{
 			breathTimer = 20;//‚±‚±‚Í20
 			isBreath = false;
-			//isClose = true;
 			isStop2 = true;
 		}
 	}

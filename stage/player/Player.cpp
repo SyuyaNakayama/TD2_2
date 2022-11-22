@@ -160,19 +160,35 @@ void Player::Update()
 	AttackMotion();
 	WalkMotion();
 	for (WorldTransform& w : worldTransform_) { w.Update(); }
+	debugText_->SetPos(0, 20);
+	debugText_->Printf("%d", hp_);
+	if (isHit)
+	{
+		if (drawInterval.CountDown()) { isDraw = !isDraw; }
+		if (hitTimer.CountDown())
+		{
+			isHit = false;
+			isDraw = true;
+		};
+	}
 }
 
 void Player::Draw()
 {
-	for (size_t i = 0; i < modelKnight.size(); i++)
+	if (isDraw)
 	{
-		modelKnight[i]->Draw(worldTransform_[i + 1], *viewProjection_);
+		for (size_t i = 0; i < modelKnight.size(); i++)
+		{
+			modelKnight[i]->Draw(worldTransform_[i + 1], *viewProjection_);
+		}
 	}
 }
 
 void Player::OnCollision(Collider* collider)
 {
-
+	if (isHit) { return; }
+	hp_--;
+	isHit = true;
 }
 
 void Player::WalkMotion()

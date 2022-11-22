@@ -1,5 +1,6 @@
 #include "CollisionManager.h"
 #include "CollisionConfig.h"
+#include "stage/player/Player.h"
 #include <list>
 
 using namespace std;
@@ -21,9 +22,10 @@ bool CollisionManager::CheckBoxCollisionPair(Collider* colliderA, Collider* coll
 	return 0;
 }
 
-void CollisionManager::CheckAllCollisions(Player* player, Enemy* enemy)
+void CollisionManager::CheckAllCollisions(Enemy* enemy)
 {
 	list<Collider*> colliders_;
+	Player* player = Player::GetInstance();
 	colliders_.push_back(player);
 	colliders_.push_back(enemy);
 

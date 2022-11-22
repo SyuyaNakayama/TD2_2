@@ -27,7 +27,11 @@ private:
 	Vector3 larpVec[2]{};
 	Timer walkTimer_ = 10;
 
-	int hp_ = 20;
+	bool isHit = false; // false‚Ì‚Æ‚«‚É“–‚½‚è”»’è‚ª”­¶
+	Timer hitTimer = 100;
+	bool isDraw = true;
+	Timer drawInterval = 5;
+	int hp_ = 10;
 	uint16_t LorR = 0;// 1 = ‰EŒü‚«,@0 = ¶Œü‚« 
 	float Rot = 0;
 	bool walkFlag = true;
@@ -53,6 +57,6 @@ public:
 	void SetWorldTransforms(std::vector<WorldTransform> worldTransforms) { worldTransform_ = worldTransforms; }
 
 	void OnCollision(Collider* collider);
-	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
-	const Vector3 GetRadius() { return worldTransform_[0].scale_; }
+	const Vector3 GetWorldPosition() { return Vector3(worldTransform_[1].matWorld_.m[3][0], worldTransform_[1].matWorld_.m[3][1], worldTransform_[1].matWorld_.m[3][2]); }
+	const Vector3 GetRadius() { return Vector3(2.0f,3.0f,3.0f); }
 };

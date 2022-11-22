@@ -5,6 +5,7 @@
 #include "block/BlockManager.h"
 #include "Shake.h"
 #include "Skydome.h"
+#include "player/Player.h"
 
 class Stage
 {
