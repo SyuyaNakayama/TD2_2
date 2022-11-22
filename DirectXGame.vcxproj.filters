@@ -122,16 +122,13 @@
     <ClCompile Include="timer\Timer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="audio\SoundManager.cpp">
-      <Filter>ソース ファイル\scene</Filter>
-    </ClCompile>
     <ClCompile Include="Skydome.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Bless.cpp">
+    <ClCompile Include="stage\enemy\Bless.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
-    <ClCompile Include="Affin.cpp">
+    <ClCompile Include="audio\SoundManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
   </ItemGroup>
@@ -262,10 +259,7 @@
     <ClInclude Include="fadeManager\FadeManager.h">
       <Filter>ヘッダー ファイル\scene</Filter>
     </ClInclude>
-    <ClInclude Include="Bless.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
-    <ClInclude Include="Affin.h">
+    <ClInclude Include="stage\enemy\Bless.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
   </ItemGroup>

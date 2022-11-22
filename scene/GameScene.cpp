@@ -33,10 +33,7 @@ void GameScene::Update()
 		break;
 	case Play:
 		stage_.Update();
-		//soundManager_->PlayBGM(SoundManager::Title);
 		//soundManager_->PlayBGM(SoundManager::Play);
-		//soundManager_->PlayBGM(SoundManager::Clear);
-		//soundManager_->PlayBGM(SoundManager::GameOver);
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Clear); }
 		if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(GameOver); }
 		break;
