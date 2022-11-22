@@ -2,7 +2,8 @@
 
 void Block::Initialize(Direction direction)
 {
-	model_ = Model::Create();
+	//model_ = Model::Create();
+	model_ = Model::CreateFromOBJ("cloud", true);
 	direction_ = direction;
 }
 
@@ -22,7 +23,7 @@ void Block::Add(Vector2 pos, Vector3 rad)
 	case Front:	translation = { pos.x - POLE_RAD,pos.y,-POLE_RAD };	break;
 	case Right:	translation = { POLE_RAD,pos.y,pos.x - POLE_RAD };	break;
 	case Back:	translation = { -pos.x + POLE_RAD,pos.y,POLE_RAD };	break;
-	case Left:	translation = { -POLE_RAD,pos.y,-pos.x + POLE_RAD };	break;
+	case Left:	translation = { -POLE_RAD,pos.y,-pos.x + POLE_RAD };break;
 	}
 
 	w.translation_ = translation;
