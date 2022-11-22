@@ -163,6 +163,7 @@ void Enemy::StandbyMotion()
 
 void Enemy::BreathMotion()
 {	
+
 	//溜めるモーション
 	if (isCharge == true)
 	{
@@ -173,7 +174,7 @@ void Enemy::BreathMotion()
 			diffRotX[i] = chargeRotX[i] - origRotX[i];
 		}
 
-		timer--;
+		breathTimer--;
 		for (int i = 1; i < 12; i++)//
 		{
 			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 30);
@@ -181,15 +182,29 @@ void Enemy::BreathMotion()
 			worldTransform_[i].rotation_.x += (diffRotX[i] / 30) * PI / 180;
 		}
 
-		if (timer <= 0.0f)
+		if (breathTimer <= 0.0f)
 		{
-			timer = 20;//ここは20
-			isBreath = true;
+			breathTimer = 20;//ここは20
+			//isBreath = true;
+			isStop1 = true;
 			isCharge = false;
 		}
+
 	}
 
 	//数秒待機
+	if (isStop1 == true)
+	{
+		breathTimer--;
+
+		if (breathTimer <= 0.0f)
+		{
+			breathTimer = 20;//ここは20
+			isBreath = true;
+			isStop1 = false;
+		}
+	}
+
 
 	//ブレスを吐くモーション
 	if (isBreath == true)
@@ -201,22 +216,34 @@ void Enemy::BreathMotion()
 			diffRotX[i] = breathRotX[i] - chargeRotX[i];
 		}
 
-		timer--;
+		breathTimer--;
 		for (int i = 1; i < 12; i++)//
 		{
 			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 20);
 			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 20);
 			worldTransform_[i].rotation_.x += (diffRotX[i] / 20) * PI / 180;
 		}
-		if (timer <= 0.0f)
+		if (breathTimer <= 0.0f)
 		{
-			timer = 20;//ここは20
+			breathTimer = 20;//ここは20
 			isBreath = false;
-			isClose = true;
+			//isClose = true;
+			isStop2 = true;
 		}
 	}
 
 	//数秒待機
+	if (isStop2 == true)
+	{
+		breathTimer--;
+
+		if (breathTimer <= 0.0f)
+		{
+			breathTimer = 20;//ここは20
+			isClose = true;
+			isStop2 = false;
+		}
+	}
 
 	//口閉じる
 	if (isClose == true)
@@ -228,24 +255,19 @@ void Enemy::BreathMotion()
 			diffRotX[i] = origRotX[i] - breathRotX[i];
 		}
 
-		timer--;
+		breathTimer--;
 		for (int i = 1; i < 12; i++)//
 		{
 			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 20);
 			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 20);
 			worldTransform_[i].rotation_.x += (diffRotX[i] / 20) * PI / 180;
 		}
-		if (timer <= 0.0f)
+		if (breathTimer <= 0.0f)
 		{
-			timer = 30;//ここは30
+			breathTimer = 30;//ここは30
 			isClose = false;
 		}
 	}
-
-	debugText_->SetPos(0, 0);
-	debugText_->Printf("isCha:%d, timer:%f", isCharge,timer);
-	debugText_->SetPos(0, 20);
-	debugText_->Printf("Rot:%f", Rot);
 }
 
 void Enemy::BiteMotion()
