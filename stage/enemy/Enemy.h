@@ -38,10 +38,7 @@ private:
 	bool isOrig = false;
 	uint16_t biteTimer = 30;
 
-	Vector3 origPos[modelNum] =
-	{
-
-	};
+	int hp = 50;
 
 	float origPosY[12] =	{ 0.0f,14.0f, 14.0f, 15.0f, 14.0f,11.5f, 8.0f, 5.5f, 2.2f,  -2.0f, -7.0f, -12.5f };//元の座標
 	float origPosZ[12] =	{ 0.0f,-4.0f, -4.0f,  2.0f,  4.5f, 6.0f, 5.0f, 4.0f, 3.5f,   3.5f,  4.0f,  4.5f  };
