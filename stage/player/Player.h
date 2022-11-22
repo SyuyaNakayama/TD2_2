@@ -58,5 +58,16 @@ public:
 
 	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return Vector3(worldTransform_[1].matWorld_.m[3][0], worldTransform_[1].matWorld_.m[3][1], worldTransform_[1].matWorld_.m[3][2]); }
-	const Vector3 GetRadius() { return Vector3(2.0f,3.0f,3.0f); }
+	const Vector3 GetRadius() { return Vector3(2.0f, 3.0f, 3.0f); }
+};
+
+class PlayerAttack : Collider
+{
+public:
+	Player* player_ = Player::GetInstance();
+
+public:
+	void OnCollision(Collider* collider) {}
+	const Vector3 GetWorldPosition() { return player_->GetWorldPosition() + Vector3(-1.0f, 0, 0); }
+	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
 };
