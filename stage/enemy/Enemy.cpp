@@ -118,13 +118,23 @@ void Enemy::ParentInitialize()
 
 void Enemy::ParentUpdate()
 {
-	//StandbyMotion();
-
-	if(input_->PushKey(DIK_1))
+	if (input_->PushKey(DIK_1))//ブレスモーション
 	{
 		isCharge = true;
+		isBreathMotion = true;
 	}
+	if (input_->PushKey(DIK_2))//噛みつきモーション
+	{
+		isOpen = true;
+		isBiteMotion = true;
+	}
+	if(isBiteMotion ==false && isBreathMotion == false)
+	{
+		StandbyMotion();
+	}
+
 	BreathMotion();
+	BiteMotion();
 	for (int i = 0; i < modelNum; i++)
 	{
 		worldTransform_[i].Update();
@@ -133,7 +143,7 @@ void Enemy::ParentUpdate()
 
 void Enemy::StandbyMotion()
 {
-	if(isStandby == true)
+	if (isStandby == true)
 	{
 		if (isUp == true)
 		{
@@ -154,11 +164,7 @@ void Enemy::StandbyMotion()
 			}
 		}
 	}
-	
-	for (int i = 1; i < 3; i++)//頭、顎
-	{
-		worldTransform_[i].rotation_.x = standbyRot * PI / 180;
-	}
+	worldTransform_[1].rotation_.x = standbyRot * PI / 180;
 }
 
 void Enemy::BreathMotion()
@@ -204,7 +210,6 @@ void Enemy::BreathMotion()
 			isStop1 = false;
 		}
 	}
-
 
 	//ブレスを吐くモーション
 	if (isBreath == true)
@@ -266,29 +271,109 @@ void Enemy::BreathMotion()
 		{
 			breathTimer = 30;//ここは30
 			isClose = false;
+			isBreathMotion = false;
 		}
 	}
 }
 
 void Enemy::BiteMotion()
 {
-	if (input_->PushKey(DIK_W)) {
-		y += 0.1f;
+	//口開く
+	if(isOpen == true)
+	{
+		for (int i = 1; i < 12; i++)//座標をセット
+		{
+			diffPosY[i] = breathPosY[i] - origPosY[i];
+			diffPosZ[i] = breathPosZ[i] - origPosZ[i];
+			diffRotX[i] = breathRotX[i] - origRotX[i];
+		}
+		biteTimer--;
+		for (int i = 1; i < 12; i++)//
+		{
+			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 30);
+			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 30);
+			worldTransform_[i].rotation_.x += (diffRotX[i] / 30) * PI / 180;
+		}
+		if (biteTimer <= 0.0f)
+		{
+			biteTimer = 30;//ここは30
+			isOpen = false;
+			isStop3 = true;
+		}
 	}
-	if (input_->PushKey(DIK_S)) {
-		y -= 0.1f;
+
+	//数秒待機
+	if (isStop3 == true)
+	{
+		biteTimer--;
+
+		if (biteTimer <= 0.0f)
+		{
+			biteTimer = 20;//ここは20
+			isBite = true;
+			isStop3 = false;
+		}
 	}
-	if (input_->PushKey(DIK_A)) {
-		z += 0.1f;
+
+	//噛むモーション
+	if (isBite == true)
+	{
+		for (int i = 1; i < 12; i++)//座標をセット
+		{
+			diffPosY[i] = bitePosY[i] - breathPosY[i];
+			diffPosZ[i] = bitePosZ[i] - breathPosZ[i];
+			diffRotX[i] = biteRotX[i] - breathRotX[i];
+		}
+		biteTimer--;
+		for (int i = 1; i < 12; i++)//
+		{
+			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 20);
+			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 20);
+			worldTransform_[i].rotation_.x += (diffRotX[i] / 20) * PI / 180;
+		}
+		if (biteTimer <= 0.0f)
+		{
+			biteTimer = 200;//ここは200
+			isBite = false;
+			isStop4 = true;
+		}
 	}
-	if (input_->PushKey(DIK_D)) {
-		z -= 0.1;
+
+	//数秒待機
+	if (isStop4 == true)
+	{
+		biteTimer--;
+
+		if (biteTimer <= 0.0f)
+		{
+			biteTimer = 40;//ここは40
+			isOrig = true;
+			isStop4 = false;
+		}
 	}
-	if (input_->PushKey(DIK_R)) {
-		Rot += 0.1;
-	}
-	if (input_->PushKey(DIK_F)) {
-		Rot -= 0.1;
+
+	//元の位置に戻る
+	if (isOrig == true)
+	{
+		for (int i = 1; i < 12; i++)//座標をセット
+		{
+			diffPosY[i] = origPosY[i] - bitePosY[i];
+			diffPosZ[i] = origPosZ[i] - bitePosZ[i];
+			diffRotX[i] = origRotX[i] - biteRotX[i];
+		}
+		biteTimer--;
+		for (int i = 1; i < 12; i++)//
+		{
+			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 40);
+			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 40);
+			worldTransform_[i].rotation_.x += (diffRotX[i] / 40) * PI / 180;
+		}
+		if (biteTimer <= 0.0f)
+		{
+			biteTimer = 30;//ここは30
+			isOrig = false;
+			isBiteMotion = false;
+		}
 	}
 }
 
