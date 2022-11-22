@@ -2,7 +2,7 @@
 
 struct CollisionAttribute
 {
-	enum
+	enum Enum
 	{
 		Player = 0b1,
 		PlayerAttack = 0b1 << 1,
@@ -13,9 +13,10 @@ struct CollisionAttribute
 
 struct CollisionMask
 {
-	enum
+	enum Enum
 	{
 		Player = ~(CollisionAttribute::Player | CollisionAttribute::PlayerAttack),
-		Enemy = ~(CollisionAttribute::Enemy | CollisionAttribute::EnemyBreath)
+		Enemy = ~(CollisionAttribute::Enemy | CollisionAttribute::EnemyBreath),
+		EnemyBreath = ~(CollisionAttribute::Enemy | CollisionAttribute::EnemyBreath | CollisionAttribute::PlayerAttack)
 	};
 };

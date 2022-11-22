@@ -14,6 +14,9 @@ void Bless::Initialize(const Vector3& position, const Vector3 velocity, ViewProj
 	velocity_ = velocity;
 
 	particleManager_.Initialize(viewProjection);
+
+	SetCollisionAttribute(CollisionAttribute::EnemyBreath);
+	SetCollisionMask(CollisionMask::EnemyBreath);
 }
 
 /// <summary>
