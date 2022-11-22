@@ -8,6 +8,8 @@ void Enemy::Initialize(ViewProjection* viewProjection)
 {
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
+	SetCollisionAttribute(CollisionAttribute::Enemy);
+	SetCollisionMask(CollisionMask::Enemy);
 	modelDoragon[0] = Model::CreateFromOBJ("Doragon", true);
 	modelDoragon[1] = Model::CreateFromOBJ("Doragon_Head", true);	//“ª
 	modelDoragon[2] = Model::CreateFromOBJ("Doragon_Jaw", true);	//Š{

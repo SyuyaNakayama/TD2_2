@@ -2,11 +2,13 @@
 #include "WorldTransform.h"
 #include "ViewProjection.h"
 #include "particleManager/ParticleManager.h"
+#include "collider/Collider.h"
 
 /// <summary>
 /// 敵キャラの弾
 /// </summary>
-class Bless {
+class Bless :public Collider
+{
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
@@ -37,5 +39,8 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
+	void OnCollision(Collider* collider) {}
+	const Vector3 GetWorldPosition() { return worldTransform_.translation_; }
+	const Vector3 GetRadius() { return Vector3(5.0f, 5.0f, 5.0f); }
 };
 

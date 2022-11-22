@@ -47,6 +47,8 @@ void Player::Initialize(ViewProjection* viewProjection)
 	input_ = Input::GetInstance();
 	direction_ = Front;
 	viewProjection_ = viewProjection;
+	SetCollisionAttribute(CollisionAttribute::Player);
+	SetCollisionMask(CollisionMask::Player);
 
 	for (size_t i = 0; i < modelKnight.size(); i++)
 	{
