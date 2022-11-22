@@ -7,11 +7,27 @@
 #include "scene.h"
 #include "timer/Timer.h"
 
+class PlayerAttack :public Collider
+{
+private:
+	WorldTransform* playerWorldTransform_ = nullptr;
+	bool isUp = false;
+	float ATrot = 0.0f;
+	bool isAttack = false;
+	Vector3 GetPositionFromMatrix4(Matrix4 matWorld) { return Vector3(matWorld.m[3][0], matWorld.m[3][1], matWorld.m[3][2]); }
+
+public:
+	void Initialize(WorldTransform* playerWorldTransform) { playerWorldTransform_ = playerWorldTransform; }
+	void Motion();	//攻撃のモーション
+	bool IsAttack() { return isAttack; }
+	void OnCollision(Collider* collider) {}
+	const Vector3 GetWorldPosition() { return GetPositionFromMatrix4(playerWorldTransform_->matWorld_); }
+	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
+};
+
 class Player :public Collider
 {
 private:
-	enum { Root, Head, Chest, HandLeft, HandRight, FootLeft, FootRight };
-
 	DebugText* debugText_ = DebugText::GetInstance();
 	std::vector<WorldTransform> worldTransform_;
 	std::vector<Model*> modelKnight;
@@ -26,6 +42,7 @@ private:
 	int nowFlame = 0;
 	Vector3 larpVec[2]{};
 	Timer walkTimer_ = 10;
+	PlayerAttack attack_;
 
 	bool isHit = false; // falseのときに当たり判定が発生
 	Timer hitTimer = 100;
@@ -36,17 +53,14 @@ private:
 	float Rot = 0;
 	bool walkFlag = true;
 	float walkPos = 0.0f;
-	bool isAttack = false;
-	bool isUp = false;
-	float ATrot = 0.0f;
 	void Move();
 	bool Turn(float& pos1D, Direction nextDirection, float limitPos);
 	Player() = default;
 	~Player() = default;
 	float DirectionToRadian();
 	void WalkMotion();			//歩くモーション
-	void AttackMotion();		//攻撃のモーション
 public:
+	enum { Root, Head, Chest, HandLeft, HandRight, FootLeft, FootRight };
 	static Player* GetInstance();
 
 	void Initialize(ViewProjection* viewProjection);
@@ -59,15 +73,4 @@ public:
 	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return Vector3(worldTransform_[1].matWorld_.m[3][0], worldTransform_[1].matWorld_.m[3][1], worldTransform_[1].matWorld_.m[3][2]); }
 	const Vector3 GetRadius() { return Vector3(2.0f, 3.0f, 3.0f); }
-};
-
-class PlayerAttack : Collider
-{
-public:
-	Player* player_ = Player::GetInstance();
-
-public:
-	void OnCollision(Collider* collider) {}
-	const Vector3 GetWorldPosition() { return player_->GetWorldPosition() + Vector3(-1.0f, 0, 0); }
-	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
 };

@@ -50,6 +50,7 @@ void Player::Initialize(ViewProjection* viewProjection)
 	SetCollisionAttribute(CollisionAttribute::Player);
 	SetCollisionMask(CollisionMask::Player);
 	hp_ = 10;
+	attack_.Initialize(&worldTransform_[HandRight]);
 
 	for (size_t i = 0; i < modelKnight.size(); i++)
 	{
@@ -160,7 +161,7 @@ void Player::Update()
 	if (input_->PushKey(DIK_LEFT)) { LorR = 0; }
 	if (input_->PushKey(DIK_RIGHT)) { LorR = 1; }
 	worldTransform_[Root].rotation_.y = DirectionToRadian();
-	AttackMotion();
+	attack_.Motion();
 	WalkMotion();
 	for (WorldTransform& w : worldTransform_) { w.Update(); }
 	debugText_->SetPos(0, 20);
@@ -215,7 +216,7 @@ void Player::WalkMotion()
 		walkTimer_.Reset();
 	}
 
-	if (!isAttack)// 攻撃モーションと重なってしまうため
+	if (!attack_.IsAttack())// 攻撃モーションと重なってしまうため
 	{
 		worldTransform_[HandLeft].rotation_.x = walkPos * PI / 18;
 		worldTransform_[HandRight].rotation_.x = walkPos * PI / 18;
@@ -226,11 +227,11 @@ void Player::WalkMotion()
 	worldTransform_[FootRight].translation_.z = -walkPos;
 }
 
-void Player::AttackMotion()
+void PlayerAttack::Motion()
 {
 	if (!isAttack)
 	{
-		if (input_->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; }
+		if (Input::GetInstance()->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; }
 		else { return; }
 	}
 
@@ -246,5 +247,5 @@ void Player::AttackMotion()
 		isAttack = ATrot > 0.0f;
 	}
 
-	worldTransform_[HandRight].rotation_.x = ATrot * PI / 180.0f;
+	playerWorldTransform_->rotation_.x = ATrot * PI / 180.0f;
 }
