@@ -165,7 +165,6 @@ void Enemy::BreathMotion()
 		if (breathTimer <= 0.0f)
 		{
 			breathTimer = 20;//‚±‚±‚Í20
-			//isBreath = true;
 			isStop1 = true;
 			isCharge = false;
 		}
@@ -235,7 +234,7 @@ void Enemy::BreathMotion()
 		}
 
 		breathTimer--;
-		for (int i = 1; i < 12; i++)//
+		for (int i = 1; i < 12; i++)
 		{
 			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 20);
 			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 20);
@@ -262,7 +261,7 @@ void Enemy::BiteMotion()
 			diffRotX[i] = breathRotX[i] - origRotX[i];
 		}
 		biteTimer--;
-		for (int i = 1; i < 12; i++)//
+		for (int i = 1; i < 12; i++)
 		{
 			worldTransform_[i].translation_.y += ParPos(diffPosY[i] / 30);
 			worldTransform_[i].translation_.z += ParPos(diffPosZ[i] / 30);
