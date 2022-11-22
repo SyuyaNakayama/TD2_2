@@ -10,7 +10,6 @@ class Enemy :public Collider
 private:
 	const static uint16_t modelNum = 12;
 	WorldTransform worldTransform_[modelNum] = {};
-	Model* model_ = nullptr;
 	Model* modelDoragon[modelNum] = {};
 	uint32_t texture_ = 0;
 	Input* input_ = nullptr;
@@ -38,6 +37,11 @@ private:
 	bool isStop4 = false;
 	bool isOrig = false;
 	uint16_t biteTimer = 30;
+
+	Vector3 origPos[modelNum] =
+	{
+
+	};
 
 	float origPosY[12] =	{ 0.0f,14.0f, 14.0f, 15.0f, 14.0f,11.5f, 8.0f, 5.5f, 2.2f,  -2.0f, -7.0f, -12.5f };//元の座標
 	float origPosZ[12] =	{ 0.0f,-4.0f, -4.0f,  2.0f,  4.5f, 6.0f, 5.0f, 4.0f, 3.5f,   3.5f,  4.0f,  4.5f  };

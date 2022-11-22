@@ -8,7 +8,6 @@ void Enemy::Initialize(ViewProjection* viewProjection)
 {
 	input_ = Input::GetInstance();
 	debugText_ = DebugText::GetInstance();
-	//modelDoragon[0] = Model::Create();
 	modelDoragon[0] = Model::CreateFromOBJ("Doragon", true);
 	modelDoragon[1] = Model::CreateFromOBJ("Doragon_Head", true);	//頭
 	modelDoragon[2] = Model::CreateFromOBJ("Doragon_Jaw", true);	//顎
@@ -17,7 +16,6 @@ void Enemy::Initialize(ViewProjection* viewProjection)
 	{
 		modelDoragon[i] = Model::CreateFromOBJ("Doragon_neck", true);
 	}
-	//worldTransform_[0].Initialize();
 	ParentInitialize();
 	worldTransform_[0].scale_ = {20.0f,20.0f,20.0f};
 	// ブレスの初期化
@@ -34,7 +32,6 @@ void Enemy::Update()
 
 void Enemy::Draw()
 {
-	//modelDoragon[0]->Draw(worldTransform_[0], viewProjection);//大元
 	// 各パーツ(頭、顎、首)
 	for (int i = 1; i < modelNum; i++)
 	{
@@ -48,28 +45,21 @@ void Enemy::ParentInitialize()
 	worldTransform_[0].Initialize();
 
 	//頭
-	worldTransform_[1].scale_ = Vector3(20.0f, 20.0f, 20.0f);
-	//worldTransform_[1].translation_ = { 0.0f,14.0f,-4.0f }; 
 	worldTransform_[1].translation_ = { 0.0f,ParPos(14.0f),ParPos(-4.0f) };
 
 	//顎
-	//worldTransform_[2].scale_ = Vector3(20.0f, 20.0f, 20.0f);
 	worldTransform_[2].translation_ = { 0.0f,ParPos(14.0f),ParPos(-4.0f) };
 
 	//首
-	//worldTransform_[3].scale_ = Vector3(20.0f, 20.0f, 20.0f);
 	worldTransform_[3].translation_ = { 0.0f,ParPos(15.0f),ParPos(2.0f) };
 	worldTransform_[3].rotation_.x = -90 * PI / 180;
 
-	//worldTransform_[4].scale_ = Vector3(20.0f, 20.0f, 20.0f);
 	worldTransform_[4].translation_ = { 0.0f,ParPos(14.0f),ParPos(4.5f) };
 	worldTransform_[4].rotation_.x = -50 * PI / 180;
 
-	//worldTransform_[5].scale_ = Vector3(20.0f, 20.0f, 20.0f);
 	worldTransform_[5].translation_ = { 0.0f,ParPos(11.5f),ParPos(6.0f) };
 	worldTransform_[5].rotation_.x = 6 * PI / 180;
 
-	//worldTransform_[6].scale_ = Vector3(20.0f, 20.0f, 20.0f);
 	worldTransform_[6].translation_ = { 0.0f,ParPos(8.0f),ParPos(5.0f) }; 
 	worldTransform_[6].rotation_.x = 43 * PI / 180;
 
@@ -360,6 +350,3 @@ void Enemy::BiteMotion()
 		}
 	}
 }
-
-
-
