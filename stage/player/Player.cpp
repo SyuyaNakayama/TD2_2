@@ -238,7 +238,7 @@ void PlayerAttack::Motion()
 {
 	if (!isAttack)
 	{
-		if (Input::GetInstance()->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; }
+		if (Input::GetInstance()->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; isAttacked = false; }
 		else { return; }
 	}
 
@@ -252,6 +252,7 @@ void PlayerAttack::Motion()
 	{
 		ATrot -= 30.0f;
 		isAttack = ATrot > 0.0f;
+		isAttacked = true;
 	}
 
 	playerWorldTransform_->rotation_.x = ATrot * PI / 180.0f;

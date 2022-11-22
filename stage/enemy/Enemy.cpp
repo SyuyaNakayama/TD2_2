@@ -361,5 +361,7 @@ void Enemy::OnCollision(Collider* collider)
 {
 	if (collider->GetCollisionAttribute() != CollisionAttribute::PlayerAttack) { return; }
 	if (!Player::GetInstance()->GetAttack()->IsAttack()) { return; }
+	if (Player::GetInstance()->GetAttack()->IsAttacked()) { return; }
 	hp_--;
+	Player::GetInstance()->GetAttack()->SetIsAttacked(true);
 }

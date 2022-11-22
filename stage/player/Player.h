@@ -14,12 +14,15 @@ private:
 	bool isUp = false;
 	float ATrot = 0.0f;
 	bool isAttack = false;
+	bool isAttacked = false;
 	Vector3 GetPositionFromMatrix4(Matrix4 matWorld) { return Vector3(matWorld.m[3][0], matWorld.m[3][1], matWorld.m[3][2]); }
 
 public:
 	void Initialize(WorldTransform* playerWorldTransform);
 	void Motion();	//UŒ‚‚Ìƒ‚[ƒVƒ‡ƒ“
 	bool IsAttack() { return isAttack; }
+	bool IsAttacked() { return isAttacked; }
+	void SetIsAttacked(bool isAttacked_) { isAttacked = isAttacked_; }
 	void OnCollision(Collider* collider) {}
 	const Vector3 GetWorldPosition() { return GetPositionFromMatrix4(playerWorldTransform_->matWorld_) + Vector3(-3.0f, 0, 0); }
 	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
