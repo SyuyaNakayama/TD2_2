@@ -6,7 +6,6 @@ using namespace std;
 void Stage::Initialize()
 {
 	debugText_ = DebugText::GetInstance();
-	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
 	player_ = Player::GetInstance();
@@ -18,8 +17,6 @@ void Stage::Initialize()
 
 void Stage::Update()
 {
-	// 当たり判定
-	//collisionManager.CheckAllCollisions(&player_, &enemy_);
 #pragma region オブジェクトの更新
 	player_->Update();
 	enemy_.Update();
@@ -28,11 +25,10 @@ void Stage::Update()
 	//}
 	shake_.Update(viewProjection_);
 #pragma endregion
-
+	// 当たり判定
+	collisionManager.CheckAllCollisions(&enemy_);
 #pragma region カメラの更新
 	viewProjection_.UpdateMatrix();
-	debugCamera_->Update();
-	//viewProjection_ = debugCamera_->GetViewProjection();
 #pragma endregion
 }
 
@@ -51,6 +47,5 @@ void Stage::SpriteDraw()
 
 Stage::~Stage()
 {
-	SafeDelete(debugCamera_);
 	SafeDelete(skydome);
 }

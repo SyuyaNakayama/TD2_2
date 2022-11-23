@@ -2,22 +2,24 @@
 #include "WorldTransform.h"
 #include "ViewProjection.h"
 #include "particleManager/ParticleManager.h"
+#include "collider/Collider.h"
 
 /// <summary>
 /// 敵キャラの弾
 /// </summary>
-class Bless {
+class Bless :public Collider
+{
 private:
 	// ワールド変換データ
 	WorldTransform worldTransform_;
 	// 速度
 	Vector3 velocity_;
 	// 寿命<frm>
-	static const int kLifeTime = 60 * 5;
+	static const int kLifeTime = 60;
 	// デスタイマー
 	int dethTimer_ = kLifeTime;
 	// デスフラグ
-	bool isDead_ = false;
+	bool isDead_ = true;
 	ParticleManager particleManager_;
 
 public:
@@ -37,5 +39,7 @@ public:
 	/// 描画
 	/// </summary>
 	void Draw();
+	void OnCollision(Collider* collider) {}
+	const Vector3 GetWorldPosition() { return worldTransform_.translation_; }
+	const Vector3 GetRadius() { return Vector3(5.0f, 5.0f, 5.0f); }
 };
-

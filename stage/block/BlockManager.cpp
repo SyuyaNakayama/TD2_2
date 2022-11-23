@@ -14,10 +14,10 @@ void BlockManager::SetBlocks()
 {
 	for (size_t i = 0; i < 1; i++)
 	{
-		blocks_[Front].Add({ POLE_RAD,0.0f }, { POLE_RAD - 1.0f,1.0f,1.0f });
-		blocks_[Right].Add({ POLE_RAD,0.0f }, { 1.0f,1.0f,POLE_RAD + 1.0f });
-		blocks_[Back].Add({ POLE_RAD,0.0f }, { POLE_RAD - 1.0f,1.0f,1.0f });
-		blocks_[Left].Add({ POLE_RAD,0.0f }, { 1.0f,1.0f,POLE_RAD + 1.0f });
+		blocks_[Front].Add({ POLE_RAD,0.0f });//, { POLE_RAD - 1.0f,1.0f,1.0f });
+		blocks_[Right].Add({ POLE_RAD,0.0f });//, { 1.0f,1.0f,POLE_RAD + 1.0f });
+		blocks_[Back].Add({ POLE_RAD,0.0f });// , { POLE_RAD - 1.0f,1.0f,1.0f });
+		blocks_[Left].Add({ POLE_RAD,0.0f });//, { 1.0f,1.0f,POLE_RAD + 1.0f });
 	}
 }
 

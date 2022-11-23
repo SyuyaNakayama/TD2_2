@@ -29,6 +29,8 @@ void GameScene::Update()
 		sprite_[1]->SetPosition({ 367.0f,500.0f - fabs(sinf(startStringYOffset_)) * 30.0f });
 		break;
 	case HowToPlay:
+		sprite_[1]->SetPosition({ 367.0f,600.0f });
+
 		soundManager_->StopBGM(SoundManager::Title);
 		if (input_->TriggerKey(DIK_SPACE))
 		{
@@ -39,8 +41,7 @@ void GameScene::Update()
 	case Play:
 		stage_.Update();
 		soundManager_->PlayBGM(SoundManager::Play);
-		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Clear); }
-		if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(GameOver); }
+
 		if (Player::GetPlayerHp == 0) { fadeManager_.ChangeScene(GameOver); }
 		if (Enemy::GetEnemyHp == 0) { fadeManager_.ChangeScene(Clear); }
 		break;
@@ -109,6 +110,7 @@ void GameScene::Draw()
 		break;
 	case HowToPlay:
 		sprite_[2]->Draw();
+		sprite_[1]->Draw();
 		break;
 	case Clear:
 		sprite_[3]->Draw();

@@ -47,6 +47,10 @@ void Player::Initialize(ViewProjection* viewProjection)
 	input_ = Input::GetInstance();
 	direction_ = Front;
 	viewProjection_ = viewProjection;
+	SetCollisionAttribute(CollisionAttribute::Player);
+	SetCollisionMask(CollisionMask::Player);
+	hp_ = 10;
+	attack_.Initialize(&worldTransform_[HandRight]);
 
 	for (size_t i = 0; i < modelKnight.size(); i++)
 	{
@@ -88,13 +92,6 @@ void Player::Move()
 		worldTransform_[Root].translation_.z -= horizontalSpd;
 		break;
 	}
-
-	// ジャンプ
-	if (input_->PushKey(DIK_UP))
-	{
-		jamp_.StartJamp(1.5f, 0.1f, 2.0f);
-	}
-	jamp_.Update(worldTransform_[0].translation_.y);
 
 	viewProjection_->eye = viewProjection_->target = worldTransform_[0].translation_;
 	viewProjection_->target.y += 2.0f;
@@ -157,22 +154,38 @@ void Player::Update()
 	if (input_->PushKey(DIK_LEFT)) { LorR = 0; }
 	if (input_->PushKey(DIK_RIGHT)) { LorR = 1; }
 	worldTransform_[Root].rotation_.y = DirectionToRadian();
-	AttackMotion();
+	Vector3 hitOffset = Vector3(0, 0, -3.0f) * Matrix4RotationY(DirectionToRadian());
+	attack_.Motion(hitOffset);
 	WalkMotion();
 	for (WorldTransform& w : worldTransform_) { w.Update(); }
+	
+	if (isHit)
+	{
+		if (drawInterval.CountDown()) { isDraw = !isDraw; }
+		if (hitTimer.CountDown())
+		{
+			isHit = false;
+			isDraw = true;
+		};
+	}
 }
 
 void Player::Draw()
 {
-	for (size_t i = 0; i < modelKnight.size(); i++)
+	if (isDraw)
 	{
-		modelKnight[i]->Draw(worldTransform_[i + 1], *viewProjection_);
+		for (size_t i = 0; i < modelKnight.size(); i++)
+		{
+			modelKnight[i]->Draw(worldTransform_[i + 1], *viewProjection_);
+		}
 	}
 }
 
 void Player::OnCollision(Collider* collider)
 {
-
+	if (isHit) { return; }
+	hp_--;
+	isHit = true;
 }
 
 void Player::WalkMotion()
@@ -196,7 +209,7 @@ void Player::WalkMotion()
 		walkTimer_.Reset();
 	}
 
-	if (!isAttack)// 攻撃モーションと重なってしまうため
+	if (!attack_.IsAttack())// 攻撃モーションと重なってしまうため
 	{
 		worldTransform_[HandLeft].rotation_.x = walkPos * PI / 18;
 		worldTransform_[HandRight].rotation_.x = walkPos * PI / 18;
@@ -207,11 +220,19 @@ void Player::WalkMotion()
 	worldTransform_[FootRight].translation_.z = -walkPos;
 }
 
-void Player::AttackMotion()
+void PlayerAttack::Initialize(WorldTransform* playerWorldTransform)
 {
+	playerWorldTransform_ = playerWorldTransform;
+	SetCollisionAttribute(CollisionAttribute::PlayerAttack);
+	SetCollisionMask(CollisionMask::Player);
+}
+
+void PlayerAttack::Motion(Vector3 hitOffset)
+{
+	hitOffset_ = hitOffset;
 	if (!isAttack)
 	{
-		if (input_->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; }
+		if (Input::GetInstance()->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; isAttacked = false; }
 		else { return; }
 	}
 
@@ -225,7 +246,8 @@ void Player::AttackMotion()
 	{
 		ATrot -= 30.0f;
 		isAttack = ATrot > 0.0f;
+		isAttacked = true;
 	}
 
-	worldTransform_[HandRight].rotation_.x = ATrot * PI / 180.0f;
+	playerWorldTransform_->rotation_.x = ATrot * PI / 180.0f;
 }
