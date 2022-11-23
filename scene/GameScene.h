@@ -28,10 +28,6 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	
-
-	
-
 private: // メンバ変数
 	DirectXCommon* dxCommon_= DirectXCommon::GetInstance();
 	Input* input_ = Input::GetInstance();
@@ -43,7 +39,4 @@ private: // メンバ変数
 	std::vector<Sprite*> sprite_{};
 	float playerBodyRotSpd = 0.06f;
 	float startStringYOffset_ = 0;
-
-	
-	
 };

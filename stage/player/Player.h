@@ -54,7 +54,7 @@ private:
 	Timer hitTimer = 100;
 	bool isDraw = true;
 	Timer drawInterval = 5;
-	int hp_ = 10;
+	int hp_ = 2;
 	uint16_t LorR = 0;// 1 = ‰EŒü‚«,@0 = ¶Œü‚« 
 	float Rot = 0;
 	bool walkFlag = true;
