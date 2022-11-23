@@ -42,6 +42,8 @@ private:
 	bool isOrig = false;
 	uint16_t biteTimer = 30;
 
+
+
 	int hp = 50;
 
 	float origPosY[12] =	{ 0.0f,14.0f, 14.0f, 15.0f, 14.0f,11.5f, 8.0f, 5.5f, 2.2f,  -2.0f, -7.0f, -12.5f };//元の座標
@@ -77,6 +79,8 @@ public:
 	void OnCollision(Collider* collider) {};
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
 	const Vector3 GetRadius() { return worldTransform_[0].scale_; }
+
+	int GetEnemyHp() { return hp; }
 
 	float ParPos(float x) { return x / 20.0f; }//親子関係にすると座標がおかしくなるため
 

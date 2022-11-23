@@ -46,6 +46,8 @@ private:
 	float DirectionToRadian();
 	void WalkMotion();			//歩くモーション
 	void AttackMotion();		//攻撃のモーション
+
+	
 public:
 	static Player* GetInstance();
 
@@ -61,4 +63,5 @@ public:
 	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
 	const Vector3 GetRadius() { return worldTransform_[0].scale_; }
+	int GetPlayerHp() { return hp_; }
 };
