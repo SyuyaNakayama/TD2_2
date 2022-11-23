@@ -42,8 +42,8 @@ void GameScene::Update()
 		stage_.Update();
 		soundManager_->PlayBGM(SoundManager::Play);
 
-		if (Player::GetPlayerHp == 0) { fadeManager_.ChangeScene(GameOver); }
-		if (Enemy::GetEnemyHp == 0) { fadeManager_.ChangeScene(Clear); }
+		if (Player::GetInstance()->GetPlayerHp() == 0) { fadeManager_.ChangeScene(GameOver); }
+		if (Enemy::GetInstance()->GetEnemyHp() == 0) { fadeManager_.ChangeScene(Clear); }
 		break;
 	case Clear:
 		soundManager_->StopBGM(SoundManager::Play);

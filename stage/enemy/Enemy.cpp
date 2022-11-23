@@ -27,6 +27,12 @@ void Enemy::Move()
 	worldTransform_[0].rotation_.y = atan2f(direction.x, direction.z) + PI;
 }
 
+Enemy* Enemy::GetInstance()
+{
+	static Enemy* enemy = new Enemy;
+	return enemy;
+}
+
 void Enemy::Initialize(ViewProjection* viewProjection)
 {
 	input_ = Input::GetInstance();
@@ -78,7 +84,7 @@ void Enemy::SpriteDraw()
 {
 	HpBackUI->SetSize({ 50 * 20.0f,25.0f });
 	HpBackUI->Draw();
-	HpUI->SetSize({  hp * 20.0f,25.0f });
+	HpUI->SetSize({  hp_ * 20.0f,25.0f });
 	HpUI->Draw();
 }
 

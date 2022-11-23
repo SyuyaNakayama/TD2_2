@@ -78,7 +78,12 @@ private:
 	Timer attackInterval = 10;
 	AttackPattern attackPattern = Idle;
 	bool rotStop = false;
+
+	Enemy() = default;
+	~Enemy() = default;
 public:
+	static Enemy* GetInstance();
+
 	void Initialize(ViewProjection* viewProjection);
 	void Update();
 	void Draw();
@@ -89,7 +94,7 @@ public:
 	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
 	Bless* GetBreath() { return &breath_; }
 
-	int GetEnemyHp() { return hp; }
+	int GetEnemyHp() { return hp_; }
 
 	float ParPos(float x) { return x / 20.0f; }//親子関係にすると座標がおかしくなるため
 

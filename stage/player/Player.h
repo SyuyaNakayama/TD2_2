@@ -61,6 +61,7 @@ private:
 	~Player() = default;
 	float DirectionToRadian();
 	void WalkMotion();			//ï‡Ç≠ÉÇÅ[ÉVÉáÉì
+	
 public:
 	enum { Root, Head, Chest, HandLeft, HandRight, FootLeft, FootRight };
 	static Player* GetInstance();
@@ -74,7 +75,7 @@ public:
 	PlayerAttack* GetAttack() { return &attack_; }
 
 	void OnCollision(Collider* collider);
-	const Vector3 GetWorldPosition() { return GetWorldTranslation(worldTransform_[1].matWorld_); }
-	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
 	int GetPlayerHp() { return hp_; }
+	const Vector3 GetWorldPosition() { return GetWorldTranslation(worldTransform_[1].matWorld_); }
+	const Vector3 GetRadius() { return Vector3(2.0f, 3.0f, 3.0f); }
 };
