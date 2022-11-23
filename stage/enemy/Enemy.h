@@ -112,4 +112,6 @@ public:
 	void BiteMotion();			//嚙みつきのモーション
 
 	static void(Enemy::* AttackFunc[])();
+
+	void Finalize();
 };

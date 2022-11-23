@@ -65,4 +65,5 @@ public:
 	int GetPlayerHp() { return hp_; }
 	const Vector3 GetWorldPosition() { return GetWorldTranslation(worldTransform_[1].matWorld_); }
 	const Vector3 GetRadius() { return Vector3(2.0f, 3.0f, 3.0f); }
+	void Finalize();
 };

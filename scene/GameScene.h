@@ -10,7 +10,13 @@
 /// </summary>
 class GameScene {
 public: // メンバ関数
-	~GameScene() { soundManager_->Finalize(); }
+	~GameScene()
+	{
+		for (size_t i = 0; i < sprite_.size(); i++)
+		{
+			SafeDelete(sprite_[i]);
+		}
+	}
 
 	/// <summary>
 	/// 初期化

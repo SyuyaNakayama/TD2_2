@@ -12,4 +12,3 @@ public:
 	void ShakeStart(float shakeStrength);
 	void Update(ViewProjection& viewProjection);
 };
-

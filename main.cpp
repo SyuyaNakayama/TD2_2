@@ -63,6 +63,7 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	}
 
 	// 各種解放
+	Audio::GetInstance()->Finalize();
 	SafeDelete(gameScene);
 
 	// ゲームウィンドウの破棄

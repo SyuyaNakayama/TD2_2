@@ -101,9 +101,6 @@
     <ClCompile Include="particleManager\ParticleManager.cpp">
       <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
-    <ClCompile Include="stage\Jamp.cpp">
-      <Filter>ソース ファイル</Filter>
-    </ClCompile>
     <ClCompile Include="stage\block\Block.cpp">
       <Filter>ソース ファイル\stage</Filter>
     </ClCompile>
@@ -228,9 +225,6 @@
     </ClInclude>
     <ClInclude Include="particleManager\ParticleManager.h">
       <Filter>ヘッダー ファイル\stage</Filter>
-    </ClInclude>
-    <ClInclude Include="stage\Jamp.h">
-      <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
     <ClInclude Include="stage\block\Block.h">
       <Filter>ヘッダー ファイル\stage</Filter>

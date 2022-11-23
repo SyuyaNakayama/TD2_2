@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "./stage/enemy/Enemy.h"
 #include "SoundManager.h"
+#include "SafeDelete.h"
 using namespace MathUtility;
 
 std::vector<std::string> modelName =
@@ -219,6 +220,18 @@ void Player::OnCollision(Collider* collider)
 	isHit = true;
 	shake_.ShakeStart(5.0f);
 	SoundManager::GetInstance()->PlaySE(SoundManager::P_Damage);
+}
+
+void Player::Finalize()
+{
+	SafeDelete(HpUI);
+	SafeDelete(HpBackUI);
+	for (size_t i = 0; i < modelKnight.size(); i++)
+	{
+		SafeDelete(modelKnight[i]);
+	}
+	modelKnight.clear();
+	delete this;
 }
 
 void Player::WalkMotion()

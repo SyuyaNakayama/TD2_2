@@ -24,5 +24,4 @@ public:
 	void PlaySE(SE index);
 	void StopBGM(BGM index);
 	bool IsPlayIng(BGM index) { return audio_->IsPlaying(playHandle_[index]); }
-	void Finalize() { audio_->Finalize(); }
 };

@@ -6,6 +6,7 @@ class Skydome
 public:
 	void Initialize();
 	void Draw(ViewProjection viewProjection);
+	~Skydome() { delete modelSkydome; }
 
 private:
 	WorldTransform worldTransform_;

@@ -12,6 +12,7 @@ private:
 	Direction direction_;
 	float Rot = 0.0f;
 public:
+	~Block() { delete model_; }
 	void Initialize(Direction direction);
 	void Draw(ViewProjection viewProjection);
 	// pos : Še–Ê‚ğ³–Ê‚©‚çŒ©‚½‚Ì¶‰º‚©‚ç‚Ì‹——£

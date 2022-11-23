@@ -1,4 +1,5 @@
 #include "Enemy.h"
+#include "SafeDelete.h"
 
 void(Enemy::* Enemy::AttackFunc[])() =
 {
@@ -423,6 +424,18 @@ void Enemy::BiteMotion()
 			attackPattern = Idle;
 		}
 	}
+}
+
+void Enemy::Finalize()
+{
+	SafeDelete(HpUI);
+	SafeDelete(HpBackUI);
+	for (size_t i = 0; i < modelNum; i++)
+	{
+		SafeDelete(modelDoragon[i]);
+	}
+	
+	delete this;
 }
 
 void Enemy::OnCollision(Collider* collider)

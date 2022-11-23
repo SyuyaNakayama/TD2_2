@@ -30,10 +30,7 @@ void GameScene::Update()
 	case HowToPlay:
 		sprite_[1]->SetPosition({ 367.0f,600.0f });
 
-		while(soundManager_->IsPlayIng(SoundManager::Title))
-		{
-			soundManager_->StopBGM(SoundManager::Title);
-		}
+		soundManager_->StopBGM(SoundManager::Title);
 		if (input_->TriggerKey(DIK_SPACE))
 		{
 			fadeManager_.ChangeScene(Play);

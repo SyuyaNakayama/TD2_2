@@ -44,4 +44,6 @@ void Stage::SpriteDraw()
 Stage::~Stage()
 {
 	SafeDelete(skydome);
+	player_->Finalize();
+	enemy_->Finalize();
 }
