@@ -174,6 +174,8 @@ void Player::Update()
 			isDraw = true;
 		};
 	}
+	
+	shake_.Update(*viewProjection_);
 }
 
 void Player::Draw()
@@ -206,6 +208,7 @@ void Player::OnCollision(Collider* collider)
 	if (isHit) { return; }
 	hp_--;
 	isHit = true;
+	shake_.ShakeStart(5.0f);
 }
 
 void Player::WalkMotion()

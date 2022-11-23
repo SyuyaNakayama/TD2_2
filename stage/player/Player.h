@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "scene.h"
 #include "timer/Timer.h"
+#include "./stage/Shake.h"
 
 class PlayerAttack :public Collider
 {
@@ -49,6 +50,7 @@ private:
 	Vector3 larpVec[2]{};
 	Timer walkTimer_ = 10;
 	PlayerAttack attack_;
+	Shake shake_;
 
 	bool isHit = false; // false‚Ì‚Æ‚«‚É“–‚½‚è”»’è‚ª”­¶
 	Timer hitTimer = 100;
