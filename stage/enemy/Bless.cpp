@@ -17,6 +17,8 @@ void Bless::Initialize(const Vector3& position, const Vector3 velocity, ViewProj
 
 	SetCollisionAttribute(CollisionAttribute::EnemyBreath);
 	SetCollisionMask(CollisionMask::EnemyBreath);
+
+	isDead_ = false;
 }
 
 /// <summary>
@@ -35,7 +37,11 @@ void Bless::Update()
 	worldTransform_.Update();
 
 	// ŽžŠÔŒo‰ß‚ÅƒfƒX
-	if (--dethTimer_ <= 0) { isDead_ = true; }
+	if (--dethTimer_ <= 0)
+	{
+		isDead_ = true;
+		dethTimer_ = kLifeTime;
+	}
 }
 
 /// <summary>

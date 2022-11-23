@@ -31,7 +31,6 @@ void Stage::Update()
 #pragma region ƒJƒƒ‰‚ÌXV
 	viewProjection_.UpdateMatrix();
 	debugCamera_->Update();
-	//viewProjection_ = debugCamera_->GetViewProjection();
 #pragma endregion
 }
 

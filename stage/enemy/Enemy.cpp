@@ -47,7 +47,6 @@ void Enemy::Initialize(ViewProjection* viewProjection)
 	worldTransform_[0].scale_ = { 20.0f,20.0f,20.0f };
 	// ブレスの初期化
 	viewProjection_ = viewProjection;
-	breath_.Initialize(worldTransform_[0].translation_, { 0,0,0 }, viewProjection_);
 }
 
 void Enemy::Update()
@@ -128,7 +127,7 @@ void Enemy::ParentUpdate()
 	case Enemy::Idle:
 		if (attackInterval.CountDown())
 		{
-			int pattern = rand() % 2;
+			int pattern = rand() % 1;
 			if (pattern == 0) { attackPattern = Enemy::Breath; }
 			else { attackPattern = Enemy::Bite; }
 			attackInterval = rand() % 120 + 30;
@@ -186,7 +185,7 @@ void Enemy::StandbyMotion()
 
 void Enemy::BreathMotion()
 {
-
+	static Vector3 direction{};
 	//溜めるモーション
 	if (isCharge == true)
 	{
@@ -210,6 +209,8 @@ void Enemy::BreathMotion()
 			breathTimer = 20;//ここは20
 			isStop1 = true;
 			isCharge = false;
+			direction = player_->GetWorldPosition() - GetWorldPosition();
+			direction.normalize();
 		}
 
 	}
@@ -247,6 +248,7 @@ void Enemy::BreathMotion()
 		if (breathTimer <= 0.0f)
 		{
 			breathTimer = 20;//ここは20
+			breath_.Initialize(GetWorldTranslation(worldTransform_[1].matWorld_), direction, viewProjection_);
 			isBreath = false;
 			isStop2 = true;
 		}

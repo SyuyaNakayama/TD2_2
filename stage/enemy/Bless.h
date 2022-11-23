@@ -15,11 +15,11 @@ private:
 	// 速度
 	Vector3 velocity_;
 	// 寿命<frm>
-	static const int kLifeTime = 60 * 5;
+	static const int kLifeTime = 60;
 	// デスタイマー
 	int dethTimer_ = kLifeTime;
 	// デスフラグ
-	bool isDead_ = false;
+	bool isDead_ = true;
 	ParticleManager particleManager_;
 
 public:
