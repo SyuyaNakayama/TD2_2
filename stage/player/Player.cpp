@@ -194,9 +194,9 @@ void Player::SetUIPosition()
 
 void Player::SpriteDraw()
 {
-	HpBackUI->SetSize({ 20.0f*8.0f,15.0f });
+	HpBackUI->SetSize({ 10.0f*16.0f,15.0f });
 	HpBackUI->Draw();
-	HpUI->SetSize({ hp_* 8.0f,15.0f });
+	HpUI->SetSize({ hp_* 16.0f,15.0f });
 	HpUI->Draw();
 }
 
