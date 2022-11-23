@@ -7,8 +7,9 @@ void SoundManager::Initialize()
 	audio_->Initialize();
 	bgm_.push_back(audio_->LoadWave("sound/bgm/Title.mp3"));
 	bgm_.push_back(audio_->LoadWave("sound/bgm/BattleMusic.mp3"));
+	bgm_.push_back(audio_->LoadWave("sound/bgm/Clear3.mp3"));
 	bgm_.push_back(audio_->LoadWave("sound/bgm/GameOver.mp3"));
-	bgm_.push_back(audio_->LoadWave("sound/bgm/Clear1.mp3"));
+	
 
 	se_.push_back(audio_->LoadWave("sound/se/PlayerJump.mp3"));
 	se_.push_back(audio_->LoadWave("sound/se/PlayerDamage.mp3"));

@@ -11,6 +11,7 @@ void GameScene::Initialize()
 	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/HowToPlay.png"), {}));
 	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/Clear.png"), {}));
 	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/GameOver.png"), {}));
+	soundManager_->Initialize();
 }
 
 void GameScene::Update()
@@ -20,11 +21,15 @@ void GameScene::Update()
 	switch (scene_)
 	{
 	case Title:
+		soundManager_->StopBGM(SoundManager::Clear);
+		soundManager_->StopBGM(SoundManager::GameOver);
+		soundManager_->PlayBGM(SoundManager::Title);
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(HowToPlay); }
 		startStringYOffset_ += 0.04f;
 		sprite_[1]->SetPosition({ 367.0f,500.0f - fabs(sinf(startStringYOffset_)) * 30.0f });
 		break;
 	case HowToPlay:
+		soundManager_->StopBGM(SoundManager::Title);
 		if (input_->TriggerKey(DIK_SPACE))
 		{
 			fadeManager_.ChangeScene(Play);
@@ -33,11 +38,13 @@ void GameScene::Update()
 		break;
 	case Play:
 		stage_.Update();
-		//soundManager_->PlayBGM(SoundManager::Play);
+		soundManager_->PlayBGM(SoundManager::Play);
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Clear); }
 		if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(GameOver); }
 		break;
 	case Clear:
+		soundManager_->StopBGM(SoundManager::Play);
+		soundManager_->PlayBGM(SoundManager::Clear);
 		pw = Player::GetInstance()->GetWorldTransforms();
 		pw[0].translation_ = { 0,0,0 };
 		pw[0].rotation_.y = 0;
@@ -55,14 +62,16 @@ void GameScene::Update()
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Title); }
 		break;
 	case GameOver:
-			pw = Player::GetInstance()->GetWorldTransforms();
-			pw[0].translation_ = { 0,0,0 };
-			pw[0].rotation_.y = 0;
-			pw[1].rotation_.x = -PI / 4.0f;
-			for (WorldTransform& w : pw) { w.Update(); }
-			Player::GetInstance()->SetWorldTransforms(pw);
-			stage_.SetEye({ 0,2.5f,-15.0f });
-			stage_.SetTarget({ 0,2.5f,0 });
+		soundManager_->StopBGM(SoundManager::Play);
+		soundManager_->PlayBGM(SoundManager::GameOver);
+		pw = Player::GetInstance()->GetWorldTransforms();
+		pw[0].translation_ = { 0,0,0 };
+		pw[0].rotation_.y = 0;
+		pw[1].rotation_.x = -PI / 4.0f;
+		for (WorldTransform& w : pw) { w.Update(); }
+		Player::GetInstance()->SetWorldTransforms(pw);
+		stage_.SetEye({ 0,2.5f,-15.0f });
+		stage_.SetTarget({ 0,2.5f,0 });
 
 		if (input_->TriggerKey(DIK_SPACE))
 		{
