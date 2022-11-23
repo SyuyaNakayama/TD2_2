@@ -156,7 +156,16 @@ void GameScene::Draw()
 	fadeManager_.Draw();
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
-
+	
+	switch (scene_)
+	{
+	case Play:
+		stage_.SpriteDraw();
+		break;
+	case Clear:
+	case GameOver:
+		break;
+	}
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

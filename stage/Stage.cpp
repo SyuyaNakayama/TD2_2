@@ -44,6 +44,11 @@ void Stage::Draw()
 	enemy_.Draw();
 }
 
+void Stage::SpriteDraw()
+{
+	enemy_.SpriteDraw();
+};
+
 Stage::~Stage()
 {
 	SafeDelete(debugCamera_);

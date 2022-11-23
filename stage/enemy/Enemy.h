@@ -11,6 +11,10 @@ private:
 	const static uint16_t modelNum = 12;
 	WorldTransform worldTransform_[modelNum] = {};
 	Model* modelDoragon[modelNum] = {};
+	uint32_t textureHP_ = 0;
+	Sprite* HpUI = nullptr;
+	uint32_t textureHPback_ = 0;
+	Sprite* HpBackUI = nullptr;
 	uint32_t texture_ = 0;
 	Input* input_ = nullptr;
 	DebugText* debugText_ = nullptr;
@@ -68,6 +72,7 @@ public:
 	void Initialize(ViewProjection* viewProjection);
 	void Update();
 	void Draw();
+	void SpriteDraw();
 
 	void OnCollision(Collider* collider) {};
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }
