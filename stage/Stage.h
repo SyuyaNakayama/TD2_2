@@ -25,6 +25,7 @@ public:
 	void Initialize();
 	void Update();
 	void Draw();
+	void SpriteDraw();
 	void SetEye(Vector3 eye) { viewProjection_.eye = eye; viewProjection_.UpdateMatrix(); }
 	void SetTarget(Vector3 target) { viewProjection_.target = target; viewProjection_.UpdateMatrix(); }
 };

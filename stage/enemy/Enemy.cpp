@@ -11,6 +11,10 @@ void Enemy::Initialize(ViewProjection* viewProjection)
 	modelDoragon[0] = Model::CreateFromOBJ("Doragon", true);
 	modelDoragon[1] = Model::CreateFromOBJ("Doragon_Head", true);	//“ª
 	modelDoragon[2] = Model::CreateFromOBJ("Doragon_Jaw", true);	//Š{
+	textureHP_ = TextureManager::Load("green.png");
+	HpUI = Sprite::Create(textureHP_, { 150.0f,5.0f });
+	textureHPback_ = TextureManager::Load("gray.png");
+	HpBackUI = Sprite::Create(textureHPback_, { 150.0f,5.0f });
 	//Žñ
 	for (int i = 3; i < modelNum; i++)
 	{
@@ -38,6 +42,14 @@ void Enemy::Draw()
 		modelDoragon[i]->Draw(worldTransform_[i], *viewProjection_);
 	}
 	breath_.Draw();
+}
+
+void Enemy::SpriteDraw()
+{
+	HpBackUI->SetSize({ 50 * 20.0f,25.0f });
+	HpBackUI->Draw();
+	HpUI->SetSize({  hp * 20.0f,25.0f });
+	HpUI->Draw();
 }
 
 void Enemy::ParentInitialize()
