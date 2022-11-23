@@ -1,6 +1,5 @@
 #include "Vector3.h"
 #include <math.h>
-#include "DebugText.h"
 #include "MathUtility.h"
 using namespace MathUtility;
 

@@ -47,7 +47,6 @@ void Player::Initialize(ViewProjection* viewProjection)
 	HpUI = Sprite::Create(textureHP_, { 150.0f,50.0f });
 	textureHPback_ = TextureManager::Load("gray.png");
 	HpBackUI = Sprite::Create(textureHPback_, { 150.0f,50.0f });
-	debugText_ = DebugText::GetInstance();
 	worldTransform_.resize(7);
 	modelKnight.resize(worldTransform_.size() - 1);
 	input_ = Input::GetInstance();

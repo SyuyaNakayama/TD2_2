@@ -6,7 +6,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	DirectXCommon* dxCommon = nullptr;
 	// 汎用機能
 	Input* input = nullptr;
-	DebugText* debugText = nullptr;
 	GameScene* gameScene = nullptr;
 
 	// ゲームウィンドウの作成
@@ -31,10 +30,6 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 
 	// スプライト静的初期化
 	Sprite::StaticInitialize(dxCommon->GetDevice(), WinApp::kWindowWidth, WinApp::kWindowHeight);
-
-	// デバッグテキスト初期化
-	debugText = DebugText::GetInstance();
-	debugText->Initialize();
 
 	// 3Dモデル静的初期化
 	Model::StaticInitialize();

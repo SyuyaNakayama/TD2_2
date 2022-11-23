@@ -158,8 +158,6 @@ void GameScene::Draw()
 
 	if (scene_ == Play) { stage_.SpriteDraw(); }
 	fadeManager_.Draw();
-	// デバッグテキストの描画
-	debugText_->DrawAll(commandList);
 
 	// スプライト描画後処理
 	Sprite::PostDraw();

@@ -120,7 +120,6 @@
     <ClCompile Include="timer\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="2d\DebugText.h" />
     <ClInclude Include="2d\Sprite.h" />
     <ClInclude Include="3d\CircleShadow.h" />
     <ClInclude Include="3d\DirectionalLight.h" />

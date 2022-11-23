@@ -32,7 +32,6 @@ private: // メンバ変数
 	Input* input_ = Input::GetInstance();
 	SoundManager* soundManager_ = SoundManager::GetInstance();
 	Stage stage_;
-	DebugText* debugText_ = DebugText::GetInstance();
 	Scene scene_ = Title;
 	FadeManager fadeManager_;
 	std::vector<Sprite*> sprite_{};

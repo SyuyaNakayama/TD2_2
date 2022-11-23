@@ -2,7 +2,7 @@
 #include "collider/Collider.h"
 #include "Model.h"
 #include "Input.h"
-#include "DebugText.h"
+#include "Sprite.h"
 #include "Bless.h"
 #include "./stage/player/Player.h"
 #include "SoundManager.h"
@@ -23,7 +23,6 @@ private:
 	Sprite* HpBackUI = nullptr;
 	uint32_t texture_ = 0;
 	Input* input_ = nullptr;
-	DebugText* debugText_ = nullptr;
 	float Rot = 0.0f;
 	float y = 0.0f;
 	float z = 0.0f;

@@ -36,7 +36,6 @@ Enemy* Enemy::GetInstance()
 void Enemy::Initialize(ViewProjection* viewProjection)
 {
 	input_ = Input::GetInstance();
-	debugText_ = DebugText::GetInstance();
 	SetCollisionAttribute(CollisionAttribute::Enemy);
 	SetCollisionMask(CollisionMask::Enemy);
 	hp_ = 50;
@@ -75,9 +74,6 @@ void Enemy::Update()
 	ParentUpdate();
 	breath_.Update();
 	isDamage = false;
-
-	debugText_->SetPos(0, 0);
-	debugText_->Printf("%d", hp_);
 }
 
 void Enemy::Draw()

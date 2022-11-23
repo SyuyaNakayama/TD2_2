@@ -166,9 +166,6 @@
     <ClInclude Include="3d\SpotLight.h">
       <Filter>ヘッダー ファイル\3d</Filter>
     </ClInclude>
-    <ClInclude Include="2d\DebugText.h">
-      <Filter>ヘッダー ファイル\2d</Filter>
-    </ClInclude>
     <ClInclude Include="2d\Sprite.h">
       <Filter>ヘッダー ファイル\2d</Filter>
     </ClInclude>

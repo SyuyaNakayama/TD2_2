@@ -1,17 +1,16 @@
 #pragma once
 #include "Input.h"
-#include "DebugText.h"
 #include "../stage/Jamp.h"
 #include "Model.h"
 #include "scene.h"
 #include "timer/Timer.h"
 #include "./stage/Shake.h"
 #include "PlayerAttack.h"
+#include "Sprite.h"
 
 class Player :public Collider
 {
 private:
-	DebugText* debugText_ = DebugText::GetInstance();
 	std::vector<WorldTransform> worldTransform_;
 	std::vector<Model*> modelKnight;
 	ViewProjection* viewProjection_ = nullptr;
