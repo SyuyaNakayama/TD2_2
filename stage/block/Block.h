@@ -10,6 +10,7 @@ private:
 	std::vector<WorldTransform> worldTransforms_;
 	Model* model_ = nullptr;
 	Direction direction_;
+	float Rot = 0.0f;
 public:
 	void Initialize(Direction direction);
 	void Draw(ViewProjection viewProjection);
