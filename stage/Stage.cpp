@@ -6,7 +6,6 @@ using namespace std;
 void Stage::Initialize()
 {
 	debugText_ = DebugText::GetInstance();
-	debugCamera_ = new DebugCamera(WinApp::kWindowWidth, WinApp::kWindowHeight);
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
 	player_ = Player::GetInstance();
@@ -30,7 +29,6 @@ void Stage::Update()
 	collisionManager.CheckAllCollisions(&enemy_);
 #pragma region ƒJƒƒ‰‚ÌXV
 	viewProjection_.UpdateMatrix();
-	debugCamera_->Update();
 #pragma endregion
 }
 
@@ -44,6 +42,5 @@ void Stage::Draw()
 
 Stage::~Stage()
 {
-	SafeDelete(debugCamera_);
 	SafeDelete(skydome);
 }
