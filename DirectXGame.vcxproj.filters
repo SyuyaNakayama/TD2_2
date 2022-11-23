@@ -131,6 +131,9 @@
     <ClCompile Include="audio\SoundManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="stage\player\PlayerAttack.cpp">
+      <Filter>ソース ファイル\stage</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="3d\ViewProjection.h">
@@ -261,6 +264,9 @@
     </ClInclude>
     <ClInclude Include="stage\enemy\Bless.h">
       <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="stage\player\PlayerAttack.h">
+      <Filter>ヘッダー ファイル\stage</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -15,7 +15,7 @@ private:
 	const SoundManager& operator=(const SoundManager&) = delete;
 public:
 	enum BGM { Title, Play, Clear, GameOver };
-	enum SE { P_Jamp, P_Damage, E_Bite, E_Breath, E_Damage };
+	enum SE { P_Attack, P_Damage, E_Bite, E_Breath, E_Damage };
 
 	static SoundManager* GetInstance();
 

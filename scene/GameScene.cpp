@@ -11,7 +11,6 @@ void GameScene::Initialize()
 	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/HowToPlay.png"), {}));
 	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/Clear.png"), {}));
 	sprite_.push_back(Sprite::Create(TextureManager::Load("sceneSprite/GameOver.png"), {}));
-	soundManager_->Initialize();
 }
 
 void GameScene::Update()
@@ -46,6 +45,7 @@ void GameScene::Update()
 		if (Enemy::GetInstance()->GetEnemyHp() == 0) { fadeManager_.ChangeScene(Clear); }
 		break;
 	case Clear:
+		Player::GetInstance()->SetIsDraw(true);
 		soundManager_->StopBGM(SoundManager::Play);
 		soundManager_->PlayBGM(SoundManager::Clear);
 		pw = Player::GetInstance()->GetWorldTransforms();
@@ -68,6 +68,7 @@ void GameScene::Update()
 		soundManager_->StopBGM(SoundManager::Play);
 		soundManager_->PlayBGM(SoundManager::GameOver);
 		pw = Player::GetInstance()->GetWorldTransforms();
+		pw[4].rotation_.x = 0;
 		pw[0].translation_ = { 0,0,0 };
 		pw[0].rotation_.y = 0;
 		pw[1].rotation_.x = -PI / 4.0f;
@@ -155,19 +156,11 @@ void GameScene::Draw()
 	/// ここに前景スプライトの描画処理を追加できる
 	/// </summary>
 
+	if (scene_ == Play) { stage_.SpriteDraw(); }
 	fadeManager_.Draw();
 	// デバッグテキストの描画
 	debugText_->DrawAll(commandList);
-	
-	switch (scene_)
-	{
-	case Play:
-		stage_.SpriteDraw();
-		break;
-	case Clear:
-	case GameOver:
-		break;
-	}
+
 	// スプライト描画後処理
 	Sprite::PostDraw();
 

@@ -5,6 +5,7 @@
 #include "DebugText.h"
 #include "Bless.h"
 #include "./stage/player/Player.h"
+#include "SoundManager.h"
 
 float DirectionToRadian(Direction direction);
 
@@ -27,6 +28,7 @@ private:
 	float y = 0.0f;
 	float z = 0.0f;
 	bool isStandby = true;
+	SoundManager* soundManager = SoundManager::GetInstance();
 
 	float standbyRot = 0.0f;
 	bool isUp = false;
@@ -109,6 +111,6 @@ public:
 	void BreathMotion();		//ブレスのモーション
 
 	void BiteMotion();			//嚙みつきのモーション
-	
+
 	static void(Enemy::* AttackFunc[])();
 };

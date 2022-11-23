@@ -1,5 +1,4 @@
 #pragma once
-#include "collider/Collider.h"
 #include "Input.h"
 #include "DebugText.h"
 #include "../stage/Jamp.h"
@@ -7,27 +6,7 @@
 #include "scene.h"
 #include "timer/Timer.h"
 #include "./stage/Shake.h"
-
-class PlayerAttack :public Collider
-{
-private:
-	WorldTransform* playerWorldTransform_ = nullptr;
-	bool isUp = false;
-	float ATrot = 0.0f;
-	bool isAttack = false;
-	bool isAttacked = false;
-	Vector3 hitOffset_{};
-
-public:
-	void Initialize(WorldTransform* playerWorldTransform);
-	void Motion(Vector3 hitOffset);	//攻撃のモーション
-	bool IsAttack() { return isAttack; }
-	bool IsAttacked() { return isAttacked; }
-	void SetIsAttacked(bool isAttacked_) { isAttacked = isAttacked_; }
-	void OnCollision(Collider* collider) {}
-	const Vector3 GetWorldPosition() { return GetWorldTranslation(playerWorldTransform_->matWorld_) + hitOffset_; }
-	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
-};
+#include "PlayerAttack.h"
 
 class Player :public Collider
 {
@@ -67,7 +46,7 @@ private:
 	~Player() = default;
 	float DirectionToRadian();
 	void WalkMotion();			//歩くモーション
-	
+
 public:
 	enum { Root, Head, Chest, HandLeft, HandRight, FootLeft, FootRight };
 	static Player* GetInstance();
@@ -81,6 +60,7 @@ public:
 	void SetWorldTransforms(std::vector<WorldTransform> worldTransforms) { worldTransform_ = worldTransforms; }
 	void SetUIPosition();
 	PlayerAttack* GetAttack() { return &attack_; }
+	void SetIsDraw(bool isdraw) { isDraw = isdraw; }
 
 	void OnCollision(Collider* collider);
 	int GetPlayerHp() { return hp_; }

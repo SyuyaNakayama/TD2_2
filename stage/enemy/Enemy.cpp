@@ -50,13 +50,6 @@ void Enemy::Initialize(ViewProjection* viewProjection)
 	isOrig = false;
 	biteTimer = 30;
 
-	for (size_t i = 0; i < 12; i++)
-	{
-		diffPosY[i] = {};
-		diffPosZ[i] = {};
-		diffRotX[i] = {};
-	}
-
 	modelDoragon[0] = Model::CreateFromOBJ("Doragon", true);
 	modelDoragon[1] = Model::CreateFromOBJ("Doragon_Head", true);	//“ª
 	modelDoragon[2] = Model::CreateFromOBJ("Doragon_Jaw", true);	//Š{
@@ -165,7 +158,7 @@ void Enemy::ParentUpdate()
 	case Enemy::Idle:
 		if (attackInterval.CountDown())
 		{
-			int pattern = 0;//rand() % 2;
+			int pattern = rand() % 2;
 			if (pattern == 0) { attackPattern = Enemy::Breath; }
 			else { attackPattern = Enemy::Bite; }
 			attackInterval = rand() % 120 + 30;
@@ -289,6 +282,7 @@ void Enemy::BreathMotion()
 			breath_.Initialize(GetWorldTranslation(worldTransform_[1].matWorld_), direction, viewProjection_);
 			isBreath = false;
 			isStop2 = true;
+			soundManager->PlaySE(SoundManager::E_Breath);
 		}
 	}
 
@@ -368,6 +362,7 @@ void Enemy::BiteMotion()
 			biteTimer = 20;//‚±‚±‚Í20
 			isBite = true;
 			isStop3 = false;
+			soundManager->PlaySE(SoundManager::E_Bite);
 		}
 	}
 
@@ -439,7 +434,9 @@ void Enemy::OnCollision(Collider* collider)
 	if (collider->GetCollisionAttribute() != CollisionAttribute::PlayerAttack) { return; }
 	if (!player_->GetAttack()->IsAttack()) { return; }
 	if (player_->GetAttack()->IsAttacked()) { return; }
+	if (hp_ <= 0) { return; }
 	hp_--;
 	player_->GetAttack()->SetIsAttacked(true);
 	isDamage = true;
+	for (size_t i = 0; i < 8; i++) { soundManager->PlaySE(SoundManager::E_Damage); }
 }

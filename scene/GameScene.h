@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include "SoundManager.h"
 #include "DirectXCommon.h"
 #include "SafeDelete.h"

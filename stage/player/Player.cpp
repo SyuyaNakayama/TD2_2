@@ -1,4 +1,6 @@
 #include "Player.h"
+#include "./stage/enemy/Enemy.h"
+#include "SoundManager.h"
 using namespace MathUtility;
 
 std::vector<std::string> modelName =
@@ -53,7 +55,7 @@ void Player::Initialize(ViewProjection* viewProjection)
 	viewProjection_ = viewProjection;
 	SetCollisionAttribute(CollisionAttribute::Player);
 	SetCollisionMask(CollisionMask::Player);
-	hp_ = 1;
+	hp_ = 10;
 	attack_.Initialize(&worldTransform_[HandRight]);
 	isHit = false;
 	isDraw = true;
@@ -83,7 +85,7 @@ void Player::Move()
 	float horizontalSpd = (input_->PushKey(DIK_RIGHT) - input_->PushKey(DIK_LEFT)) * 0.5f;
 
 	// à⁄ìÆ
-	if (hp_ > 0)
+	if (hp_ > 0&& Enemy::GetInstance()->GetEnemyHp() > 0)
 	{
 		switch (direction_)
 		{
@@ -160,17 +162,17 @@ void Player::Update()
 {
 	Move();
 	// ç∂âEÇÃîªíË
-	if (hp_ > 0)
+	if (hp_ > 0 && Enemy::GetInstance()->GetEnemyHp() > 0)
 	{
 		if (input_->PushKey(DIK_LEFT)) { LorR = 0; }
 		if (input_->PushKey(DIK_RIGHT)) { LorR = 1; }
 	}
 	worldTransform_[Root].rotation_.y = DirectionToRadian();
 	Vector3 hitOffset = Vector3(0, 0, -3.0f) * Matrix4RotationY(DirectionToRadian());
-	if (hp_ > 0) 
+	if (hp_ > 0)
 	{
 		attack_.Motion(hitOffset);
-		WalkMotion();
+		if (Enemy::GetInstance()->GetEnemyHp() > 0) { WalkMotion(); }
 	}
 	SetUIPosition();
 	for (WorldTransform& w : worldTransform_) { w.Update(); }
@@ -213,10 +215,11 @@ void Player::SpriteDraw()
 
 void Player::OnCollision(Collider* collider)
 {
-	if (isHit) { return; }
+	if (isHit || hp_ <= 0 || Enemy::GetInstance()->GetEnemyHp() <= 0) { return; }
 	hp_--;
 	isHit = true;
 	shake_.ShakeStart(5.0f);
+	SoundManager::GetInstance()->PlaySE(SoundManager::P_Damage);
 }
 
 void Player::WalkMotion()
@@ -249,36 +252,4 @@ void Player::WalkMotion()
 	// ÉÇÅ[ÉVÉáÉìÇîΩâf
 	worldTransform_[FootLeft].translation_.z = walkPos;
 	worldTransform_[FootRight].translation_.z = -walkPos;
-}
-
-void PlayerAttack::Initialize(WorldTransform* playerWorldTransform)
-{
-	playerWorldTransform_ = playerWorldTransform;
-	SetCollisionAttribute(CollisionAttribute::PlayerAttack);
-	SetCollisionMask(CollisionMask::Player);
-}
-
-void PlayerAttack::Motion(Vector3 hitOffset)
-{
-	hitOffset_ = hitOffset;
-	if (!isAttack)
-	{
-		if (Input::GetInstance()->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; isAttacked = false; }
-		else { return; }
-	}
-
-	if (isUp)// êUÇËè„Ç∞ÇÈ
-	{
-		ATrot += 20.0f;
-		// ê^è„Ç‹Ç≈âEéËÇè„Ç∞ÇΩÇÁ
-		isUp = ATrot < 180;
-	}
-	if (!isUp) // êUÇËâ∫Ç∞ÇÈ
-	{
-		ATrot -= 30.0f;
-		isAttack = ATrot > 0.0f;
-		isAttacked = true;
-	}
-
-	playerWorldTransform_->rotation_.x = ATrot * PI / 180.0f;
 }

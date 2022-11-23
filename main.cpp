@@ -17,6 +17,8 @@ int WINAPI WinMain(HINSTANCE, HINSTANCE, LPSTR, int) {
 	dxCommon = DirectXCommon::GetInstance();
 	dxCommon->Initialize(win);
 
+	SoundManager::GetInstance()->Initialize();
+
 	srand(time(NULL));
 #pragma region 汎用機能初期化
 	// 入力の初期化

@@ -9,9 +9,8 @@ void SoundManager::Initialize()
 	bgm_.push_back(audio_->LoadWave("sound/bgm/BattleMusic.mp3"));
 	bgm_.push_back(audio_->LoadWave("sound/bgm/Clear3.mp3"));
 	bgm_.push_back(audio_->LoadWave("sound/bgm/GameOver.mp3"));
-	
 
-	se_.push_back(audio_->LoadWave("sound/se/PlayerJump.mp3"));
+	se_.push_back(audio_->LoadWave("sound/se/PlayerAttack.mp3"));
 	se_.push_back(audio_->LoadWave("sound/se/PlayerDamage.mp3"));
 	se_.push_back(audio_->LoadWave("sound/se/Bite.mp3"));
 	se_.push_back(audio_->LoadWave("sound/se/Breath.mp3"));
@@ -22,12 +21,12 @@ void SoundManager::Initialize()
 void SoundManager::PlayBGM(BGM index)
 {
 	if (audio_->IsPlaying(playHandle_[index])) { return; }
-	//playHandle_[index] = audio_->PlayWave(bgm_[index], true, 0.6f);
+	playHandle_[index] = audio_->PlayWave(bgm_[index], true, 0.2f);
 }
 
 void SoundManager::PlaySE(SE index)
 {
-	audio_->PlayWave(se_[index]);
+	audio_->PlayWave(se_[index], false, 1.0f);
 }
 
 void SoundManager::StopBGM(BGM index)
@@ -38,6 +37,5 @@ void SoundManager::StopBGM(BGM index)
 SoundManager* SoundManager::GetInstance()
 {
 	static SoundManager* instance = new SoundManager;
-	instance->Initialize();
 	return instance;
 }
