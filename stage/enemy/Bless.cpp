@@ -24,6 +24,7 @@ void Bless::Initialize(const Vector3& position, const Vector3 velocity, ViewProj
 /// </summary>
 void Bless::Update()
 {
+	if (isDead_) { return; }
 	// 座標を移動させる (1フレーム分の移動量を足しこむ)
 	worldTransform_.translation_ += velocity_;
 
@@ -34,9 +35,7 @@ void Bless::Update()
 	worldTransform_.Update();
 
 	// 時間経過でデス
-	if (--dethTimer_ <= 0) {
-		isDead_ = true;
-	}
+	if (--dethTimer_ <= 0) { isDead_ = true; }
 }
 
 /// <summary>
@@ -44,5 +43,6 @@ void Bless::Update()
 /// </summary>
 void Bless::Draw()
 {
+	if (isDead_) { return; }
 	particleManager_.Draw();
 }

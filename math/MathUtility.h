@@ -78,3 +78,5 @@ namespace MathUtility {
 	float Lerp(float a, float b, float t);
 
 } // namespace MathUtility
+
+Vector3 GetWorldTranslation(Matrix4 matWorld);

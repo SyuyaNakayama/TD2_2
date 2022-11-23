@@ -4,10 +4,15 @@
 #include "Input.h"
 #include "DebugText.h"
 #include "Bless.h"
+#include "./stage/player/Player.h"
+
+float DirectionToRadian(Direction direction);
 
 class Enemy :public Collider
 {
 private:
+	enum AttackPattern { Idle, Breath, Bite };
+
 	const static uint16_t modelNum = 12;
 	WorldTransform worldTransform_[modelNum] = {};
 	Model* modelDoragon[modelNum] = {};
@@ -64,14 +69,19 @@ private:
 	void Move();
 	// ブレス
 	Bless breath_;
+	Player* player_ = Player::GetInstance();
+
+	Timer attackInterval = 10;
+	AttackPattern attackPattern = Idle;
+	bool rotStop = false;
 public:
 	void Initialize(ViewProjection* viewProjection);
 	void Update();
 	void Draw();
 
 	void OnCollision(Collider* collider);
-	const Vector3 GetWorldPosition() { return Vector3(worldTransform_[1].matWorld_.m[3][0], worldTransform_[1].matWorld_.m[3][1], worldTransform_[1].matWorld_.m[3][2] - 5.0f); }
-	const Vector3 GetRadius() { return Vector3(3.0f, 5.0f, 5.0f); }
+	const Vector3 GetWorldPosition() { return GetWorldTranslation(worldTransform_[1].matWorld_) + Vector3(0, 0, -5.0f) * MathUtility::Matrix4RotationY((DirectionToRadian(player_->GetDirection()))); }
+	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
 	Bless* GetBreath() { return &breath_; }
 
 	float ParPos(float x) { return x / 20.0f; }//親子関係にすると座標がおかしくなるため
@@ -85,5 +95,6 @@ public:
 	void BreathMotion();		//ブレスのモーション
 
 	void BiteMotion();			//嚙みつきのモーション
-
+	
+	static void(Enemy::* AttackFunc[])();
 };

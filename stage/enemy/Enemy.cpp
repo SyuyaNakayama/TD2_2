@@ -1,8 +1,30 @@
 #include "Enemy.h"
-#include "./stage/player/Player.h"
+
+void(Enemy::* Enemy::AttackFunc[])() =
+{
+	&Enemy::StandbyMotion,&Enemy::BreathMotion,&Enemy::BiteMotion
+};
+
+float DirectionToRadian(Direction direction)
+{
+	float angle = 0;
+
+	switch (direction)
+	{
+	case Right:	angle = 3.0f * PI / 2.0f;	break;
+	case Back:	angle = -PI;				break;
+	case Left:	angle = PI / 2.0f;			break;
+	}
+	return angle;
+}
 
 void Enemy::Move()
 {
+	if (attackPattern == 2 && !rotStop) { worldTransform_[0].rotation_.y = DirectionToRadian(player_->GetDirection()); rotStop = true; }
+	if (attackPattern != 0) { return; }
+	rotStop = false;
+	Vector3 direction = player_->GetWorldPosition() - GetWorldPosition();
+	worldTransform_[0].rotation_.y = atan2f(direction.x, direction.z) + PI;
 }
 
 void Enemy::Initialize(ViewProjection* viewProjection)
@@ -22,20 +44,21 @@ void Enemy::Initialize(ViewProjection* viewProjection)
 		modelDoragon[i] = Model::CreateFromOBJ("Doragon_neck", true);
 	}
 	ParentInitialize();
-	worldTransform_[0].scale_ = {20.0f,20.0f,20.0f};
+	worldTransform_[0].scale_ = { 20.0f,20.0f,20.0f };
 	// ブレスの初期化
 	viewProjection_ = viewProjection;
-	breath_.Initialize(worldTransform_[0].translation_,{0,0,-0.5f}, viewProjection_);
+	breath_.Initialize(worldTransform_[0].translation_, { 0,0,0 }, viewProjection_);
 }
 
 void Enemy::Update()
 {
+	Move();
 	worldTransform_[0].Update();
 	ParentUpdate();
 	breath_.Update();
 
 	debugText_->SetPos(0, 0);
-	debugText_->Printf("%d",hp_);
+	debugText_->Printf("%d", hp_);
 }
 
 void Enemy::Draw()
@@ -68,7 +91,7 @@ void Enemy::ParentInitialize()
 	worldTransform_[5].translation_ = { 0.0f,ParPos(11.5f),ParPos(6.0f) };
 	worldTransform_[5].rotation_.x = 6 * PI / 180;
 
-	worldTransform_[6].translation_ = { 0.0f,ParPos(8.0f),ParPos(5.0f) }; 
+	worldTransform_[6].translation_ = { 0.0f,ParPos(8.0f),ParPos(5.0f) };
 	worldTransform_[6].rotation_.x = 43 * PI / 180;
 
 	worldTransform_[7].scale_ = Vector3(1.15f, 1.15f, 1.15f);
@@ -84,7 +107,7 @@ void Enemy::ParentInitialize()
 	worldTransform_[9].rotation_.x = -4 * PI / 180;
 
 	worldTransform_[10].scale_ = Vector3(1.85f, 1.85f, 1.86f);
-	worldTransform_[10].translation_ = { 0.0f,ParPos(-7.0f),ParPos(4.0f) }; 
+	worldTransform_[10].translation_ = { 0.0f,ParPos(-7.0f),ParPos(4.0f) };
 	worldTransform_[10].rotation_.x = -4 * PI / 180;
 
 	worldTransform_[11].scale_ = Vector3(2.1f, 2.1f, 2.1f);
@@ -100,23 +123,35 @@ void Enemy::ParentInitialize()
 
 void Enemy::ParentUpdate()
 {
-	if (input_->PushKey(DIK_1))//ブレスモーション
+	switch (attackPattern)
 	{
-		isCharge = true;
-		isBreathMotion = true;
-	}
-	if (input_->PushKey(DIK_2))//噛みつきモーション
-	{
-		isOpen = true;
-		isBiteMotion = true;
-	}
-	if(isBiteMotion ==false && isBreathMotion == false)
-	{
-		StandbyMotion();
+	case Enemy::Idle:
+		if (attackInterval.CountDown())
+		{
+			int pattern = rand() % 2;
+			if (pattern == 0) { attackPattern = Enemy::Breath; }
+			else { attackPattern = Enemy::Bite; }
+			attackInterval = rand() % 120 + 30;
+		}
+		break;
+	case Enemy::Breath:
+		if (!isBreathMotion)//ブレスモーション
+		{
+			isCharge = true;
+			isBreathMotion = true;
+		}
+		break;
+	case Enemy::Bite:
+		if (!isBiteMotion)//噛みつきモーション
+		{
+			isOpen = true;
+			isBiteMotion = true;
+		}
+		break;
 	}
 
-	BreathMotion();
-	BiteMotion();
+	(this->*AttackFunc[attackPattern])();
+
 	for (int i = 0; i < modelNum; i++)
 	{
 		worldTransform_[i].Update();
@@ -150,7 +185,7 @@ void Enemy::StandbyMotion()
 }
 
 void Enemy::BreathMotion()
-{	
+{
 
 	//溜めるモーション
 	if (isCharge == true)
@@ -252,6 +287,7 @@ void Enemy::BreathMotion()
 			breathTimer = 30;//ここは30
 			isClose = false;
 			isBreathMotion = false;
+			attackPattern = Idle;
 		}
 	}
 }
@@ -259,7 +295,7 @@ void Enemy::BreathMotion()
 void Enemy::BiteMotion()
 {
 	//口開く
-	if(isOpen == true)
+	if (isOpen == true)
 	{
 		for (int i = 1; i < 12; i++)//座標をセット
 		{
@@ -353,6 +389,7 @@ void Enemy::BiteMotion()
 			biteTimer = 30;//ここは30
 			isOrig = false;
 			isBiteMotion = false;
+			attackPattern = Idle;
 		}
 	}
 }
@@ -360,8 +397,8 @@ void Enemy::BiteMotion()
 void Enemy::OnCollision(Collider* collider)
 {
 	if (collider->GetCollisionAttribute() != CollisionAttribute::PlayerAttack) { return; }
-	if (!Player::GetInstance()->GetAttack()->IsAttack()) { return; }
-	if (Player::GetInstance()->GetAttack()->IsAttacked()) { return; }
+	if (!player_->GetAttack()->IsAttack()) { return; }
+	if (player_->GetAttack()->IsAttacked()) { return; }
 	hp_--;
-	Player::GetInstance()->GetAttack()->SetIsAttacked(true);
+	player_->GetAttack()->SetIsAttacked(true);
 }

@@ -15,7 +15,6 @@ private:
 	float ATrot = 0.0f;
 	bool isAttack = false;
 	bool isAttacked = false;
-	Vector3 GetPositionFromMatrix4(Matrix4 matWorld) { return Vector3(matWorld.m[3][0], matWorld.m[3][1], matWorld.m[3][2]); }
 
 public:
 	void Initialize(WorldTransform* playerWorldTransform);
@@ -24,7 +23,7 @@ public:
 	bool IsAttacked() { return isAttacked; }
 	void SetIsAttacked(bool isAttacked_) { isAttacked = isAttacked_; }
 	void OnCollision(Collider* collider) {}
-	const Vector3 GetWorldPosition() { return GetPositionFromMatrix4(playerWorldTransform_->matWorld_) + Vector3(-3.0f, 0, 0); }
+	const Vector3 GetWorldPosition() { return GetWorldTranslation(playerWorldTransform_->matWorld_) + Vector3(-3.0f, 0, 0); }
 	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
 };
 
@@ -75,6 +74,6 @@ public:
 	PlayerAttack* GetAttack() { return &attack_; }
 
 	void OnCollision(Collider* collider);
-	const Vector3 GetWorldPosition() { return Vector3(worldTransform_[1].matWorld_.m[3][0], worldTransform_[1].matWorld_.m[3][1], worldTransform_[1].matWorld_.m[3][2]); }
+	const Vector3 GetWorldPosition() { return GetWorldTranslation(worldTransform_[1].matWorld_); }
 	const Vector3 GetRadius() { return Vector3(2.0f, 3.0f, 3.0f); }
 };
