@@ -41,8 +41,8 @@ void GameScene::Update()
 		soundManager_->PlayBGM(SoundManager::Play);
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Clear); }
 		if (input_->TriggerKey(DIK_RETURN)) { fadeManager_.ChangeScene(GameOver); }
-		if (playerHp == 0) { fadeManager_.ChangeScene(GameOver); }
-		if (enemyHp == 0) { fadeManager_.ChangeScene(Clear); }
+		if (Player::GetPlayerHp == 0) { fadeManager_.ChangeScene(GameOver); }
+		if (Enemy::GetEnemyHp == 0) { fadeManager_.ChangeScene(Clear); }
 		break;
 	case Clear:
 		soundManager_->StopBGM(SoundManager::Play);

@@ -28,9 +28,9 @@ public: // メンバ関数
 	/// </summary>
 	void Draw();
 
-	float GetPlayerHp() { return playerHp; }
+	
 
-	float GetEnemyHp() { return enemyHp; }
+	
 
 private: // メンバ変数
 	DirectXCommon* dxCommon_= DirectXCommon::GetInstance();
@@ -44,6 +44,6 @@ private: // メンバ変数
 	float playerBodyRotSpd = 0.06f;
 	float startStringYOffset_ = 0;
 
-	float playerHp;
-	float enemyHp;
+	
+	
 };
