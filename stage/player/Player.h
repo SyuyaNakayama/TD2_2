@@ -18,6 +18,10 @@ private:
 	ViewProjection* viewProjection_ = nullptr;
 	Input* input_ = Input::GetInstance();
 	uint32_t texture_ = 0;
+	uint32_t textureHP_ = 0;
+	Sprite* HpUI = nullptr;
+	uint32_t textureHPback_ = 0;
+	Sprite* HpBackUI = nullptr;
 	const float CAMERA_DISTANCE = 30.0f;
 	Direction direction_ = Front;
 	Jamp jamp_;
@@ -48,9 +52,11 @@ public:
 	void Initialize(ViewProjection* viewProjection);
 	void Update();
 	void Draw();
+	void SpriteDraw();
 	Direction GetDirection() { return direction_; }
 	std::vector<WorldTransform> GetWorldTransforms() { return worldTransform_; }
 	void SetWorldTransforms(std::vector<WorldTransform> worldTransforms) { worldTransform_ = worldTransforms; }
+	void SetUIPosition();
 
 	void OnCollision(Collider* collider);
 	const Vector3 GetWorldPosition() { return worldTransform_[0].translation_; }

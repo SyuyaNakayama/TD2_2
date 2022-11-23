@@ -41,6 +41,10 @@ Player* Player::GetInstance()
 
 void Player::Initialize(ViewProjection* viewProjection)
 {
+	textureHP_ = TextureManager::Load("green.png");
+	HpUI = Sprite::Create(textureHP_, { 150.0f,50.0f });
+	textureHPback_ = TextureManager::Load("gray.png");
+	HpBackUI = Sprite::Create(textureHPback_, { 150.0f,50.0f });
 	debugText_ = DebugText::GetInstance();
 	worldTransform_.resize(7);
 	modelKnight.resize(worldTransform_.size() - 1);
@@ -159,6 +163,7 @@ void Player::Update()
 	worldTransform_[Root].rotation_.y = DirectionToRadian();
 	AttackMotion();
 	WalkMotion();
+	SetUIPosition();
 	for (WorldTransform& w : worldTransform_) { w.Update(); }
 }
 
@@ -168,6 +173,20 @@ void Player::Draw()
 	{
 		modelKnight[i]->Draw(worldTransform_[i + 1], *viewProjection_);
 	}
+}
+
+void Player::SetUIPosition()
+{
+	HpBackUI->SetPosition({ 1280/2 - 65.0f, worldTransform_[Root].translation_.y + 230.0f});	
+	HpUI->SetPosition({ 1280 / 2 - 65.0f, worldTransform_[Root].translation_.y + 230.0f });
+}
+
+void Player::SpriteDraw()
+{
+	HpBackUI->SetSize({ 20.0f*8.0f,15.0f });
+	HpBackUI->Draw();
+	HpUI->SetSize({ hp_* 8.0f,15.0f });
+	HpUI->Draw();
 }
 
 void Player::OnCollision(Collider* collider)

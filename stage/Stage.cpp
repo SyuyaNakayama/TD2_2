@@ -47,6 +47,7 @@ void Stage::Draw()
 void Stage::SpriteDraw()
 {
 	enemy_.SpriteDraw();
+	player_->SpriteDraw();
 };
 
 Stage::~Stage()
