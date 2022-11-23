@@ -20,9 +20,6 @@ void Stage::Update()
 #pragma region オブジェクトの更新
 	player_->Update();
 	enemy_->Update();
-	//if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
-	//	shake_.ShakeStart(10.0f);
-	//}
 #pragma endregion
 	// 当たり判定
 	collisionManager.CheckAllCollisions(enemy_);

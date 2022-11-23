@@ -84,7 +84,7 @@ void Enemy::SpriteDraw()
 {
 	HpBackUI->SetSize({ 50 * 20.0f,25.0f });
 	HpBackUI->Draw();
-	HpUI->SetSize({  hp_ * 20.0f,25.0f });
+	HpUI->SetSize({ hp_ * 20.0f,25.0f });
 	HpUI->Draw();
 }
 
