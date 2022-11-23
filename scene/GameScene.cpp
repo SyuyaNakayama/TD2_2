@@ -25,6 +25,8 @@ void GameScene::Update()
 		sprite_[1]->SetPosition({ 367.0f,500.0f - fabs(sinf(startStringYOffset_)) * 30.0f });
 		break;
 	case HowToPlay:
+		sprite_[1]->SetPosition({ 367.0f,600.0f });
+
 		if (input_->TriggerKey(DIK_SPACE))
 		{
 			fadeManager_.ChangeScene(Play);
@@ -55,14 +57,14 @@ void GameScene::Update()
 		if (input_->TriggerKey(DIK_SPACE)) { fadeManager_.ChangeScene(Title); }
 		break;
 	case GameOver:
-			pw = Player::GetInstance()->GetWorldTransforms();
-			pw[0].translation_ = { 0,0,0 };
-			pw[0].rotation_.y = 0;
-			pw[1].rotation_.x = -PI / 4.0f;
-			for (WorldTransform& w : pw) { w.Update(); }
-			Player::GetInstance()->SetWorldTransforms(pw);
-			stage_.SetEye({ 0,2.5f,-15.0f });
-			stage_.SetTarget({ 0,2.5f,0 });
+		pw = Player::GetInstance()->GetWorldTransforms();
+		pw[0].translation_ = { 0,0,0 };
+		pw[0].rotation_.y = 0;
+		pw[1].rotation_.x = -PI / 4.0f;
+		for (WorldTransform& w : pw) { w.Update(); }
+		Player::GetInstance()->SetWorldTransforms(pw);
+		stage_.SetEye({ 0,2.5f,-15.0f });
+		stage_.SetTarget({ 0,2.5f,0 });
 
 		if (input_->TriggerKey(DIK_SPACE))
 		{
@@ -98,6 +100,7 @@ void GameScene::Draw()
 		break;
 	case HowToPlay:
 		sprite_[2]->Draw();
+		sprite_[1]->Draw();
 		break;
 	case Clear:
 		sprite_[3]->Draw();

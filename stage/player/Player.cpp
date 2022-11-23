@@ -93,13 +93,6 @@ void Player::Move()
 		break;
 	}
 
-	// ƒWƒƒƒ“ƒv
-	if (input_->PushKey(DIK_UP))
-	{
-		jamp_.StartJamp(1.5f, 0.1f, 2.0f);
-	}
-	jamp_.Update(worldTransform_[0].translation_.y);
-
 	viewProjection_->eye = viewProjection_->target = worldTransform_[0].translation_;
 	viewProjection_->target.y += 2.0f;
 	if (!isTurn_)
@@ -161,11 +154,11 @@ void Player::Update()
 	if (input_->PushKey(DIK_LEFT)) { LorR = 0; }
 	if (input_->PushKey(DIK_RIGHT)) { LorR = 1; }
 	worldTransform_[Root].rotation_.y = DirectionToRadian();
-	attack_.Motion();
+	Vector3 hitOffset = Vector3(0, 0, -3.0f) * Matrix4RotationY(DirectionToRadian());
+	attack_.Motion(hitOffset);
 	WalkMotion();
 	for (WorldTransform& w : worldTransform_) { w.Update(); }
-	debugText_->SetPos(0, 20);
-	debugText_->Printf("%d", hp_);
+	
 	if (isHit)
 	{
 		if (drawInterval.CountDown()) { isDraw = !isDraw; }
@@ -234,8 +227,9 @@ void PlayerAttack::Initialize(WorldTransform* playerWorldTransform)
 	SetCollisionMask(CollisionMask::Player);
 }
 
-void PlayerAttack::Motion()
+void PlayerAttack::Motion(Vector3 hitOffset)
 {
+	hitOffset_ = hitOffset;
 	if (!isAttack)
 	{
 		if (Input::GetInstance()->TriggerKey(DIK_SPACE)) { isAttack = isUp = true; isAttacked = false; }

@@ -15,15 +15,16 @@ private:
 	float ATrot = 0.0f;
 	bool isAttack = false;
 	bool isAttacked = false;
+	Vector3 hitOffset_{};
 
 public:
 	void Initialize(WorldTransform* playerWorldTransform);
-	void Motion();	//UŒ‚‚Ìƒ‚[ƒVƒ‡ƒ“
+	void Motion(Vector3 hitOffset);	//UŒ‚‚Ìƒ‚[ƒVƒ‡ƒ“
 	bool IsAttack() { return isAttack; }
 	bool IsAttacked() { return isAttacked; }
 	void SetIsAttacked(bool isAttacked_) { isAttacked = isAttacked_; }
 	void OnCollision(Collider* collider) {}
-	const Vector3 GetWorldPosition() { return GetWorldTranslation(playerWorldTransform_->matWorld_) + Vector3(-3.0f, 0, 0); }
+	const Vector3 GetWorldPosition() { return GetWorldTranslation(playerWorldTransform_->matWorld_) + hitOffset_; }
 	const Vector3 GetRadius() { return Vector3(3.0f, 3.0f, 3.0f); }
 };
 
@@ -38,7 +39,6 @@ private:
 	uint32_t texture_ = 0;
 	const float CAMERA_DISTANCE = 30.0f;
 	Direction direction_ = Front;
-	Jamp jamp_;
 	bool isTurn_ = 0;
 	const int LERP_FLAME = 60;
 	int nowFlame = 0;

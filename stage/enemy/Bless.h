@@ -43,4 +43,3 @@ public:
 	const Vector3 GetWorldPosition() { return worldTransform_.translation_; }
 	const Vector3 GetRadius() { return Vector3(5.0f, 5.0f, 5.0f); }
 };
-

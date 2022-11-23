@@ -127,7 +127,7 @@ void Enemy::ParentUpdate()
 	case Enemy::Idle:
 		if (attackInterval.CountDown())
 		{
-			int pattern = rand() % 1;
+			int pattern = rand() % 1+1;
 			if (pattern == 0) { attackPattern = Enemy::Breath; }
 			else { attackPattern = Enemy::Bite; }
 			attackInterval = rand() % 120 + 30;
