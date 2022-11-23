@@ -1,6 +1,7 @@
 #pragma once
 #include "Vector3.h"
 #include <cstdint>
+#include "CollisionConfig.h"
 
 class Collider
 {
@@ -12,6 +13,6 @@ public:
 	const virtual Vector3 GetWorldPosition() = 0, GetRadius() = 0;
 	uint32_t GetCollisionAttribute() { return collisionAttribute_; }
 	uint32_t GetCollisionMask() { return collisionMask_; }
-	void SetCollisionAttribute(uint32_t collisionAttribute) { collisionAttribute_ = collisionAttribute; }
-	void SetCollisionMask(uint32_t collisionMask) { collisionMask_ = collisionMask; }
+	void SetCollisionAttribute(CollisionAttribute::Enum collisionAttribute) { collisionAttribute_ = collisionAttribute; }
+	void SetCollisionMask(CollisionMask::Enum collisionMask) { collisionMask_ = collisionMask; }
 };

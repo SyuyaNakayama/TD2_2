@@ -14,6 +14,11 @@ void Bless::Initialize(const Vector3& position, const Vector3 velocity, ViewProj
 	velocity_ = velocity;
 
 	particleManager_.Initialize(viewProjection);
+
+	SetCollisionAttribute(CollisionAttribute::EnemyBreath);
+	SetCollisionMask(CollisionMask::EnemyBreath);
+
+	isDead_ = false;
 }
 
 /// <summary>
@@ -21,6 +26,7 @@ void Bless::Initialize(const Vector3& position, const Vector3 velocity, ViewProj
 /// </summary>
 void Bless::Update()
 {
+	if (isDead_) { return; }
 	// 座標を移動させる (1フレーム分の移動量を足しこむ)
 	worldTransform_.translation_ += velocity_;
 
@@ -31,8 +37,10 @@ void Bless::Update()
 	worldTransform_.Update();
 
 	// 時間経過でデス
-	if (--dethTimer_ <= 0) {
+	if (--dethTimer_ <= 0)
+	{
 		isDead_ = true;
+		dethTimer_ = kLifeTime;
 	}
 }
 
@@ -41,5 +49,6 @@ void Bless::Update()
 /// </summary>
 void Bless::Draw()
 {
+	if (isDead_) { return; }
 	particleManager_.Draw();
 }
