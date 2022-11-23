@@ -15,7 +15,7 @@ void Block::Add(Vector2 pos, Vector3 rad)
 {
 	WorldTransform w;
 	Vector3 translation{};
-	
+
 	w.Initialize();
 
 	switch (direction_)
@@ -24,7 +24,7 @@ void Block::Add(Vector2 pos, Vector3 rad)
 	case Right:	translation = { POLE_RAD,pos.y,pos.x - POLE_RAD };
 			  Rot = 90 * PI / 180;
 			  break;
-		
+
 	case Back:	translation = { -pos.x + POLE_RAD,pos.y,POLE_RAD };	break;
 	case Left:	translation = { -POLE_RAD,pos.y,-pos.x + POLE_RAD };
 			 Rot = 90 * PI / 180;

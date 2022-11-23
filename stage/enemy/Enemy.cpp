@@ -40,6 +40,22 @@ void Enemy::Initialize(ViewProjection* viewProjection)
 	SetCollisionAttribute(CollisionAttribute::Enemy);
 	SetCollisionMask(CollisionMask::Enemy);
 	hp_ = 50;
+	isDamage = 0;
+	attackPattern = Idle;
+	isBiteMotion = false;
+	isOpen = false;
+	isStop3 = false;
+	isBite = false;
+	isStop4 = false;
+	isOrig = false;
+	biteTimer = 30;
+
+	for (size_t i = 0; i < 12; i++)
+	{
+		diffPosY[i] = {};
+		diffPosZ[i] = {};
+		diffRotX[i] = {};
+	}
 
 	modelDoragon[0] = Model::CreateFromOBJ("Doragon", true);
 	modelDoragon[1] = Model::CreateFromOBJ("Doragon_Head", true);	//頭
@@ -65,6 +81,7 @@ void Enemy::Update()
 	worldTransform_[0].Update();
 	ParentUpdate();
 	breath_.Update();
+	isDamage = false;
 
 	debugText_->SetPos(0, 0);
 	debugText_->Printf("%d", hp_);
@@ -75,7 +92,8 @@ void Enemy::Draw()
 	// 各パーツ(頭、顎、首)
 	for (int i = 1; i < modelNum; i++)
 	{
-		modelDoragon[i]->Draw(worldTransform_[i], *viewProjection_);
+		if (!isDamage) { modelDoragon[i]->Draw(worldTransform_[i], *viewProjection_); }
+		else { modelDoragon[i]->Draw(worldTransform_[i], *viewProjection_, TextureManager::Load("white1x1.png")); }
 	}
 	breath_.Draw();
 }
@@ -94,9 +112,11 @@ void Enemy::ParentInitialize()
 
 	//頭
 	worldTransform_[1].translation_ = { 0.0f,ParPos(14.0f),ParPos(-4.0f) };
+	worldTransform_[1].rotation_.x = 0;
 
 	//顎
 	worldTransform_[2].translation_ = { 0.0f,ParPos(14.0f),ParPos(-4.0f) };
+	worldTransform_[2].rotation_.x = 0;
 
 	//首
 	worldTransform_[3].translation_ = { 0.0f,ParPos(15.0f),ParPos(2.0f) };
@@ -145,7 +165,7 @@ void Enemy::ParentUpdate()
 	case Enemy::Idle:
 		if (attackInterval.CountDown())
 		{
-			int pattern = rand() % 2;
+			int pattern = 0;//rand() % 2;
 			if (pattern == 0) { attackPattern = Enemy::Breath; }
 			else { attackPattern = Enemy::Bite; }
 			attackInterval = rand() % 120 + 30;
@@ -421,4 +441,5 @@ void Enemy::OnCollision(Collider* collider)
 	if (player_->GetAttack()->IsAttacked()) { return; }
 	hp_--;
 	player_->GetAttack()->SetIsAttacked(true);
+	isDamage = true;
 }

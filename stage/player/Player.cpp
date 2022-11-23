@@ -53,9 +53,10 @@ void Player::Initialize(ViewProjection* viewProjection)
 	viewProjection_ = viewProjection;
 	SetCollisionAttribute(CollisionAttribute::Player);
 	SetCollisionMask(CollisionMask::Player);
-	hp_ = 10;
+	hp_ = 1;
 	attack_.Initialize(&worldTransform_[HandRight]);
 	isHit = false;
+	isDraw = true;
 
 	for (size_t i = 0; i < modelKnight.size(); i++)
 	{
@@ -82,20 +83,23 @@ void Player::Move()
 	float horizontalSpd = (input_->PushKey(DIK_RIGHT) - input_->PushKey(DIK_LEFT)) * 0.5f;
 
 	// ˆÚ“®
-	switch (direction_)
+	if (hp_ > 0)
 	{
-	case Front:
-		worldTransform_[Root].translation_.x += horizontalSpd;
-		break;
-	case Right:
-		worldTransform_[Root].translation_.z += horizontalSpd;
-		break;
-	case Back:
-		worldTransform_[Root].translation_.x -= horizontalSpd;
-		break;
-	case Left:
-		worldTransform_[Root].translation_.z -= horizontalSpd;
-		break;
+		switch (direction_)
+		{
+		case Front:
+			worldTransform_[Root].translation_.x += horizontalSpd;
+			break;
+		case Right:
+			worldTransform_[Root].translation_.z += horizontalSpd;
+			break;
+		case Back:
+			worldTransform_[Root].translation_.x -= horizontalSpd;
+			break;
+		case Left:
+			worldTransform_[Root].translation_.z -= horizontalSpd;
+			break;
+		}
 	}
 
 	viewProjection_->eye = viewProjection_->target = worldTransform_[0].translation_;
@@ -156,15 +160,21 @@ void Player::Update()
 {
 	Move();
 	// ¶‰E‚Ì”»’è
-	if (input_->PushKey(DIK_LEFT)) { LorR = 0; }
-	if (input_->PushKey(DIK_RIGHT)) { LorR = 1; }
+	if (hp_ > 0)
+	{
+		if (input_->PushKey(DIK_LEFT)) { LorR = 0; }
+		if (input_->PushKey(DIK_RIGHT)) { LorR = 1; }
+	}
 	worldTransform_[Root].rotation_.y = DirectionToRadian();
 	Vector3 hitOffset = Vector3(0, 0, -3.0f) * Matrix4RotationY(DirectionToRadian());
-	attack_.Motion(hitOffset);
-	WalkMotion();
+	if (hp_ > 0) 
+	{
+		attack_.Motion(hitOffset);
+		WalkMotion();
+	}
 	SetUIPosition();
 	for (WorldTransform& w : worldTransform_) { w.Update(); }
-	
+
 	if (isHit)
 	{
 		if (drawInterval.CountDown()) { isDraw = !isDraw; }
@@ -174,32 +184,30 @@ void Player::Update()
 			isDraw = true;
 		};
 	}
-	
+
 	shake_.Update(*viewProjection_);
 }
 
 void Player::Draw()
 {
-	if (isDraw)
+	if (!isDraw) { return; }
+	for (size_t i = 0; i < modelKnight.size(); i++)
 	{
-		for (size_t i = 0; i < modelKnight.size(); i++)
-		{
-			modelKnight[i]->Draw(worldTransform_[i + 1], *viewProjection_);
-		}
+		modelKnight[i]->Draw(worldTransform_[i + 1], *viewProjection_);
 	}
 }
 
 void Player::SetUIPosition()
 {
-	HpBackUI->SetPosition({ 1280/2 - 65.0f, worldTransform_[Root].translation_.y + 230.0f});	
+	HpBackUI->SetPosition({ 1280 / 2 - 65.0f, worldTransform_[Root].translation_.y + 230.0f });
 	HpUI->SetPosition({ 1280 / 2 - 65.0f, worldTransform_[Root].translation_.y + 230.0f });
 }
 
 void Player::SpriteDraw()
 {
-	HpBackUI->SetSize({ 10.0f*16.0f,15.0f });
+	HpBackUI->SetSize({ 10.0f * 16.0f,15.0f });
 	HpBackUI->Draw();
-	HpUI->SetSize({ hp_* 16.0f,15.0f });
+	HpUI->SetSize({ hp_ * 16.0f,15.0f });
 	HpUI->Draw();
 }
 

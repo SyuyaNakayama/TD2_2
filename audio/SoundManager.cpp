@@ -22,7 +22,7 @@ void SoundManager::Initialize()
 void SoundManager::PlayBGM(BGM index)
 {
 	if (audio_->IsPlaying(playHandle_[index])) { return; }
-	playHandle_[index] = audio_->PlayWave(bgm_[index], true, 0.8f);
+	//playHandle_[index] = audio_->PlayWave(bgm_[index], true, 0.6f);
 }
 
 void SoundManager::PlaySE(SE index)

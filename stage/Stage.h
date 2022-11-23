@@ -8,14 +8,12 @@
 class Stage
 {
 private:
-	DebugText* debugText_ = DebugText::GetInstance();
 	ViewProjection viewProjection_;
 	Player* player_ = Player::GetInstance();
 	CollisionManager collisionManager;
 	Enemy* enemy_ = Enemy::GetInstance();
 	BlockManager blockManager_;
 	Skydome* skydome = new Skydome();
-	float size = 1.0f;
 
 public:
 	~Stage();

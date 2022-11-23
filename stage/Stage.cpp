@@ -5,7 +5,6 @@ using namespace std;
 
 void Stage::Initialize()
 {
-	debugText_ = DebugText::GetInstance();
 	viewProjection_.Initialize();
 	blockManager_.Initialize();
 	player_ = Player::GetInstance();

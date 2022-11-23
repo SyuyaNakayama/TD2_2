@@ -79,6 +79,8 @@ private:
 	AttackPattern attackPattern = Idle;
 	bool rotStop = false;
 
+	bool isDamage = false;
+
 	Enemy() = default;
 	~Enemy() = default;
 public:
