@@ -23,7 +23,6 @@ void Stage::Update()
 	//if (Input::GetInstance()->TriggerKey(DIK_RETURN)) {
 	//	shake_.ShakeStart(10.0f);
 	//}
-	shake_.Update(viewProjection_);
 #pragma endregion
 	// “–‚½‚è”»’è
 	collisionManager.CheckAllCollisions(enemy_);

@@ -2,7 +2,6 @@
 #include <vector>
 #include "collider/CollisionManager.h"
 #include "block/BlockManager.h"
-#include "Shake.h"
 #include "Skydome.h"
 #include "player/Player.h"
 
@@ -15,7 +14,6 @@ private:
 	CollisionManager collisionManager;
 	Enemy* enemy_ = Enemy::GetInstance();
 	BlockManager blockManager_;
-	Shake shake_;
 	Skydome* skydome = new Skydome();
 	float size = 1.0f;
 

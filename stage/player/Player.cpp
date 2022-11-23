@@ -53,7 +53,7 @@ void Player::Initialize(ViewProjection* viewProjection)
 	viewProjection_ = viewProjection;
 	SetCollisionAttribute(CollisionAttribute::Player);
 	SetCollisionMask(CollisionMask::Player);
-	hp_ = 2;
+	hp_ = 10;
 	attack_.Initialize(&worldTransform_[HandRight]);
 	isHit = false;
 
